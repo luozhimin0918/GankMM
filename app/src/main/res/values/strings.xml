@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">MM·福利</string>
+    <string name="about">关于</string>
+    <string name="mm_no_net">请检查网络设置</string>
+
+    <string name="download_url">http://fir.im/gankmm</string>
+    <string name="github_my">http://www.github.com/maning0303</string>
+    <string name="gankio">http://www.gank.io</string>
+    <string name="github">github</string>
+    <string name="github_daimajia">https://github.com/daimajia</string>
+    <string name="github_other_app_01">https://github.com/drakeet/Meizhi</string>
+    <string name="github_other_app_02">https://github.com/xingrz/GankMeizhi</string>
+    <string name="github_other_app_03">https://github.com/xiongwei-git/GankApp</string>
+    <string name="github_other_app_04">https://github.com/dongjunkun/GanK</string>
+    <string name="github_other_app_05">https://github.com/zzhoujay/Gank4Android</string>
+
+
+    <!-- umeng反馈 -->
+    <string name="feedback">意见反馈</string>
+    <string name="reply_no_empty">反馈内容不能为空</string>
+    <string name="comment_count">评论(%d)</string>
+    <string name="hour_before">%d小时前</string>
+    <string name="minute_before">%d分钟前</string>
+    <string name="second_before">%d秒前</string>
+    <string name="fb_reply_content_default">我是福利MM的开发者，有任何问题及建议欢迎吐槽</string>
+    <string name="current">刚刚</string>
+
+</resources>
