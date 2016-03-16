@@ -74,7 +74,7 @@ public class FeedBackActivity extends BaseActivity implements SwipeRefreshLayout
 
         initUmeng();
 
-        initUmengUserInfo();
+//        initUmengUserInfo();
 
     }
 
@@ -205,7 +205,7 @@ public class FeedBackActivity extends BaseActivity implements SwipeRefreshLayout
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(0, 0);
         umengFbSendContent.setText(null);
-        mConversation.addUserReply("http://image.tianjimedia.com/uploadImages/2015/099/07/MP8W242RX737.jpg");
+        mConversation.addUserReply(content);
         sync();
         scrollListViewToBottom();
     }
