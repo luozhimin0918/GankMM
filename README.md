@@ -15,15 +15,31 @@
 ![](https://github.com/maning0303/GankMM/raw/master/screenshots/003.jpg)  
 
 ##感谢：
-#####[代码家-干货集中营](https://github.com/daimajia)
-</string>
-https://github.com/xingrz/GankMeizhi</string>
-https://github.com/xiongwei-git/GankApp</string>
-https://github.com/dongjunkun/GanK</string>
-https://github.com/zzhoujay/Gank4Android</string>
-#####[drakeet](https://github.com/drakeet/Meizhi)
-#####[drakeet](https://github.com/drakeet/Meizhi)
-#####[drakeet](https://github.com/drakeet/Meizhi)
-#####[drakeet](https://github.com/drakeet/Meizhi)
+######[代码家-干货集中营](https://github.com/daimajia)
+######[drakeet](https://github.com/drakeet/Meizhi)
+######[xingrz](https://github.com/xingrz/GankMeizhi)
+######[dongjunkun](https://github.com/dongjunkun/GanK)
+######[xiongwei-git](https://github.com/xiongwei-git/GankApp)
+######[zzhoujay](https://github.com/zzhoujay/Gank4Android)
+
+##依赖库：
+` ``java
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:support-v4:23.1.1'
+    compile 'com.android.support:design:23.1.1'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.google.code.gson:gson:2.5'
+    compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
+    compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
+    compile 'com.squareup.okhttp:okhttp:2.4.0'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.github.zhaokaiqiang.klog:library:1.3.0'
+    compile 'com.bigkoo:svprogresshud:1.0.2'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.android.support:cardview-v7:23.1.1'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.github.Aspsine:SwipeToLoadLayout:v1.0.2'
+    compile 'com.github.jd-alexander:LikeButton:0.1.8'
+    compile 'com.umeng.analytics:analytics:latest.integration'
 
 
