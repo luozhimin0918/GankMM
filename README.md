@@ -1,9 +1,9 @@
 # GankMM -- 福利MM
 
-（项目练手，勿喷）
-
-####周一到周五每天分享一张美女图片和若干程序干货等<br>
-####所有的数据来自：
+  周一到周五每天分享一张美女图片和若干程序干货等<br>
+  项目练手
+  
+##所有的数据来自：
 ####[干货集中营](http://gank.io/)  
 
 ##APK下载地址：
@@ -16,8 +16,14 @@
 
 ##感谢：
 #####[代码家-干货集中营](https://github.com/daimajia)
-#####[代码家-干货集中营](https://github.com/daimajia)
-#####[代码家-干货集中营](https://github.com/daimajia)
-#####[代码家-干货集中营](https://github.com/daimajia)
-#####[代码家-干货集中营](https://github.com/daimajia)
+</string>
+https://github.com/xingrz/GankMeizhi</string>
+https://github.com/xiongwei-git/GankApp</string>
+https://github.com/dongjunkun/GanK</string>
+https://github.com/zzhoujay/Gank4Android</string>
+#####[drakeet](https://github.com/drakeet/Meizhi)
+#####[drakeet](https://github.com/drakeet/Meizhi)
+#####[drakeet](https://github.com/drakeet/Meizhi)
+#####[drakeet](https://github.com/drakeet/Meizhi)
+
 
