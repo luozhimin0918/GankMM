@@ -1,12 +1,12 @@
 # GankMM -- 福利MM
-
+  一个业余的Android项目<br>
   周一到周五每天分享一张美女图片和若干程序干货等<br>
   
 ##所有的数据来自：
 ####[干货集中营](http://gank.io/)  
 
 ##APK下载地址：
-####[http://fir.im/gankmm](http://fir.im/gankmm)
+####[点击下载](http://fir.im/gankmm)
 
 ##项目截图：
 ![](https://github.com/maning0303/GankMM/raw/master/screenshots/001.jpg) 
@@ -20,6 +20,7 @@
 ######[dongjunkun](https://github.com/dongjunkun/GanK)
 ######[xiongwei-git](https://github.com/xiongwei-git/GankApp)
 ######[zzhoujay](https://github.com/zzhoujay/Gank4Android)
+######[所有的开源的人](https://github.com)
 
 ##依赖库：
     compile 'com.android.support:appcompat-v7:23.1.1'
