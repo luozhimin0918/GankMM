@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MM·福利</string>
+    <string name="app_name">干货~营</string>
     <string name="about">关于</string>
     <string name="mm_no_net">请检查网络设置</string>
 
@@ -22,7 +22,7 @@
     <string name="hour_before">%d小时前</string>
     <string name="minute_before">%d分钟前</string>
     <string name="second_before">%d秒前</string>
-    <string name="fb_reply_content_default">我是福利MM的开发者，有任何问题及建议欢迎吐槽</string>
+    <string name="fb_reply_content_default">我是 干货~营 的开发者，有任何问题及建议欢迎吐槽</string>
     <string name="current">刚刚</string>
 
 </resources>

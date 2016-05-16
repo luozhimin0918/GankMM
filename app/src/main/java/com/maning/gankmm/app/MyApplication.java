@@ -34,19 +34,11 @@ public class MyApplication extends Application {
         //初始化Log
         KLog.init(BuildConfig.LOG_DEBUG);
 
-        //umeng日志
-        initUmengLog();
-
     }
 
     private void initBase() {
         application = this;
         mHandler = new Handler();
-    }
-
-    private void initUmengLog() {
-        /** 设置是否对日志信息进行加密, 默认false(不加密). */
-        AnalyticsConfig.enableEncrypt(true);
     }
 
 
