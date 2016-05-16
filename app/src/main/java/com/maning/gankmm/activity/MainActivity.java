@@ -14,12 +14,10 @@ import android.widget.Toast;
 import com.maning.gankmm.R;
 import com.maning.gankmm.base.BaseActivity;
 import com.maning.gankmm.constant.Constants;
-import com.maning.gankmm.fragment.CollectFragment;
+import com.maning.gankmm.fragment.collect.CollectFragment;
 import com.maning.gankmm.fragment.PublicFragment;
 import com.maning.gankmm.fragment.WelFareFragment;
 import com.maning.gankmm.utils.IntentUtils;
-import com.maning.gankmm.utils.MyToast;
-import com.maning.gankmm.utils.ShareUtil;
 import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
@@ -27,12 +25,8 @@ import com.umeng.fb.SyncListener;
 import com.umeng.fb.model.Conversation;
 import com.umeng.fb.model.Reply;
 import com.umeng.update.UmengUpdateAgent;
-import com.umeng.update.UmengUpdateListener;
-import com.umeng.update.UpdateResponse;
-import com.umeng.update.UpdateStatus;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -48,7 +42,14 @@ public class MainActivity extends BaseActivity {
 
     private Context context;
     private WelFareFragment welFareFragment;
-    private PublicFragment publicFragment;
+    private PublicFragment androidFragment;
+    private PublicFragment iOSFragment;
+    private PublicFragment videoFragment;
+    private PublicFragment jsFragment;
+    private PublicFragment expandFragment;
+    private PublicFragment recommendFragment;
+    private PublicFragment appFragment;
+
     private long exitTime = 0;
     private CollectFragment collectFragment;
     private FeedbackAgent umengAgent;
@@ -118,33 +119,74 @@ public class MainActivity extends BaseActivity {
         switch (flag) {
             case 0:
                 if (welFareFragment == null) {
-                    // 如果MessageFragment为空，则创建一个并添加到界面上
                     welFareFragment = WelFareFragment.newInstance();
                     fragmentTransaction.add(R.id.frame_content, welFareFragment);
                 } else {
-                    // 如果MessageFragment不为空，则直接将它显示出来
                     fragmentTransaction.show(welFareFragment);
                 }
                 break;
             case 1:
-                if (publicFragment == null) {
-                    // 如果MessageFragment为空，则创建一个并添加到界面上
-                    publicFragment = PublicFragment.newInstance(toolbar.getTitle().toString());
-                    fragmentTransaction.add(R.id.frame_content, publicFragment);
-                } else {
-                    // 如果MessageFragment不为空，则直接将它显示出来
-                    fragmentTransaction.show(publicFragment);
-                    publicFragment.updateFlag(toolbar.getTitle().toString());
-                }
-                break;
-            case 2:
                 if (collectFragment == null) {
-                    // 如果MessageFragment为空，则创建一个并添加到界面上
                     collectFragment = CollectFragment.newInstance();
                     fragmentTransaction.add(R.id.frame_content, collectFragment);
                 } else {
-                    // 如果MessageFragment不为空，则直接将它显示出来
                     fragmentTransaction.show(collectFragment);
+                }
+                break;
+            case 2:
+                if (androidFragment == null) {
+                    androidFragment = PublicFragment.newInstance(toolbar.getTitle().toString());
+                    fragmentTransaction.add(R.id.frame_content, androidFragment);
+                } else {
+                    fragmentTransaction.show(androidFragment);
+                }
+                break;
+            case 3:
+                if (iOSFragment == null) {
+                    iOSFragment = PublicFragment.newInstance(toolbar.getTitle().toString());
+                    fragmentTransaction.add(R.id.frame_content, iOSFragment);
+                } else {
+                    fragmentTransaction.show(iOSFragment);
+                }
+                break;
+            case 4:
+                if (videoFragment == null) {
+                    videoFragment = PublicFragment.newInstance(toolbar.getTitle().toString());
+                    fragmentTransaction.add(R.id.frame_content, videoFragment);
+                } else {
+                    fragmentTransaction.show(videoFragment);
+                }
+                break;
+            case 5:
+                if (jsFragment == null) {
+                    jsFragment = PublicFragment.newInstance(toolbar.getTitle().toString());
+                    fragmentTransaction.add(R.id.frame_content, jsFragment);
+                } else {
+                    fragmentTransaction.show(jsFragment);
+                }
+                break;
+            case 6:
+                if (expandFragment == null) {
+                    expandFragment = PublicFragment.newInstance(toolbar.getTitle().toString());
+                    fragmentTransaction.add(R.id.frame_content, expandFragment);
+                } else {
+                    fragmentTransaction.show(expandFragment);
+                }
+                break;
+            case 7:
+                if (recommendFragment == null) {
+                    recommendFragment = PublicFragment.newInstance(toolbar.getTitle().toString());
+                    fragmentTransaction.add(R.id.frame_content, recommendFragment);
+                } else {
+                    fragmentTransaction.show(recommendFragment);
+                }
+                break;
+            case 8:
+                if (appFragment == null) {
+                    appFragment = PublicFragment.newInstance(toolbar.getTitle().toString());
+                    fragmentTransaction.add(R.id.frame_content, appFragment);
+                } else {
+                    fragmentTransaction.show(appFragment);
                 }
                 break;
 
@@ -157,11 +199,29 @@ public class MainActivity extends BaseActivity {
         if (welFareFragment != null) {
             transaction.hide(welFareFragment);
         }
-        if (publicFragment != null) {
-            transaction.hide(publicFragment);
-        }
         if (collectFragment != null) {
             transaction.hide(collectFragment);
+        }
+        if (androidFragment != null) {
+            transaction.hide(androidFragment);
+        }
+        if (iOSFragment != null) {
+            transaction.hide(iOSFragment);
+        }
+        if (videoFragment != null) {
+            transaction.hide(videoFragment);
+        }
+        if (expandFragment != null) {
+            transaction.hide(expandFragment);
+        }
+        if (jsFragment != null) {
+            transaction.hide(jsFragment);
+        }
+        if (recommendFragment != null) {
+            transaction.hide(recommendFragment);
+        }
+        if (appFragment != null) {
+            transaction.hide(appFragment);
         }
 
     }
@@ -180,7 +240,7 @@ public class MainActivity extends BaseActivity {
                 switch (menuItem.getItemId()) {
                     case R.id.nav_collect:
                         toolbar.setTitle(menuItem.getTitle());
-                        setMenuSelection(2);
+                        setMenuSelection(1);
                         break;
                     case R.id.nav_fuli:
                         toolbar.setTitle(menuItem.getTitle());
@@ -188,31 +248,31 @@ public class MainActivity extends BaseActivity {
                         break;
                     case R.id.nav_android:
                         toolbar.setTitle(menuItem.getTitle());
-                        setMenuSelection(1);
+                        setMenuSelection(2);
                         break;
                     case R.id.nav_ios:
                         toolbar.setTitle(menuItem.getTitle());
-                        setMenuSelection(1);
+                        setMenuSelection(3);
                         break;
                     case R.id.nav_video:
                         toolbar.setTitle(menuItem.getTitle());
-                        setMenuSelection(1);
+                        setMenuSelection(4);
                         break;
                     case R.id.nav_js:
                         toolbar.setTitle(menuItem.getTitle());
-                        setMenuSelection(1);
+                        setMenuSelection(5);
                         break;
                     case R.id.nav_expand:
                         toolbar.setTitle(menuItem.getTitle());
-                        setMenuSelection(1);
+                        setMenuSelection(6);
                         break;
                     case R.id.nav_recommend:
                         toolbar.setTitle(menuItem.getTitle());
-                        setMenuSelection(1);
+                        setMenuSelection(7);
                         break;
                     case R.id.nav_app:
                         toolbar.setTitle(menuItem.getTitle());
-                        setMenuSelection(1);
+                        setMenuSelection(8);
                         break;
                     case R.id.about:
                         menuItem.setChecked(false); // 改变item选中状态

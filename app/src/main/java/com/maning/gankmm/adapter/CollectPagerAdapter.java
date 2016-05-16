@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.maning.gankmm.constant.Constants;
-import com.maning.gankmm.fragment.CollectPagerFragment;
+import com.maning.gankmm.fragment.collect.CollectPagerFragment;
 
 /**
  * Created by maning on 16/3/5.

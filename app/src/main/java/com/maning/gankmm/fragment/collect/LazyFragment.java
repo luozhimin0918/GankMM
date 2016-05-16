@@ -1,4 +1,4 @@
-package com.maning.gankmm.fragment;
+package com.maning.gankmm.fragment.collect;
 
 import com.maning.gankmm.base.BaseFragment;
 

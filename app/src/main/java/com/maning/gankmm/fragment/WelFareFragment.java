@@ -58,9 +58,20 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
                     PublicData publicData = (PublicData) result;
                     KLog.i("myCallBack：" + publicData.toString());
                     List<PublicData.ResultsEntity> results = publicData.getResults();
+                    //过滤一下数据,筛除重的
+                    if(commonDataResults!=null && commonDataResults.size()>0){
+                        for (int i = 0; i < results.size(); i++) {
+                            PublicData.ResultsEntity resultEntity2 = results.get(i);
+                            for (int j = 0; j < commonDataResults.size(); j++) {
+                                PublicData.ResultsEntity resultsEntity1 = commonDataResults.get(j);
+                                if(resultEntity2.get_id().equals(resultsEntity1.get_id())){
+                                    //删除
+                                    results.remove(i);
+                                }
+                            }
+                        }
+                    }
                     if (results != null && results.size() > 0) {
-                        //把网络数据保存到数据库中去
-                        saveToDB(results);
                         commonDataResults.addAll(results);
                     }
                     initAdapter();
@@ -76,9 +87,11 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
                     PublicData publicDataNew = (PublicData) result;
                     KLog.i("myCallBack：" + publicDataNew.toString());
                     commonDataResults = publicDataNew.getResults();
-                    //把网络数据保存到数据库中去
-                    saveToDB(commonDataResults);
-                    initAdapter();
+                    if(commonDataResults!=null && commonDataResults.size()>0){
+                        //把网络数据保存到数据库中去
+                        saveToDB(commonDataResults);
+                        initAdapter();
+                    }
                     overRefresh();
                     break;
             }
@@ -106,7 +119,7 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                new PublicDao().insertList(results);
+                new PublicDao().insertList(results, Constants.FlagWelFare);
             }
         }).start();
     }
@@ -141,23 +154,11 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //判断有没有网络
-        if (NetUtils.hasNetWorkConection(context)) {
-            //进来就自动刷新
-            swipeToLoadLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    swipeToLoadLayout.setRefreshing(true);
-                }
-            });
-        } else {
-            MyToast.showShortToast(getString(R.string.mm_no_net));
-            getDBDatas();
-        }
+        getDBDatas();
+
     }
 
     private void getDBDatas() {
-        swipeToLoadLayout.setLoadMoreEnabled(false);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -165,7 +166,16 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
                 MyApplication.getHandler().post(new Runnable() {
                     @Override
                     public void run() {
-                        initAdapter();
+                        if (commonDataResults != null && commonDataResults.size() > 0) {
+                            initAdapter();
+                        } else {
+                            swipeToLoadLayout.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    swipeToLoadLayout.setRefreshing(true);
+                                }
+                            });
+                        }
                     }
                 });
             }

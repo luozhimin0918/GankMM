@@ -28,10 +28,14 @@ public class PublicDao {
     /**
      * 往数据库中插入一条收藏数据
      */
-    public synchronized void insertList(List<PublicData.ResultsEntity> list) {
+    public synchronized void insertList(List<PublicData.ResultsEntity> list,String type) {
         db = helper.getWritableDatabase();
         //插入
         db.beginTransaction();
+
+        //删除
+        deleteAll(type);
+
         for (int i = 0; i < list.size(); i++) {
             PublicData.ResultsEntity gankResult = list.get(i);
             //查看数据库中有没有
@@ -61,6 +65,11 @@ public class PublicDao {
         db.endTransaction();
         //关闭数据库
         db.close();
+    }
+
+    //删除之前的所有，在保存（保证每次只保存最新刷新的20条即可）
+    private synchronized void deleteAll(String type) {
+        db.delete(GankMMHelper.TABLE_NAME_PUBLIC, GankMMHelper.type + "=?", new String[]{type});
     }
 
     /**

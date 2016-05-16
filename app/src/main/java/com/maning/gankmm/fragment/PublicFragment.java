@@ -55,9 +55,20 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
                     PublicData publicData = (PublicData) result;
                     KLog.i("myCallBack：" + publicData.toString());
                     List<PublicData.ResultsEntity> results = publicData.getResults();
+                    //过滤一下数据,筛除重的
+                    if(publicDataResults!=null && publicDataResults.size()>0){
+                        for (int i = 0; i < results.size(); i++) {
+                            PublicData.ResultsEntity resultEntity2 = results.get(i);
+                            for (int j = 0; j < publicDataResults.size(); j++) {
+                                PublicData.ResultsEntity resultsEntity1 = publicDataResults.get(j);
+                                if(resultEntity2.get_id().equals(resultsEntity1.get_id())){
+                                    //删除
+                                    results.remove(i);
+                                }
+                            }
+                        }
+                    }
                     if (results != null && results.size() > 0) {
-                        //把网络数据保存到数据库中去
-                        saveToDB(results);
                         publicDataResults.addAll(results);
                     }
                     initAdapter();
@@ -100,7 +111,7 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
         new Thread(new Runnable() {
             @Override
             public void run() {
-                new PublicDao().insertList(results);
+                new PublicDao().insertList(results,flagFragment);
             }
         }).start();
     }
@@ -118,36 +129,6 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
         args.putString(Constants.FlagFragment, flag);
         publicFragment.setArguments(args);
         return publicFragment;
-    }
-
-    public void updateFlag(String flag) {
-        //判断需不需要刷新界面
-        if (!flagFragment.equals(flag)) {
-            //刷新界面
-            flagFragment = flag;
-            //
-            if (publicDataResults == null) {
-                publicDataResults = new ArrayList<>();
-            }
-            //判断有没有网络
-            if (NetUtils.hasNetWorkConection(context)) {
-                publicDataResults.clear();
-                if (publicAdapter != null) {
-                    publicAdapter.updateList(publicDataResults);
-                }
-                pageIndex = 1;
-                swipeToLoadLayout.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeToLoadLayout.setRefreshing(true);
-                    }
-                });
-            } else {
-                getDBDatas();
-            }
-        }
-
-
     }
 
     @Override
@@ -176,24 +157,11 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
         super.onViewCreated(view, savedInstanceState);
         KLog.i("PublicFragment-----onViewCreated");
 
-        //判断有没有网络
-        if (NetUtils.hasNetWorkConection(context)) {
-            //进来就自动刷新
-            swipeToLoadLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    swipeToLoadLayout.setRefreshing(true);
-                }
-            });
-        } else {
-            getDBDatas();
-        }
+        getDBDatas();
 
     }
 
     private void getDBDatas() {
-        MyToast.showShortToast(getString(R.string.mm_no_net));
-        swipeToLoadLayout.setLoadMoreEnabled(false);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -202,10 +170,19 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
                 MyApplication.getHandler().post(new Runnable() {
                     @Override
                     public void run() {
-                        initAdapter();
+                        if(publicDataResults != null && publicDataResults.size() > 0){
+                            initAdapter();
+                        }else{
+                            //自动刷新
+                            swipeToLoadLayout.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    swipeToLoadLayout.setRefreshing(true);
+                                }
+                            });
+                        }
                     }
                 });
-
             }
         }).start();
     }
