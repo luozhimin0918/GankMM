@@ -34,8 +34,6 @@ public class CollectPagerFragment extends LazyFragment implements OnRefreshListe
 
     @Bind(R.id.swipe_target)
     ListView swipeTarget;
-    @Bind(R.id.swipeToLoadLayout)
-    SwipeToLoadLayout swipeToLoadLayout;
 
     private String flag;
     private CollectListViewAdapter collectListViewAdapter;
@@ -127,7 +125,6 @@ public class CollectPagerFragment extends LazyFragment implements OnRefreshListe
     }
 
     private void initListView() {
-        swipeToLoadLayout.setOnRefreshListener(this);
         swipeTarget.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
