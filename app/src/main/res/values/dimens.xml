@@ -13,8 +13,8 @@
 
     <dimen name="load_more_footer_height_classic">60dp</dimen>
 
-    <dimen name="refresh_header_height_twitter">80dp</dimen>
-    <dimen name="load_more_footer_height_twitter">60dp</dimen>
+    <dimen name="refresh_header_height_twitter">50dp</dimen>
+    <dimen name="load_more_footer_height_twitter">50dp</dimen>
 
     <!-- google -->
     <dimen name="refresh_header_height_google">100dp</dimen>

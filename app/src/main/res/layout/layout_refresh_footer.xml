@@ -5,9 +5,9 @@
     xmlns:wheel="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/load_more_footer_height_classic">
+        android:layout_height="@dimen/load_more_footer_height_twitter">
 
         <com.maning.gankmm.view.ProgressWheel
             android:id="@+id/progressbar"
