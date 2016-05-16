@@ -6,7 +6,7 @@
 ####[干货集中营](http://gank.io/)  
 
 ##APK下载地址：
-####[点击下载](http://fir.im/gankmm)
+####[点击下载](http://fir.im/gankmm)![](https://github.com/maning0303/GankMM/raw/master/screenshots/004.jpg) 
 
 ##项目截图：
 ![](https://github.com/maning0303/GankMM/raw/master/screenshots/001.jpg) 
