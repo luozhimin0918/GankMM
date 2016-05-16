@@ -124,7 +124,6 @@ public class CollectPagerFragment extends LazyFragment implements OnRefreshListe
     private void initAdapter() {
         collectListViewAdapter = new CollectListViewAdapter(getActivity(), collects);
         swipeTarget.setAdapter(collectListViewAdapter);
-        overRefresh();
     }
 
     private void initListView() {
@@ -161,10 +160,6 @@ public class CollectPagerFragment extends LazyFragment implements OnRefreshListe
     @Override
     public void onRefresh() {
         initData();
-    }
-
-    private void overRefresh() {
-        swipeToLoadLayout.setRefreshing(false);
     }
 
 }
