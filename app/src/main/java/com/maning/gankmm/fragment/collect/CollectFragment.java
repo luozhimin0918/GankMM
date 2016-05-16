@@ -54,7 +54,7 @@ public class CollectFragment extends BaseFragment {
     private void initViewPager() {
         collectPagerAdapter = new CollectPagerAdapter(getActivity().getSupportFragmentManager());
         //关闭预加载，默认一次只加载一个Fragment
-        viewPager.setOffscreenPageLimit(3);
+        viewPager.setOffscreenPageLimit(1);
         viewPager.setAdapter(collectPagerAdapter);
         viewPager.setPageMargin(20);
         //设置tablayout为滑动模式
