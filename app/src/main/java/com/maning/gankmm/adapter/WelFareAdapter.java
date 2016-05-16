@@ -71,7 +71,7 @@ public class WelFareAdapter extends BaseAdapter {
         final PublicData.ResultsEntity resultsEntity = commonDataResults.get(position);
 
         viewHolder.tvShowTime.setText(resultsEntity.getCreatedAt().split("T")[0]);
-        viewHolder.tvShowWho.setText("图：" + resultsEntity.getWho());
+        viewHolder.tvShowWho.setText("来自：" + resultsEntity.getWho());
         //图片显示
         String url = resultsEntity.getUrl();
         Glide
