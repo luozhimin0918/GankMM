@@ -1,17 +1,24 @@
 package com.maning.gankmm.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.maning.gankmm.R;
+import com.maning.gankmm.adapter.RecyclePicAdapter;
 import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.db.PublicDao;
@@ -25,6 +32,7 @@ import com.maning.gankmm.utils.MyToast;
 import com.maning.gankmm.utils.NetUtils;
 import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +47,7 @@ import butterknife.ButterKnife;
 public class WelFareFragment extends BaseFragment implements OnRefreshListener, OnLoadMoreListener {
 
     @Bind(R.id.swipe_target)
-    ListView swipeTarget;
+    RecyclerView swipeTarget;
     @Bind(R.id.swipeToLoadLayout)
     SwipeToLoadLayout swipeToLoadLayout;
 
@@ -59,12 +67,12 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
                     KLog.i("myCallBack：" + publicData.toString());
                     List<PublicData.ResultsEntity> results = publicData.getResults();
                     //过滤一下数据,筛除重的
-                    if(commonDataResults!=null && commonDataResults.size()>0){
+                    if (commonDataResults != null && commonDataResults.size() > 0) {
                         for (int i = 0; i < results.size(); i++) {
                             PublicData.ResultsEntity resultEntity2 = results.get(i);
                             for (int j = 0; j < commonDataResults.size(); j++) {
                                 PublicData.ResultsEntity resultsEntity1 = commonDataResults.get(j);
-                                if(resultEntity2.get_id().equals(resultsEntity1.get_id())){
+                                if (resultEntity2.get_id().equals(resultsEntity1.get_id())) {
                                     //删除
                                     results.remove(i);
                                 }
@@ -74,7 +82,7 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
                     if (results != null && results.size() > 0) {
                         commonDataResults.addAll(results);
                     }
-                    initAdapter();
+                    initRecycleView();
                     if (commonDataResults == null || commonDataResults.size() == 0 || commonDataResults.size() < pageIndex * pageSize) {
                         swipeToLoadLayout.setLoadMoreEnabled(false);
                     } else {
@@ -84,13 +92,15 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
                     overRefresh();
                     break;
                 case 0x002: //下拉刷新
+                    pageIndex = 1;
+                    pageIndex++;
                     PublicData publicDataNew = (PublicData) result;
                     KLog.i("myCallBack：" + publicDataNew.toString());
                     commonDataResults = publicDataNew.getResults();
-                    if(commonDataResults!=null && commonDataResults.size()>0){
+                    if (commonDataResults != null && commonDataResults.size() > 0) {
                         //把网络数据保存到数据库中去
                         saveToDB(commonDataResults);
-                        initAdapter();
+                        initRecycleView();
                     }
                     overRefresh();
                     break;
@@ -125,7 +135,7 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
     }
 
     private List<PublicData.ResultsEntity> commonDataResults;
-    private WelFareAdapter welFareAdapter;
+    private RecyclePicAdapter recyclePicAdapter;
     private int pageSize = 20;
     private int pageIndex = 1;
 
@@ -167,7 +177,7 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
                     @Override
                     public void run() {
                         if (commonDataResults != null && commonDataResults.size() > 0) {
-                            initAdapter();
+                            initRecycleView();
                         } else {
                             swipeToLoadLayout.post(new Runnable() {
                                 @Override
@@ -182,31 +192,50 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
         }).start();
     }
 
-    private void initAdapter() {
-        if (welFareAdapter == null) {
-            welFareAdapter = new WelFareAdapter(context, commonDataResults);
-            swipeTarget.setAdapter(welFareAdapter);
-        } else {
-            welFareAdapter.updateList(commonDataResults);
-        }
-    }
 
+    private void initRecycleView() {
+        if (recyclePicAdapter == null) {
+            recyclePicAdapter = new RecyclePicAdapter(context, commonDataResults);
+            swipeTarget.setAdapter(recyclePicAdapter);
+            //点击事件
+            recyclePicAdapter.setOnItemClickLitener(new RecyclePicAdapter.OnItemClickLitener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    ArrayList<String> arrayList = new ArrayList<>();
+                    for (int i = 0; i < commonDataResults.size(); i++) {
+                        arrayList.add(commonDataResults.get(i).getUrl());
+                    }
+                    IntentUtils.startToImageShow(context, arrayList, position);
+                }
+            });
+
+        } else {
+            recyclePicAdapter.updateDatas(commonDataResults);
+        }
+
+    }
 
     private void initRefresh() {
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setOnLoadMoreListener(this);
 
-        swipeTarget.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ArrayList<String> arrayList = new ArrayList<>();
-                for (int i = 0; i < commonDataResults.size(); i++) {
-                    arrayList.add(commonDataResults.get(i).getUrl());
-                }
-                IntentUtils.startToImageShow(context, arrayList, position);
-            }
-        });
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        swipeTarget.setLayoutManager(linearLayoutManager);
+        swipeTarget.setItemAnimator(new DefaultItemAnimator());
+        //添加分割线
+//      swipeTarget.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).color(Color.LTGRAY).build());
 
+        //到底自动刷新
+//        swipeTarget.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+//                    if (!ViewCompat.canScrollVertically(recyclerView, 1)) {
+//                        swipeToLoadLayout.setLoadingMore(true);
+//                    }
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -217,11 +246,8 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
 
     @Override
     public void onRefresh() {
-        if (pageIndex == 1) {
-            GankApi.getCommonData(Constants.FlagWelFare, pageSize, pageIndex, 0x001, myCallBack);
-        } else {
-            GankApi.getCommonData(Constants.FlagWelFare, pageSize * (pageIndex - 1), 1, 0x002, myCallBack);
-        }
+        GankApi.getCommonData(Constants.FlagWelFare, pageSize, 1, 0x002, myCallBack);
+
     }
 
     private void overRefresh() {
