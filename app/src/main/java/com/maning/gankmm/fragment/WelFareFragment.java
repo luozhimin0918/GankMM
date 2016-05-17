@@ -1,8 +1,6 @@
 package com.maning.gankmm.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,9 +8,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
@@ -23,16 +18,13 @@ import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.db.PublicDao;
 import com.maning.gankmm.utils.IntentUtils;
-import com.maning.gankmm.adapter.WelFareAdapter;
 import com.maning.gankmm.base.BaseFragment;
 import com.maning.gankmm.bean.PublicData;
 import com.maning.gankmm.callback.MyCallBack;
 import com.maning.gankmm.http.GankApi;
 import com.maning.gankmm.utils.MyToast;
-import com.maning.gankmm.utils.NetUtils;
 import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
-import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;

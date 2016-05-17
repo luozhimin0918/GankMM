@@ -56,12 +56,12 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
                     KLog.i("myCallBack：" + publicData.toString());
                     List<PublicData.ResultsEntity> results = publicData.getResults();
                     //过滤一下数据,筛除重的
-                    if(publicDataResults!=null && publicDataResults.size()>0){
+                    if (publicDataResults != null && publicDataResults.size() > 0) {
                         for (int i = 0; i < results.size(); i++) {
                             PublicData.ResultsEntity resultEntity2 = results.get(i);
                             for (int j = 0; j < publicDataResults.size(); j++) {
                                 PublicData.ResultsEntity resultsEntity1 = publicDataResults.get(j);
-                                if(resultEntity2.get_id().equals(resultsEntity1.get_id())){
+                                if (resultEntity2.get_id().equals(resultsEntity1.get_id())) {
                                     //删除
                                     results.remove(i);
                                 }
@@ -81,6 +81,8 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
                     overRefresh();
                     break;
                 case 0x002: //下拉刷新
+                    pageIndex = 1;
+                    pageIndex++;
                     PublicData publicDataNew = (PublicData) result;
                     KLog.i("myCallBack：" + publicDataNew.toString());
                     publicDataResults = publicDataNew.getResults();
@@ -111,7 +113,7 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
         new Thread(new Runnable() {
             @Override
             public void run() {
-                new PublicDao().insertList(results,flagFragment);
+                new PublicDao().insertList(results, flagFragment);
             }
         }).start();
     }
@@ -170,9 +172,9 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
                 MyApplication.getHandler().post(new Runnable() {
                     @Override
                     public void run() {
-                        if(publicDataResults != null && publicDataResults.size() > 0){
+                        if (publicDataResults != null && publicDataResults.size() > 0) {
                             initAdapter();
-                        }else{
+                        } else {
                             //自动刷新
                             swipeToLoadLayout.post(new Runnable() {
                                 @Override
@@ -218,12 +220,7 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
 
     @Override
     public void onRefresh() {
-        if (pageIndex == 1) {
-            GankApi.getCommonData(flagFragment, pageSize, pageIndex, 0x001, myCallBack);
-        } else {
-            GankApi.getCommonData(flagFragment, pageSize * (pageIndex - 1), 1, 0x002, myCallBack);
-        }
-
+        GankApi.getCommonData(flagFragment, pageSize, 1, 0x002, myCallBack);
     }
 
     @Override
