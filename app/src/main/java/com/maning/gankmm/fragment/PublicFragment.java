@@ -197,11 +197,8 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
             recyclePublicAdapter.setOnItemClickLitener(new RecyclePublicAdapter.OnItemClickLitener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    ArrayList<String> arrayList = new ArrayList<>();
-                    for (int i = 0; i < publicDataResults.size(); i++) {
-                        arrayList.add(publicDataResults.get(i).getUrl());
-                    }
-                    IntentUtils.startToImageShow(context, arrayList, position);
+                    PublicData.ResultsEntity resultsEntity = publicDataResults.get(position);
+                    IntentUtils.startToWebActivity(getActivity(), flagFragment, resultsEntity.getUrl());
                 }
             });
 
@@ -237,8 +234,12 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
     }
 
     private void overRefresh() {
-        swipeToLoadLayout.setRefreshing(false);
-        swipeToLoadLayout.setLoadingMore(false);
+        if(swipeToLoadLayout.isRefreshing()){
+            swipeToLoadLayout.setRefreshing(false);
+        }
+        if(swipeToLoadLayout.isLoadingMore()) {
+            swipeToLoadLayout.setLoadingMore(false);
+        }
     }
 
     public void onResume() {
