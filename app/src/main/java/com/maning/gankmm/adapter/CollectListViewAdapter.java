@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 
 /**
  * Created by maning on 16/3/3.
- * 测试用的Adapter
+ * 收藏用的Adapter
  */
 public class CollectListViewAdapter extends BaseAdapter {
 

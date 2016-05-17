@@ -1,29 +1,28 @@
 package com.maning.gankmm.fragment;
 
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.maning.gankmm.R;
+import com.maning.gankmm.adapter.RecyclePublicAdapter;
 import com.maning.gankmm.app.MyApplication;
-import com.maning.gankmm.constant.Constants;
-import com.maning.gankmm.db.PublicDao;
-import com.maning.gankmm.utils.IntentUtils;
-import com.maning.gankmm.adapter.PublicAdapter;
 import com.maning.gankmm.base.BaseFragment;
 import com.maning.gankmm.bean.PublicData;
 import com.maning.gankmm.callback.MyCallBack;
+import com.maning.gankmm.constant.Constants;
+import com.maning.gankmm.db.PublicDao;
 import com.maning.gankmm.http.GankApi;
-import com.maning.gankmm.utils.MyToast;
-import com.maning.gankmm.utils.NetUtils;
+import com.maning.gankmm.utils.IntentUtils;
 import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
 
@@ -39,7 +38,7 @@ import butterknife.ButterKnife;
 public class PublicFragment extends BaseFragment implements OnRefreshListener, OnLoadMoreListener {
 
     @Bind(R.id.swipe_target)
-    ListView swipeTarget;
+    RecyclerView swipeTarget;
     @Bind(R.id.swipeToLoadLayout)
     SwipeToLoadLayout swipeToLoadLayout;
 
@@ -103,6 +102,7 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
             }
         }
     };
+    private RecyclePublicAdapter recyclePublicAdapter;
 
     /**
      * 保存到数据库
@@ -119,7 +119,6 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
     }
 
     private List<PublicData.ResultsEntity> publicDataResults;
-    private PublicAdapter publicAdapter;
     private int pageSize = 20;
     private int pageIndex = 1;
     //标记来自哪个标签的
@@ -190,26 +189,35 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
     }
 
     private void initAdapter() {
-        if (publicAdapter == null) {
-            publicAdapter = new PublicAdapter(context, publicDataResults);
-            swipeTarget.setAdapter(publicAdapter);
+
+        if (recyclePublicAdapter == null) {
+            recyclePublicAdapter = new RecyclePublicAdapter(context, publicDataResults);
+            swipeTarget.setAdapter(recyclePublicAdapter);
+            //点击事件
+            recyclePublicAdapter.setOnItemClickLitener(new RecyclePublicAdapter.OnItemClickLitener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    ArrayList<String> arrayList = new ArrayList<>();
+                    for (int i = 0; i < publicDataResults.size(); i++) {
+                        arrayList.add(publicDataResults.get(i).getUrl());
+                    }
+                    IntentUtils.startToImageShow(context, arrayList, position);
+                }
+            });
+
         } else {
-            publicAdapter.updateList(publicDataResults);
+            recyclePublicAdapter.updateDatas(publicDataResults);
         }
+
     }
 
 
     private void initRefresh() {
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setOnLoadMoreListener(this);
-
-        swipeTarget.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                PublicData.ResultsEntity resultsEntity = publicDataResults.get(position);
-                IntentUtils.startToWebActivity(getActivity(), flagFragment, resultsEntity.getUrl());
-            }
-        });
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        swipeTarget.setLayoutManager(linearLayoutManager);
+        swipeTarget.setItemAnimator(new DefaultItemAnimator());
     }
 
     @Override

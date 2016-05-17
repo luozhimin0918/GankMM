@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.maning.gankmm.R;
-import com.maning.gankmm.adapter.CollectPagerAdapter;
 import com.maning.gankmm.base.BaseFragment;
 import com.umeng.analytics.MobclickAgent;
 

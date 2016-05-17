@@ -1,4 +1,4 @@
-package com.maning.gankmm.adapter;
+package com.maning.gankmm.fragment.collect;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

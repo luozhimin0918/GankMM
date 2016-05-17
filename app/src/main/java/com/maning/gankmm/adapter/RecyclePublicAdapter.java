@@ -1,13 +1,15 @@
 package com.maning.gankmm.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.maning.gankmm.R;
@@ -20,51 +22,42 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by maning on 16/3/3.
- * 测试用的Adapter
+ * Created by maning on 16/5/17.
  */
-public class PublicAdapter extends BaseAdapter {
+public class RecyclePublicAdapter extends RecyclerView.Adapter<RecyclePublicAdapter.MyViewHolder> {
 
     private Context context;
     private List<PublicData.ResultsEntity> commonDataResults;
     private LayoutInflater layoutInflater;
 
-    public PublicAdapter(Context context, List<PublicData.ResultsEntity> commonDataResults) {
+    public RecyclePublicAdapter(Context context, List<PublicData.ResultsEntity> commonDataResults) {
         this.context = context;
         this.commonDataResults = commonDataResults;
         layoutInflater = LayoutInflater.from(this.context);
     }
 
-    public void updateList(List<PublicData.ResultsEntity> commonDataResults) {
+    private OnItemClickLitener mOnItemClickLitener;
+
+    public void setOnItemClickLitener(OnItemClickLitener mOnItemClickLitener)
+    {
+        this.mOnItemClickLitener = mOnItemClickLitener;
+    }
+
+    public void updateDatas(List<PublicData.ResultsEntity> commonDataResults){
         this.commonDataResults = commonDataResults;
         notifyDataSetChanged();
     }
 
     @Override
-    public int getCount() {
-        return commonDataResults.size();
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        View inflate = layoutInflater.inflate(R.layout.item_common, parent, false);
+
+        return new MyViewHolder(inflate);
     }
 
     @Override
-    public Object getItem(int position) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
-        if (convertView == null) {
-            convertView = layoutInflater.inflate(R.layout.item_common, parent, false);
-            viewHolder = new ViewHolder(convertView);
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
+    public void onBindViewHolder(final MyViewHolder viewHolder, final int position) {
 
         final PublicData.ResultsEntity resultsEntity = commonDataResults.get(position);
 
@@ -104,16 +97,25 @@ public class PublicAdapter extends BaseAdapter {
             }
         });
 
-        return convertView;
+        //如果设置了回调，则设置点击事件
+        if (mOnItemClickLitener != null) {
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnItemClickLitener.onItemClick(viewHolder.itemView, position);
+                }
+            });
+        }
+
     }
 
-    /**
-     * This class contains all butterknife-injected Views & Layouts from layout file 'item_common.xml'
-     * for easy to all layout elements.
-     *
-     * @author ButterKnifeZelezny, plugin for Android Studio by Avast Developers (http://github.com/avast)
-     */
-    static class ViewHolder {
+    @Override
+    public int getItemCount() {
+        return commonDataResults.size();
+    }
+
+    class MyViewHolder extends RecyclerView.ViewHolder {
+
         @Bind(R.id.tvShowWho)
         TextView tvShowWho;
         @Bind(R.id.tvShowTitle)
@@ -123,8 +125,13 @@ public class PublicAdapter extends BaseAdapter {
         @Bind(R.id.btn_collect)
         LikeButton btnCollect;
 
-        ViewHolder(View view) {
-            ButterKnife.bind(this, view);
+        public MyViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
         }
+    }
+
+    public interface OnItemClickLitener {
+        void onItemClick(View view, int position);
     }
 }
