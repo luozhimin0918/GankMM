@@ -1,16 +1,16 @@
 package com.maning.gankmm.fragment.collect;
 
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
-import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.maning.gankmm.R;
-import com.maning.gankmm.adapter.CollectListViewAdapter;
+import com.maning.gankmm.adapter.RecycleCollectAdapter;
 import com.maning.gankmm.bean.PublicData;
 import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.db.CollectDao;
@@ -33,14 +33,14 @@ import butterknife.ButterKnife;
 public class CollectPagerFragment extends LazyFragment implements OnRefreshListener {
 
     @Bind(R.id.swipe_target)
-    ListView swipeTarget;
+    RecyclerView swipeTarget;
 
     private String flag;
-    private CollectListViewAdapter collectListViewAdapter;
     private ArrayList<PublicData.ResultsEntity> collects = new ArrayList<>();
     private boolean isPrepared;
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private RecycleCollectAdapter recycleCollectAdapter;
 
 
     public static CollectPagerFragment newInstance(String flag) {
@@ -89,7 +89,7 @@ public class CollectPagerFragment extends LazyFragment implements OnRefreshListe
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         KLog.i(flag);
-        initListView();
+        initRecycleView();
     }
 
     public void initData() {
@@ -120,32 +120,34 @@ public class CollectPagerFragment extends LazyFragment implements OnRefreshListe
     }
 
     private void initAdapter() {
-        collectListViewAdapter = new CollectListViewAdapter(getActivity(), collects);
-        swipeTarget.setAdapter(collectListViewAdapter);
-    }
-
-    private void initListView() {
-        swipeTarget.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        recycleCollectAdapter = new RecycleCollectAdapter(context, collects);
+        swipeTarget.setAdapter(recycleCollectAdapter);
+        //点击事件
+        recycleCollectAdapter.setOnItemClickLitener(new RecycleCollectAdapter.OnItemClickLitener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(View view, int position) {
                 PublicData.ResultsEntity resultsEntity = collects.get(position);
                 if (Constants.FlagWelFare.equals(resultsEntity.getType())) {
-                    swipeTarget.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            ArrayList<String> imageList = new ArrayList<>();
-                            for (int i = 0; i < collects.size(); i++) {
-                                imageList.add(collects.get(i).getUrl());
-                            }
-                            IntentUtils.startToImageShow(context, imageList, position);
-                        }
-                    });
+                    ArrayList<String> imageList = new ArrayList<>();
+                    for (int i = 0; i < collects.size(); i++) {
+                        imageList.add(collects.get(i).getUrl());
+                    }
+                    IntentUtils.startToImageShow(context, imageList, position);
+
                 } else {
                     IntentUtils.startToWebActivity(getActivity(), flag, resultsEntity.getUrl());
                 }
             }
         });
+
     }
+
+    private void initRecycleView() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        swipeTarget.setLayoutManager(linearLayoutManager);
+        swipeTarget.setItemAnimator(new DefaultItemAnimator());
+    }
+
 
 
     @Override
