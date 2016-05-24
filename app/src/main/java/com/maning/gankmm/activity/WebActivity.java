@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -77,8 +79,8 @@ public class WebActivity extends BaseActivity {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setAllowFileAccess(true);
         webView.getSettings().setDefaultTextEncodingName("UTF-8");
+        webView.getSettings().setDomStorageEnabled(true);
         ////////////////////////////////
-        webView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
         // 建议缓存策略为，判断是否有网络，有的话，使用LOAD_DEFAULT,无网络时，使用LOAD_CACHE_ELSE_NETWORK
         if (NetUtils.hasNetWorkConection(this)) {
             webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);   // 根据cache-control决定是否从网络上取数据。
@@ -112,6 +114,10 @@ public class WebActivity extends BaseActivity {
                 webView.setVisibility(View.VISIBLE);
             }
 
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                super.onReceivedError(view, request, error);
+            }
         });
 
         webView.setWebChromeClient(new WebChromeClient() {

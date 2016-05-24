@@ -10,9 +10,10 @@ import com.maning.gankmm.BuildConfig;
 import com.maning.gankmm.crash.CrashHandler;
 import com.socks.library.KLog;
 import com.squareup.okhttp.OkHttpClient;
-import com.umeng.analytics.AnalyticsConfig;
 
 import java.util.concurrent.TimeUnit;
+
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by maning on 16/3/2.
@@ -26,6 +27,9 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        //Jpush
+        initJpush();
+
         initBase();
 
         //初始化异常捕获
@@ -34,6 +38,11 @@ public class MyApplication extends Application {
         //初始化Log
         KLog.init(BuildConfig.LOG_DEBUG);
 
+    }
+
+    private void initJpush() {
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
     }
 
     private void initBase() {

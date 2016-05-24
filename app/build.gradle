@@ -67,4 +67,5 @@ dependencies {
     compile 'com.github.jd-alexander:LikeButton:0.1.8'
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile project(':libraryumeng')
+    compile files('libs/jpush-android-2.1.5.jar')
 }

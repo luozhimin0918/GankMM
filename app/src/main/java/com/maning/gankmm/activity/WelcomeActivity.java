@@ -7,6 +7,8 @@ import android.os.Bundle;
 import com.maning.gankmm.R;
 import com.maning.gankmm.app.MyApplication;
 
+import cn.jpush.android.api.JPushInterface;
+
 public class WelcomeActivity extends Activity {
 
     @Override
@@ -22,5 +24,17 @@ public class WelcomeActivity extends Activity {
             }
         },2000);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        JPushInterface.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JPushInterface.onPause(this);
     }
 }
