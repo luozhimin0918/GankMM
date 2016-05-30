@@ -1,10 +1,16 @@
 package com.maning.gankmm.activity;
 
 import android.annotation.SuppressLint;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -14,10 +20,12 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.maning.gankmm.R;
 import com.maning.gankmm.base.BaseActivity;
 import com.maning.gankmm.utils.IntentUtils;
+import com.maning.gankmm.utils.MyToast;
 import com.maning.gankmm.utils.NetUtils;
 import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
@@ -39,6 +47,7 @@ public class WebActivity extends BaseActivity {
 
     //标题
     private String flagTitle;
+    private String titleContent;
     private String url;
 
     @Override
@@ -49,10 +58,22 @@ public class WebActivity extends BaseActivity {
 
         initIntent();
 
-        initToolBar(toolbar, flagTitle + "+网址", R.drawable.ic_back);
+        String title;
+        if(TextUtils.isEmpty(flagTitle)){
+            title = titleContent;
+        }else{
+            title = flagTitle + "+" + titleContent;
+        }
+        initToolBar(toolbar, title , R.drawable.ic_back);
 
         initWebView();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_web, menu);
+        return true;
     }
 
     @Override
@@ -60,7 +81,22 @@ public class WebActivity extends BaseActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
-                return true;
+                break;
+            case R.id.action_copy:
+                // 从API11开始android推荐使用android.content.ClipboardManager
+                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                // 将文本内容放到系统剪贴板里。
+                ClipData clipData = ClipData.newPlainText("text", url);
+                cm.setPrimaryClip(clipData);
+                MyToast.showShortToast("复制成功");
+                break;
+            case R.id.action_open:
+                Intent intent = new Intent();
+                intent.setAction("android.intent.action.VIEW");
+                Uri content_url = Uri.parse(url);
+                intent.setData(content_url);
+                startActivity(intent);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -68,7 +104,8 @@ public class WebActivity extends BaseActivity {
     private void initIntent() {
 
         Intent intent = getIntent();
-        flagTitle = intent.getStringExtra(IntentUtils.WebTitle);
+        flagTitle = intent.getStringExtra(IntentUtils.WebTitleFlag);
+        titleContent = intent.getStringExtra(IntentUtils.WebTitle);
         url = intent.getStringExtra(IntentUtils.WebUrl);
 
     }

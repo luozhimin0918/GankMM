@@ -18,6 +18,7 @@ public class IntentUtils {
 
     public static final String ImagePositionForImageShow = "PositionForImageShow";
     public static final String ImageArrayList = "BigImageArrayList";
+    public static final String WebTitleFlag = "WebTitleFlag";
     public static final String WebTitle = "WebTitle";
     public static final String WebUrl = "WebUrl";
 
@@ -28,8 +29,9 @@ public class IntentUtils {
         context.startActivity(intent);
     }
 
-    public static void startToWebActivity(Context context, String title, String url) {
+    public static void startToWebActivity(Context context, String titleFlag, String title,String url) {
         Intent intent = new Intent(context.getApplicationContext(), WebActivity.class);
+        intent.putExtra(WebTitleFlag, titleFlag);
         intent.putExtra(WebTitle, title);
         intent.putExtra(WebUrl, url);
         context.startActivity(intent);

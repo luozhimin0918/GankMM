@@ -198,7 +198,7 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
                 @Override
                 public void onItemClick(View view, int position) {
                     PublicData.ResultsEntity resultsEntity = publicDataResults.get(position);
-                    IntentUtils.startToWebActivity(getActivity(), flagFragment, resultsEntity.getUrl());
+                    IntentUtils.startToWebActivity(getActivity(), flagFragment,resultsEntity.getDesc(), resultsEntity.getUrl());
                 }
             });
 

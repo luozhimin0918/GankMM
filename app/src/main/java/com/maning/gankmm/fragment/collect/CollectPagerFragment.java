@@ -135,7 +135,7 @@ public class CollectPagerFragment extends LazyFragment implements OnRefreshListe
                     IntentUtils.startToImageShow(context, imageList, position);
 
                 } else {
-                    IntentUtils.startToWebActivity(getActivity(), flag, resultsEntity.getUrl());
+                    IntentUtils.startToWebActivity(getActivity(), flag,resultsEntity.getDesc(), resultsEntity.getUrl());
                 }
             }
         });

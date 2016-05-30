@@ -71,42 +71,42 @@ public class AboutActivity extends BaseActivity {
 
     @OnClick(R.id.tvMyGithub)
     void tvMyGithub() {
-        IntentUtils.startToWebActivity(this, getString(R.string.app_name), getString(R.string.github_my));
+        IntentUtils.startToWebActivity(this, null, getString(R.string.app_name), getString(R.string.github_my));
     }
 
     @OnClick(R.id.tvGank)
     void tvGank() {
-        IntentUtils.startToWebActivity(this, getString(R.string.gankio), getString(R.string.gankio));
+        IntentUtils.startToWebActivity(this, null,getString(R.string.gankio), getString(R.string.gankio));
     }
 
     @OnClick(R.id.tvThanks01)
     void tvThanks01() {
-        IntentUtils.startToWebActivity(this, getString(R.string.github), getString(R.string.github_daimajia));
+        IntentUtils.startToWebActivity(this, null,getString(R.string.github), getString(R.string.github_daimajia));
     }
 
     @OnClick(R.id.tvThanks02)
     void tvThanks02() {
-        IntentUtils.startToWebActivity(this, getString(R.string.github), getString(R.string.github_other_app_01));
+        IntentUtils.startToWebActivity(this,null, getString(R.string.github), getString(R.string.github_other_app_01));
     }
 
     @OnClick(R.id.tvThanks03)
     void tvThanks03() {
-        IntentUtils.startToWebActivity(this, getString(R.string.github), getString(R.string.github_other_app_02));
+        IntentUtils.startToWebActivity(this, null,getString(R.string.github), getString(R.string.github_other_app_02));
     }
 
     @OnClick(R.id.tvThanks04)
     void tvThanks04() {
-        IntentUtils.startToWebActivity(this, getString(R.string.github), getString(R.string.github_other_app_03));
+        IntentUtils.startToWebActivity(this, null,getString(R.string.github), getString(R.string.github_other_app_03));
     }
 
     @OnClick(R.id.tvThanks05)
     void tvThanks05() {
-        IntentUtils.startToWebActivity(this, getString(R.string.github), getString(R.string.github_other_app_04));
+        IntentUtils.startToWebActivity(this, null,getString(R.string.github), getString(R.string.github_other_app_04));
     }
 
     @OnClick(R.id.tvThanks06)
     void tvThanks06() {
-        IntentUtils.startToWebActivity(this, getString(R.string.github), getString(R.string.github_other_app_05));
+        IntentUtils.startToWebActivity(this,null, getString(R.string.github), getString(R.string.github_other_app_05));
     }
 
     public void onResume() {
