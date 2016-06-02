@@ -143,6 +143,7 @@ public class CollectPagerFragment extends BaseFragment implements OnRefreshListe
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        overRefresh();
         ButterKnife.unbind(this);
     }
 
@@ -152,6 +153,9 @@ public class CollectPagerFragment extends BaseFragment implements OnRefreshListe
     }
 
     private void overRefresh() {
+        if(swipeToLoadLayout==null){
+            return;
+        }
         if (swipeToLoadLayout.isRefreshing()) {
             swipeToLoadLayout.setRefreshing(false);
         }

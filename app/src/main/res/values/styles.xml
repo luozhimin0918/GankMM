@@ -9,7 +9,6 @@
     </style>
 
     <style name="AppTheme" parent="@style/BaseAppTheme">
-
     </style>
 
     <style name="CollapsingToolbarTitleStyle"

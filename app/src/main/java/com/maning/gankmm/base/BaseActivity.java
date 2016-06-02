@@ -1,6 +1,7 @@
 package com.maning.gankmm.base;
 
 import android.annotation.TargetApi;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -60,12 +61,12 @@ public class BaseActivity extends AppCompatActivity {
 
     public void initToolBar(Toolbar toolbar, String title, int icon) {
         toolbar.setTitle(title);// 标题的文字需在setSupportActionBar之前，不然会无效
-        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
         assert ab != null;
-        ab.setHomeAsUpIndicator(icon);
         ab.setDisplayHomeAsUpEnabled(true);
+        ab.setHomeAsUpIndicator(icon);
     }
 
     @Override

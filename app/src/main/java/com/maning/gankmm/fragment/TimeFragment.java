@@ -8,13 +8,12 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.maning.gankmm.R;
-import com.maning.gankmm.adapter.RecyclePublicAdapter;
+import com.maning.gankmm.adapter.RecyclePicAdapter;
 import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.base.BaseFragment;
 import com.maning.gankmm.bean.GankEntity;
@@ -23,7 +22,7 @@ import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.db.PublicDao;
 import com.maning.gankmm.http.GankApi;
 import com.maning.gankmm.utils.IntentUtils;
-import com.socks.library.KLog;
+import com.maning.gankmm.utils.MyToast;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -32,21 +31,21 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+
 /**
- * 公用的Fragment：Android，ios，休息视频，前端，拓展资源，瞎推荐，App
+ * 福利Fragment
  */
-public class PublicFragment extends BaseFragment implements OnRefreshListener, OnLoadMoreListener {
+public class TimeFragment extends BaseFragment implements OnRefreshListener, OnLoadMoreListener {
 
     @Bind(R.id.swipe_target)
     RecyclerView swipeTarget;
     @Bind(R.id.swipeToLoadLayout)
     SwipeToLoadLayout swipeToLoadLayout;
 
-    private MyCallBack myCallBack = new MyCallBack() {
-
+    private MyCallBack httpCallBack = new MyCallBack() {
         @Override
         public void onSuccessList(int what, List results) {
-            if (results == null) {
+            if(results == null){
                 overRefresh();
                 dissmissProgressDialog();
                 return;
@@ -54,16 +53,19 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
             switch (what) {
                 case 0x001:
                     dissmissProgressDialog();
-                    if (publicDataResults == null) {
-                        publicDataResults = new ArrayList<>();
+                    if (commonDataResults == null) {
+                        commonDataResults = new ArrayList<>();
+                    }
+                    if (pageIndex == 1 && commonDataResults.size() > 0) {
+                        commonDataResults.clear();
                     }
                     List<GankEntity> gankEntityList = results;
                     //过滤一下数据,筛除重的
-                    if (publicDataResults.size() > 0) {
+                    if (commonDataResults != null && commonDataResults.size() > 0 ) {
                         for (int i = 0; i < results.size(); i++) {
-                            GankEntity resultEntity2 = gankEntityList.get(i);
-                            for (int j = 0; j < publicDataResults.size(); j++) {
-                                GankEntity resultsEntity1 = publicDataResults.get(j);
+                            GankEntity resultEntity2 = (GankEntity) results.get(i);
+                            for (int j = 0; j < commonDataResults.size(); j++) {
+                                GankEntity resultsEntity1 = commonDataResults.get(j);
                                 if (resultEntity2.get_id().equals(resultsEntity1.get_id())) {
                                     //删除
                                     gankEntityList.remove(i);
@@ -71,9 +73,9 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
                             }
                         }
                     }
-                    publicDataResults.addAll(gankEntityList);
-                    initAdapter();
-                    if (publicDataResults == null || publicDataResults.size() == 0 || publicDataResults.size() < pageIndex * pageSize) {
+                    commonDataResults.addAll(gankEntityList);
+                    initRecycleView();
+                    if (commonDataResults == null || commonDataResults.size() == 0 || commonDataResults.size() < pageIndex * pageSize) {
                         swipeToLoadLayout.setLoadMoreEnabled(false);
                     } else {
                         swipeToLoadLayout.setLoadMoreEnabled(true);
@@ -84,10 +86,12 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
                 case 0x002: //下拉刷新
                     pageIndex = 1;
                     pageIndex++;
-                    publicDataResults = results;
-                    //保存到数据库
-                    saveToDB(publicDataResults);
-                    initAdapter();
+                    commonDataResults = results;
+                    if (commonDataResults.size() > 0) {
+                        //把网络数据保存到数据库中去
+                        saveToDB(commonDataResults);
+                        initRecycleView();
+                    }
                     overRefresh();
                     break;
             }
@@ -103,11 +107,13 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
             dissmissProgressDialog();
             overRefresh();
             if (!TextUtils.isEmpty(result)) {
-                Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
+                MyToast.showShortToast(result);
+            }
+            if (what == 0x001 && pageIndex == 1) {
+                getDBDatas();
             }
         }
     };
-    private RecyclePublicAdapter recyclePublicAdapter;
 
     /**
      * 保存到数据库
@@ -118,39 +124,30 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
         new Thread(new Runnable() {
             @Override
             public void run() {
-                new PublicDao().insertList(results, flagFragment);
+                new PublicDao().insertList(results, Constants.FlagWelFare);
             }
         }).start();
     }
 
-    private List<GankEntity> publicDataResults;
+    private List<GankEntity> commonDataResults;
+    private RecyclePicAdapter recyclePicAdapter;
     private int pageSize = 20;
     private int pageIndex = 1;
-    //标记来自哪个标签的
-    private String flagFragment;
 
-    public static PublicFragment newInstance(String flag) {
-        PublicFragment publicFragment = new PublicFragment();
-        Bundle args = new Bundle();
-        args.putString(Constants.FlagFragment, flag);
-        publicFragment.setArguments(args);
-        return publicFragment;
+    public static TimeFragment newInstance() {
+        return new TimeFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            flagFragment = getArguments().getString(Constants.FlagFragment);
-            KLog.i("CommentFragment-----onCreate:" + flagFragment);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        KLog.i("PublicFragment-----onCreateView");
-        View view = inflater.inflate(R.layout.fragment_common, container, false);
+        View view = inflater.inflate(R.layout.fragment_wel_fare, container, false);
         ButterKnife.bind(this, view);
 
         initRefresh();
@@ -161,7 +158,6 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        KLog.i("PublicFragment-----onViewCreated");
 
         getDBDatas();
 
@@ -171,15 +167,13 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
         new Thread(new Runnable() {
             @Override
             public void run() {
-                //获取数据库的数据
-                publicDataResults = new PublicDao().queryAllCollectByType(flagFragment);
+                commonDataResults = new PublicDao().queryAllCollectByType(Constants.FlagWelFare);
                 MyApplication.getHandler().post(new Runnable() {
                     @Override
                     public void run() {
-                        if (publicDataResults != null && publicDataResults.size() > 0) {
-                            initAdapter();
+                        if (commonDataResults != null && commonDataResults.size() > 0) {
+                            initRecycleView();
                         } else {
-                            //自动刷新
                             swipeToLoadLayout.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -193,72 +187,81 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
         }).start();
     }
 
-    private void initAdapter() {
 
-        if (recyclePublicAdapter == null) {
-            recyclePublicAdapter = new RecyclePublicAdapter(context, publicDataResults);
-            swipeTarget.setAdapter(recyclePublicAdapter);
+    private void initRecycleView() {
+        if (recyclePicAdapter == null) {
+            recyclePicAdapter = new RecyclePicAdapter(context, commonDataResults);
+            swipeTarget.setAdapter(recyclePicAdapter);
             //点击事件
-            recyclePublicAdapter.setOnItemClickLitener(new RecyclePublicAdapter.OnItemClickLitener() {
+            recyclePicAdapter.setOnItemClickLitener(new RecyclePicAdapter.OnItemClickLitener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    GankEntity resultsEntity = publicDataResults.get(position);
-                    IntentUtils.startToWebActivity(getActivity(), flagFragment, resultsEntity.getDesc(), resultsEntity.getUrl());
+                    ArrayList<String> arrayList = new ArrayList<>();
+                    for (int i = 0; i < commonDataResults.size(); i++) {
+                        arrayList.add(commonDataResults.get(i).getUrl());
+                    }
+                    IntentUtils.startToImageShow(context, arrayList, position);
                 }
             });
 
         } else {
-            recyclePublicAdapter.updateDatas(publicDataResults);
+            recyclePicAdapter.updateDatas(commonDataResults);
         }
 
     }
 
-
     private void initRefresh() {
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setOnLoadMoreListener(this);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         swipeTarget.setLayoutManager(linearLayoutManager);
         swipeTarget.setItemAnimator(new DefaultItemAnimator());
+        //添加分割线
+//      swipeTarget.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).color(Color.LTGRAY).build());
+
+        //到底自动刷新
+//        swipeTarget.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+//                    if (!ViewCompat.canScrollVertically(recyclerView, 1)) {
+//                        swipeToLoadLayout.setLoadingMore(true);
+//                    }
+//                }
+//            }
+//        });
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        overRefresh();
         ButterKnife.unbind(this);
     }
 
     @Override
     public void onRefresh() {
-        GankApi.getCommonDataNew(flagFragment, pageSize, 1, 0x002, myCallBack);
+        GankApi.getCommonDataNew(Constants.FlagWelFare, pageSize, 1, 0x002, httpCallBack);
+
+    }
+
+    private void overRefresh() {
+        swipeToLoadLayout.setRefreshing(false);
+        swipeToLoadLayout.setLoadingMore(false);
     }
 
     @Override
     public void onLoadMore() {
-        GankApi.getCommonDataNew(flagFragment, pageSize, pageIndex, 0x001, myCallBack);
-    }
-
-    private void overRefresh() {
-        if(swipeToLoadLayout==null){
-            return;
-        }
-        if (swipeToLoadLayout.isRefreshing()) {
-            swipeToLoadLayout.setRefreshing(false);
-        }
-        if (swipeToLoadLayout.isLoadingMore()) {
-            swipeToLoadLayout.setLoadingMore(false);
-        }
+        GankApi.getCommonDataNew(Constants.FlagWelFare, pageSize, pageIndex, 0x001, httpCallBack);
     }
 
     public void onResume() {
         super.onResume();
-        MobclickAgent.onPageStart(flagFragment);
+        MobclickAgent.onPageStart("WelFareFragment");
     }
 
     public void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd(flagFragment);
+        MobclickAgent.onPageEnd("WelFareFragment");
     }
-
 }

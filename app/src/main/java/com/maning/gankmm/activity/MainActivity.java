@@ -15,6 +15,7 @@ import com.maning.gankmm.R;
 import com.maning.gankmm.base.BaseActivity;
 import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.fragment.CategoryFragment;
+import com.maning.gankmm.fragment.TimeFragment;
 import com.maning.gankmm.fragment.collect.CollectFragment;
 import com.maning.gankmm.fragment.PublicFragment;
 import com.maning.gankmm.fragment.WelFareFragment;
@@ -45,6 +46,7 @@ public class MainActivity extends BaseActivity {
     private WelFareFragment welFareFragment;
     private CollectFragment collectFragment;
     private CategoryFragment categoryFragment;
+    private TimeFragment timeFragment;
 
     private long exitTime = 0;
     private FeedbackAgent umengAgent;
@@ -136,6 +138,14 @@ public class MainActivity extends BaseActivity {
                     fragmentTransaction.show(categoryFragment);
                 }
                 break;
+            case 2:
+                if (timeFragment == null) {
+                    timeFragment = timeFragment.newInstance();
+                    fragmentTransaction.add(R.id.frame_content, timeFragment);
+                } else {
+                    fragmentTransaction.show(timeFragment);
+                }
+                break;
 
         }
         fragmentTransaction.commit();
@@ -151,6 +161,9 @@ public class MainActivity extends BaseActivity {
         }
         if (categoryFragment != null) {
             transaction.hide(categoryFragment);
+        }
+        if (timeFragment != null) {
+            transaction.hide(timeFragment);
         }
 
     }
@@ -178,6 +191,10 @@ public class MainActivity extends BaseActivity {
                     case R.id.nav_category:
                         toolbar.setTitle(menuItem.getTitle());
                         setMenuSelection(9);
+                        break;
+                    case R.id.nav_time:
+                        toolbar.setTitle(menuItem.getTitle());
+                        setMenuSelection(2);
                         break;
                     case R.id.about:
                         menuItem.setChecked(false); // 改变item选中状态
