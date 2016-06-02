@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.maning.gankmm.activity.AboutActivity;
+import com.maning.gankmm.activity.DayShowActivity;
 import com.maning.gankmm.activity.ImagesActivity;
 import com.maning.gankmm.activity.WebActivity;
 
@@ -21,6 +22,7 @@ public class IntentUtils {
     public static final String WebTitleFlag = "WebTitleFlag";
     public static final String WebTitle = "WebTitle";
     public static final String WebUrl = "WebUrl";
+    public static final String DayDate = "DayDate";
 
     public static void startToImageShow(Context context, ArrayList<String> mDatas, int position) {
         Intent intent = new Intent(context.getApplicationContext(), ImagesActivity.class);
@@ -39,6 +41,12 @@ public class IntentUtils {
 
     public static void startAboutActivity(Context context) {
         Intent intent = new Intent(context.getApplicationContext(), AboutActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void startDayShowActivity(Context context,String date) {
+        Intent intent = new Intent(context.getApplicationContext(), DayShowActivity.class);
+        intent.putExtra(DayDate,date);
         context.startActivity(intent);
     }
 

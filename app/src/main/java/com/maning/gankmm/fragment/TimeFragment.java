@@ -1,5 +1,6 @@
 package com.maning.gankmm.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.maning.gankmm.R;
 import com.maning.gankmm.adapter.RecyclePicAdapter;
+import com.maning.gankmm.adapter.RecycleTimeAdapter;
 import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.base.BaseFragment;
 import com.maning.gankmm.bean.GankEntity;
@@ -24,6 +26,7 @@ import com.maning.gankmm.http.GankApi;
 import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.utils.MyToast;
 import com.umeng.analytics.MobclickAgent;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +38,7 @@ import butterknife.ButterKnife;
 /**
  * 福利Fragment
  */
-public class TimeFragment extends BaseFragment implements OnRefreshListener, OnLoadMoreListener {
+public class TimeFragment extends BaseFragment implements OnRefreshListener {
 
     @Bind(R.id.swipe_target)
     RecyclerView swipeTarget;
@@ -45,56 +48,8 @@ public class TimeFragment extends BaseFragment implements OnRefreshListener, OnL
     private MyCallBack httpCallBack = new MyCallBack() {
         @Override
         public void onSuccessList(int what, List results) {
-            if(results == null){
-                overRefresh();
-                dissmissProgressDialog();
-                return;
-            }
-            switch (what) {
-                case 0x001:
-                    dissmissProgressDialog();
-                    if (commonDataResults == null) {
-                        commonDataResults = new ArrayList<>();
-                    }
-                    if (pageIndex == 1 && commonDataResults.size() > 0) {
-                        commonDataResults.clear();
-                    }
-                    List<GankEntity> gankEntityList = results;
-                    //过滤一下数据,筛除重的
-                    if (commonDataResults != null && commonDataResults.size() > 0 ) {
-                        for (int i = 0; i < results.size(); i++) {
-                            GankEntity resultEntity2 = (GankEntity) results.get(i);
-                            for (int j = 0; j < commonDataResults.size(); j++) {
-                                GankEntity resultsEntity1 = commonDataResults.get(j);
-                                if (resultEntity2.get_id().equals(resultsEntity1.get_id())) {
-                                    //删除
-                                    gankEntityList.remove(i);
-                                }
-                            }
-                        }
-                    }
-                    commonDataResults.addAll(gankEntityList);
-                    initRecycleView();
-                    if (commonDataResults == null || commonDataResults.size() == 0 || commonDataResults.size() < pageIndex * pageSize) {
-                        swipeToLoadLayout.setLoadMoreEnabled(false);
-                    } else {
-                        swipeToLoadLayout.setLoadMoreEnabled(true);
-                    }
-                    pageIndex++;
-                    overRefresh();
-                    break;
-                case 0x002: //下拉刷新
-                    pageIndex = 1;
-                    pageIndex++;
-                    commonDataResults = results;
-                    if (commonDataResults.size() > 0) {
-                        //把网络数据保存到数据库中去
-                        saveToDB(commonDataResults);
-                        initRecycleView();
-                    }
-                    overRefresh();
-                    break;
-            }
+            timeList = results;
+            initRecycleView();
         }
 
         @Override
@@ -109,30 +64,10 @@ public class TimeFragment extends BaseFragment implements OnRefreshListener, OnL
             if (!TextUtils.isEmpty(result)) {
                 MyToast.showShortToast(result);
             }
-            if (what == 0x001 && pageIndex == 1) {
-                getDBDatas();
-            }
         }
     };
 
-    /**
-     * 保存到数据库
-     *
-     * @param results
-     */
-    private void saveToDB(final List<GankEntity> results) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                new PublicDao().insertList(results, Constants.FlagWelFare);
-            }
-        }).start();
-    }
-
-    private List<GankEntity> commonDataResults;
-    private RecyclePicAdapter recyclePicAdapter;
-    private int pageSize = 20;
-    private int pageIndex = 1;
+    private List<String> timeList;
 
     public static TimeFragment newInstance() {
         return new TimeFragment();
@@ -147,7 +82,7 @@ public class TimeFragment extends BaseFragment implements OnRefreshListener, OnL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_wel_fare, container, false);
+        View view = inflater.inflate(R.layout.fragment_time, container, false);
         ButterKnife.bind(this, view);
 
         initRefresh();
@@ -159,78 +94,40 @@ public class TimeFragment extends BaseFragment implements OnRefreshListener, OnL
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getDBDatas();
-
-    }
-
-    private void getDBDatas() {
-        new Thread(new Runnable() {
+        //自动刷新
+        swipeToLoadLayout.post(new Runnable() {
             @Override
             public void run() {
-                commonDataResults = new PublicDao().queryAllCollectByType(Constants.FlagWelFare);
-                MyApplication.getHandler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (commonDataResults != null && commonDataResults.size() > 0) {
-                            initRecycleView();
-                        } else {
-                            swipeToLoadLayout.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    swipeToLoadLayout.setRefreshing(true);
-                                }
-                            });
-                        }
-                    }
-                });
+                swipeToLoadLayout.setRefreshing(true);
             }
-        }).start();
+        });
+
     }
 
 
     private void initRecycleView() {
-        if (recyclePicAdapter == null) {
-            recyclePicAdapter = new RecyclePicAdapter(context, commonDataResults);
-            swipeTarget.setAdapter(recyclePicAdapter);
-            //点击事件
-            recyclePicAdapter.setOnItemClickLitener(new RecyclePicAdapter.OnItemClickLitener() {
-                @Override
-                public void onItemClick(View view, int position) {
-                    ArrayList<String> arrayList = new ArrayList<>();
-                    for (int i = 0; i < commonDataResults.size(); i++) {
-                        arrayList.add(commonDataResults.get(i).getUrl());
-                    }
-                    IntentUtils.startToImageShow(context, arrayList, position);
-                }
-            });
-
-        } else {
-            recyclePicAdapter.updateDatas(commonDataResults);
-        }
+        RecycleTimeAdapter recyclePicAdapter = new RecycleTimeAdapter(context, timeList);
+        swipeTarget.setAdapter(recyclePicAdapter);
+        //点击事件
+        recyclePicAdapter.setOnItemClickLitener(new RecycleTimeAdapter.OnItemClickLitener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                IntentUtils.startDayShowActivity(getActivity(),timeList.get(position));
+            }
+        });
+        overRefresh();
 
     }
 
     private void initRefresh() {
         swipeToLoadLayout.setOnRefreshListener(this);
-        swipeToLoadLayout.setOnLoadMoreListener(this);
-
+        swipeToLoadLayout.setLoadMoreEnabled(false);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         swipeTarget.setLayoutManager(linearLayoutManager);
         swipeTarget.setItemAnimator(new DefaultItemAnimator());
         //添加分割线
-//      swipeTarget.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).color(Color.LTGRAY).build());
+        swipeTarget.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).color(Color.LTGRAY).build());
 
-        //到底自动刷新
-//        swipeTarget.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-//                    if (!ViewCompat.canScrollVertically(recyclerView, 1)) {
-//                        swipeToLoadLayout.setLoadingMore(true);
-//                    }
-//                }
-//            }
-//        });
     }
 
     @Override
@@ -241,18 +138,12 @@ public class TimeFragment extends BaseFragment implements OnRefreshListener, OnL
 
     @Override
     public void onRefresh() {
-        GankApi.getCommonDataNew(Constants.FlagWelFare, pageSize, 1, 0x002, httpCallBack);
+        GankApi.getHistoryData(0x001, httpCallBack);
 
     }
 
     private void overRefresh() {
         swipeToLoadLayout.setRefreshing(false);
-        swipeToLoadLayout.setLoadingMore(false);
-    }
-
-    @Override
-    public void onLoadMore() {
-        GankApi.getCommonDataNew(Constants.FlagWelFare, pageSize, pageIndex, 0x001, httpCallBack);
     }
 
     public void onResume() {

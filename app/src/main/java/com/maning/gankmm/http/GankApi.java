@@ -38,6 +38,8 @@ public class GankApi {
                     }else{
                         myCallBack.onFail(what, "获取数据失败");
                     }
+                }else{
+                    myCallBack.onFail(what, "获取数据失败");
                 }
             }
 
@@ -50,6 +52,44 @@ public class GankApi {
         });
 
         return commonDateNew;
+
+    }
+
+    public static Call<HttpResult<List<String>>> getHistoryData(final int what, final MyCallBack myCallBack){
+
+
+        Call<HttpResult<List<String>>> gankHistoryDate = BuildApi.getAPIService().getGankHistoryDate();
+
+        gankHistoryDate.enqueue(new Callback<HttpResult<List<String>>>() {
+            @Override
+            public void onResponse(Response<HttpResult<List<String>>> response, Retrofit retrofit) {
+                if (response.isSuccess()) {
+                    HttpResult<List<String>> httpResult = response.body();
+                    if(httpResult!=null) {
+                        if (!httpResult.isError()) {
+                            List<String> gankEntityList = httpResult.getResults();
+                            KLog.i("httpCallBack---gankEntityList：" + gankEntityList.toString());
+                            myCallBack.onSuccessList(what, gankEntityList);
+                        } else {
+                            myCallBack.onFail(what, "获取数据失败");
+                        }
+                    }else{
+                        myCallBack.onFail(what, "获取数据失败");
+                    }
+                }else{
+                    myCallBack.onFail(what, "获取数据失败");
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                KLog.i("httpCallBack-----onFailure：" + t.toString());
+                //数据错误
+                myCallBack.onFail(what, "获取数据失败");
+            }
+        });
+
+        return gankHistoryDate;
 
     }
 

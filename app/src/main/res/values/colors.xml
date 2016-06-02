@@ -5,6 +5,8 @@
     <color name="colorPrimaryDark2">#5554aee6</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="translate">#00000000</color>
+
     <!--qita-->
     <color name="style_color_accent">#d32f2f</color>
     <color name="style_window_background">#212121</color>

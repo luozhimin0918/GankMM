@@ -1,0 +1,13 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/item_selecter"
+    android:id="@+id/tv_time"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp"
+    android:paddingLeft="20dp"
+    android:textSize="16sp"
+    android:text="2017/2/02">
+
+
+</TextView>
