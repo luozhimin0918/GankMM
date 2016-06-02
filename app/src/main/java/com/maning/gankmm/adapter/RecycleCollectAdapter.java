@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.maning.gankmm.R;
-import com.maning.gankmm.bean.PublicData;
+import com.maning.gankmm.bean.GankEntity;
 import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.db.CollectDao;
 
@@ -28,10 +28,10 @@ import butterknife.ButterKnife;
 public class RecycleCollectAdapter extends RecyclerView.Adapter<RecycleCollectAdapter.MyViewHolder> {
 
     private Context context;
-    private List<PublicData.ResultsEntity> commonDataResults;
+    private List<GankEntity> commonDataResults;
     private LayoutInflater layoutInflater;
 
-    public RecycleCollectAdapter(Context context, List<PublicData.ResultsEntity> commonDataResults) {
+    public RecycleCollectAdapter(Context context, List<GankEntity> commonDataResults) {
         this.context = context;
         this.commonDataResults = commonDataResults;
         layoutInflater = LayoutInflater.from(this.context);
@@ -44,7 +44,7 @@ public class RecycleCollectAdapter extends RecyclerView.Adapter<RecycleCollectAd
         this.mOnItemClickLitener = mOnItemClickLitener;
     }
 
-    public void updateDatas(List<PublicData.ResultsEntity> commonDataResults){
+    public void updateDatas(List<GankEntity> commonDataResults){
         this.commonDataResults = commonDataResults;
         notifyDataSetChanged();
     }
@@ -60,7 +60,7 @@ public class RecycleCollectAdapter extends RecyclerView.Adapter<RecycleCollectAd
     @Override
     public void onBindViewHolder(final MyViewHolder viewHolder, final int position) {
 
-        final PublicData.ResultsEntity resultsEntity = commonDataResults.get(position);
+        final GankEntity resultsEntity = commonDataResults.get(position);
 
         viewHolder.tvShowWho.setText(resultsEntity.getWho());
         viewHolder.tvShowTitle.setText(resultsEntity.getDesc());

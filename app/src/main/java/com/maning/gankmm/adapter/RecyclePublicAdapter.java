@@ -5,15 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.maning.gankmm.R;
-import com.maning.gankmm.bean.PublicData;
+import com.maning.gankmm.bean.GankEntity;
 import com.maning.gankmm.db.CollectDao;
 
 import java.util.List;
@@ -27,10 +25,10 @@ import butterknife.ButterKnife;
 public class RecyclePublicAdapter extends RecyclerView.Adapter<RecyclePublicAdapter.MyViewHolder> {
 
     private Context context;
-    private List<PublicData.ResultsEntity> commonDataResults;
+    private List<GankEntity> commonDataResults;
     private LayoutInflater layoutInflater;
 
-    public RecyclePublicAdapter(Context context, List<PublicData.ResultsEntity> commonDataResults) {
+    public RecyclePublicAdapter(Context context, List<GankEntity> commonDataResults) {
         this.context = context;
         this.commonDataResults = commonDataResults;
         layoutInflater = LayoutInflater.from(this.context);
@@ -43,7 +41,7 @@ public class RecyclePublicAdapter extends RecyclerView.Adapter<RecyclePublicAdap
         this.mOnItemClickLitener = mOnItemClickLitener;
     }
 
-    public void updateDatas(List<PublicData.ResultsEntity> commonDataResults){
+    public void updateDatas(List<GankEntity> commonDataResults){
         this.commonDataResults = commonDataResults;
         notifyDataSetChanged();
     }
@@ -59,7 +57,7 @@ public class RecyclePublicAdapter extends RecyclerView.Adapter<RecyclePublicAdap
     @Override
     public void onBindViewHolder(final MyViewHolder viewHolder, final int position) {
 
-        final PublicData.ResultsEntity resultsEntity = commonDataResults.get(position);
+        final GankEntity resultsEntity = commonDataResults.get(position);
 
         viewHolder.tvShowWho.setText(resultsEntity.getWho());
         viewHolder.tvShowTitle.setText(resultsEntity.getDesc());

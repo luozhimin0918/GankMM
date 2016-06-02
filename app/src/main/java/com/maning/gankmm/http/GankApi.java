@@ -1,9 +1,11 @@
 package com.maning.gankmm.http;
 
-import com.maning.gankmm.bean.PublicData;
-import com.maning.gankmm.bean.GankDate;
+import com.maning.gankmm.bean.GankEntity;
+import com.maning.gankmm.bean.HttpResult;
 import com.maning.gankmm.callback.MyCallBack;
 import com.socks.library.KLog;
+
+import java.util.List;
 
 import retrofit.Call;
 import retrofit.Callback;
@@ -17,61 +19,38 @@ import retrofit.Retrofit;
  */
 public class GankApi {
 
-    public static Call<GankDate> getGankHistoryDate(final int what, final MyCallBack myCallBack) {
-        Call<GankDate> gankHistoryDate = BuildApi.getAPIService().getGankHistoryDate();
-        gankHistoryDate.enqueue(new Callback<GankDate>() {
-            @Override
-            public void onResponse(Response<GankDate> response, Retrofit retrofit) {
-                if (response.isSuccess()) {
-                    GankDate gankDate = response.body();
-                    KLog.i("getGankHistoryDate---onResponse：" + gankDate.toString());
-                    if (!gankDate.isError()) {
-                        //数据正确，把数据返回
-                        myCallBack.onSuccess(what, gankDate);
-                    } else {
-                        //数据错误
-                        myCallBack.onSuccess(what, "失败");
-                    }
+    public static Call<HttpResult<List<GankEntity>>> getCommonDataNew(String type, int count, int pageIndex, final int what, final MyCallBack myCallBack) {
+        Call<HttpResult<List<GankEntity>>> commonDateNew = BuildApi.getAPIService().getCommonDateNew(type, count, pageIndex);
 
+        commonDateNew.enqueue(new Callback<HttpResult<List<GankEntity>>>() {
+            @Override
+            public void onResponse(Response<HttpResult<List<GankEntity>>> response, Retrofit retrofit) {
+                if (response.isSuccess()) {
+                    HttpResult<List<GankEntity>> httpResult = response.body();
+                    if(httpResult!=null) {
+                        if (!httpResult.isError()) {
+                            List<GankEntity> gankEntityList = httpResult.getResults();
+                            KLog.i("httpCallBack---gankEntityList：" + gankEntityList.toString());
+                            myCallBack.onSuccessList(what, gankEntityList);
+                        } else {
+                            myCallBack.onFail(what, "获取数据失败");
+                        }
+                    }else{
+                        myCallBack.onFail(what, "获取数据失败");
+                    }
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                KLog.i("getGankHistoryDate----onFailure：" + t.toString());
+                KLog.i("httpCallBack-----onFailure：" + t.toString());
                 //数据错误
-                myCallBack.onFail(what, "失败");
-            }
-        });
-        return gankHistoryDate;
-    }
-
-    public static Call<PublicData> getCommonData(String type, int count, int pageIndex, final int what, final MyCallBack myCallBack) {
-        Call<PublicData> commonDate = BuildApi.getAPIService().getCommonDate(type, count, pageIndex);
-        commonDate.enqueue(new Callback<PublicData>() {
-            @Override
-            public void onResponse(Response<PublicData> response, Retrofit retrofit) {
-                if (response.isSuccess()) {
-                    PublicData publicData = response.body();
-                    KLog.i("getCommonData---onResponse：" + publicData.toString());
-                    if (!publicData.isError()) {
-                        //数据正确，把数据返回
-                        myCallBack.onSuccess(what, publicData);
-                    } else {
-                        //数据错误
-                        myCallBack.onSuccess(what, "失败");
-                    }
-                }
-            }
-            @Override
-            public void onFailure(Throwable t) {
-                KLog.i("getCommonData-----onFailure：" + t.toString());
-                //数据错误
-                myCallBack.onFail(what, "失败");
+                myCallBack.onFail(what, "获取数据失败");
             }
         });
 
-        return commonDate;
+        return commonDateNew;
+
     }
 
 }

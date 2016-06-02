@@ -17,7 +17,7 @@ import com.maning.gankmm.R;
 import com.maning.gankmm.adapter.RecyclePublicAdapter;
 import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.base.BaseFragment;
-import com.maning.gankmm.bean.PublicData;
+import com.maning.gankmm.bean.GankEntity;
 import com.maning.gankmm.callback.MyCallBack;
 import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.db.PublicDao;
@@ -43,33 +43,35 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
     SwipeToLoadLayout swipeToLoadLayout;
 
     private MyCallBack myCallBack = new MyCallBack() {
+
         @Override
-        public void onSuccess(int what, Object result) {
+        public void onSuccessList(int what, List results) {
+            if (results == null) {
+                overRefresh();
+                dissmissProgressDialog();
+                return;
+            }
             switch (what) {
                 case 0x001:
                     dissmissProgressDialog();
                     if (publicDataResults == null) {
                         publicDataResults = new ArrayList<>();
                     }
-                    PublicData publicData = (PublicData) result;
-                    KLog.i("myCallBack：" + publicData.toString());
-                    List<PublicData.ResultsEntity> results = publicData.getResults();
+                    List<GankEntity> gankEntityList = results;
                     //过滤一下数据,筛除重的
-                    if (publicDataResults != null && publicDataResults.size() > 0) {
+                    if (publicDataResults.size() > 0) {
                         for (int i = 0; i < results.size(); i++) {
-                            PublicData.ResultsEntity resultEntity2 = results.get(i);
+                            GankEntity resultEntity2 = gankEntityList.get(i);
                             for (int j = 0; j < publicDataResults.size(); j++) {
-                                PublicData.ResultsEntity resultsEntity1 = publicDataResults.get(j);
+                                GankEntity resultsEntity1 = publicDataResults.get(j);
                                 if (resultEntity2.get_id().equals(resultsEntity1.get_id())) {
                                     //删除
-                                    results.remove(i);
+                                    gankEntityList.remove(i);
                                 }
                             }
                         }
                     }
-                    if (results != null && results.size() > 0) {
-                        publicDataResults.addAll(results);
-                    }
+                    publicDataResults.addAll(gankEntityList);
                     initAdapter();
                     if (publicDataResults == null || publicDataResults.size() == 0 || publicDataResults.size() < pageIndex * pageSize) {
                         swipeToLoadLayout.setLoadMoreEnabled(false);
@@ -82,15 +84,18 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
                 case 0x002: //下拉刷新
                     pageIndex = 1;
                     pageIndex++;
-                    PublicData publicDataNew = (PublicData) result;
-                    KLog.i("myCallBack：" + publicDataNew.toString());
-                    publicDataResults = publicDataNew.getResults();
+                    publicDataResults = results;
                     //保存到数据库
                     saveToDB(publicDataResults);
                     initAdapter();
                     overRefresh();
                     break;
             }
+        }
+
+        @Override
+        public void onSuccess(int what, Object result) {
+
         }
 
         @Override
@@ -109,7 +114,7 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
      *
      * @param results
      */
-    private void saveToDB(final List<PublicData.ResultsEntity> results) {
+    private void saveToDB(final List<GankEntity> results) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -118,7 +123,7 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
         }).start();
     }
 
-    private List<PublicData.ResultsEntity> publicDataResults;
+    private List<GankEntity> publicDataResults;
     private int pageSize = 20;
     private int pageIndex = 1;
     //标记来自哪个标签的
@@ -197,8 +202,8 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
             recyclePublicAdapter.setOnItemClickLitener(new RecyclePublicAdapter.OnItemClickLitener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    PublicData.ResultsEntity resultsEntity = publicDataResults.get(position);
-                    IntentUtils.startToWebActivity(getActivity(), flagFragment,resultsEntity.getDesc(), resultsEntity.getUrl());
+                    GankEntity resultsEntity = publicDataResults.get(position);
+                    IntentUtils.startToWebActivity(getActivity(), flagFragment, resultsEntity.getDesc(), resultsEntity.getUrl());
                 }
             });
 
@@ -225,19 +230,19 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
 
     @Override
     public void onRefresh() {
-        GankApi.getCommonData(flagFragment, pageSize, 1, 0x002, myCallBack);
+        GankApi.getCommonDataNew(flagFragment, pageSize, 1, 0x002, myCallBack);
     }
 
     @Override
     public void onLoadMore() {
-        GankApi.getCommonData(flagFragment, pageSize, pageIndex, 0x001, myCallBack);
+        GankApi.getCommonDataNew(flagFragment, pageSize, pageIndex, 0x001, myCallBack);
     }
 
     private void overRefresh() {
-        if(swipeToLoadLayout.isRefreshing()){
+        if (swipeToLoadLayout.isRefreshing()) {
             swipeToLoadLayout.setRefreshing(false);
         }
-        if(swipeToLoadLayout.isLoadingMore()) {
+        if (swipeToLoadLayout.isLoadingMore()) {
             swipeToLoadLayout.setLoadingMore(false);
         }
     }

@@ -15,15 +15,14 @@ import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.maning.gankmm.R;
 import com.maning.gankmm.adapter.RecyclePicAdapter;
 import com.maning.gankmm.app.MyApplication;
+import com.maning.gankmm.bean.GankEntity;
 import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.db.PublicDao;
 import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.base.BaseFragment;
-import com.maning.gankmm.bean.PublicData;
 import com.maning.gankmm.callback.MyCallBack;
 import com.maning.gankmm.http.GankApi;
 import com.maning.gankmm.utils.MyToast;
-import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -43,9 +42,14 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
     @Bind(R.id.swipeToLoadLayout)
     SwipeToLoadLayout swipeToLoadLayout;
 
-    private MyCallBack myCallBack = new MyCallBack() {
+    private MyCallBack httpCallBack = new MyCallBack() {
         @Override
-        public void onSuccess(int what, Object result) {
+        public void onSuccessList(int what, List results) {
+            if(results == null){
+                overRefresh();
+                dissmissProgressDialog();
+                return;
+            }
             switch (what) {
                 case 0x001:
                     dissmissProgressDialog();
@@ -55,25 +59,21 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
                     if (pageIndex == 1 && commonDataResults.size() > 0) {
                         commonDataResults.clear();
                     }
-                    PublicData publicData = (PublicData) result;
-                    KLog.i("myCallBack：" + publicData.toString());
-                    List<PublicData.ResultsEntity> results = publicData.getResults();
+                    List<GankEntity> gankEntityList = results;
                     //过滤一下数据,筛除重的
-                    if (commonDataResults != null && commonDataResults.size() > 0) {
+                    if (commonDataResults != null && commonDataResults.size() > 0 ) {
                         for (int i = 0; i < results.size(); i++) {
-                            PublicData.ResultsEntity resultEntity2 = results.get(i);
+                            GankEntity resultEntity2 = (GankEntity) results.get(i);
                             for (int j = 0; j < commonDataResults.size(); j++) {
-                                PublicData.ResultsEntity resultsEntity1 = commonDataResults.get(j);
+                                GankEntity resultsEntity1 = commonDataResults.get(j);
                                 if (resultEntity2.get_id().equals(resultsEntity1.get_id())) {
                                     //删除
-                                    results.remove(i);
+                                    gankEntityList.remove(i);
                                 }
                             }
                         }
                     }
-                    if (results != null && results.size() > 0) {
-                        commonDataResults.addAll(results);
-                    }
+                    commonDataResults.addAll(gankEntityList);
                     initRecycleView();
                     if (commonDataResults == null || commonDataResults.size() == 0 || commonDataResults.size() < pageIndex * pageSize) {
                         swipeToLoadLayout.setLoadMoreEnabled(false);
@@ -86,10 +86,8 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
                 case 0x002: //下拉刷新
                     pageIndex = 1;
                     pageIndex++;
-                    PublicData publicDataNew = (PublicData) result;
-                    KLog.i("myCallBack：" + publicDataNew.toString());
-                    commonDataResults = publicDataNew.getResults();
-                    if (commonDataResults != null && commonDataResults.size() > 0) {
+                    commonDataResults = results;
+                    if (commonDataResults.size() > 0) {
                         //把网络数据保存到数据库中去
                         saveToDB(commonDataResults);
                         initRecycleView();
@@ -97,6 +95,11 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
                     overRefresh();
                     break;
             }
+        }
+
+        @Override
+        public void onSuccess(int what, Object result) {
+
         }
 
         @Override
@@ -117,7 +120,7 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
      *
      * @param results
      */
-    private void saveToDB(final List<PublicData.ResultsEntity> results) {
+    private void saveToDB(final List<GankEntity> results) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -126,7 +129,7 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
         }).start();
     }
 
-    private List<PublicData.ResultsEntity> commonDataResults;
+    private List<GankEntity> commonDataResults;
     private RecyclePicAdapter recyclePicAdapter;
     private int pageSize = 20;
     private int pageIndex = 1;
@@ -238,7 +241,7 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
 
     @Override
     public void onRefresh() {
-        GankApi.getCommonData(Constants.FlagWelFare, pageSize, 1, 0x002, myCallBack);
+        GankApi.getCommonDataNew(Constants.FlagWelFare, pageSize, 1, 0x002, httpCallBack);
 
     }
 
@@ -249,7 +252,7 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
 
     @Override
     public void onLoadMore() {
-        GankApi.getCommonData(Constants.FlagWelFare, pageSize, pageIndex, 0x001, myCallBack);
+        GankApi.getCommonDataNew(Constants.FlagWelFare, pageSize, pageIndex, 0x001, httpCallBack);
     }
 
     public void onResume() {

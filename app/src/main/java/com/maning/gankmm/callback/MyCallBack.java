@@ -1,5 +1,7 @@
 package com.maning.gankmm.callback;
 
+import java.util.List;
+
 /**
  * Created by maning on 16/1/13.
  * <p/>
@@ -8,12 +10,20 @@ package com.maning.gankmm.callback;
 public interface MyCallBack {
 
     /**
-     * 成功的回调
+     * 成功的回调对象
      *
      * @param what
      * @param result
      */
     void onSuccess(int what, Object result);
+
+    /**
+     * 成功的回调集合
+     *
+     * @param what
+     * @param results
+     */
+    void onSuccessList(int what, List results);
 
     /**
      * 失败的回调

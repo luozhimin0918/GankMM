@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.maning.gankmm.app.MyApplication;
-import com.maning.gankmm.bean.PublicData;
+import com.maning.gankmm.bean.GankEntity;
 
 import java.util.ArrayList;
 
@@ -30,7 +30,7 @@ public class CollectDao {
      * @param gankResult
      * @return 是否插入成功
      */
-    public synchronized boolean insertOneCollect(PublicData.ResultsEntity gankResult) {
+    public synchronized boolean insertOneCollect(GankEntity gankResult) {
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(GankMMHelper.GankID, gankResult.get_id());
@@ -89,12 +89,12 @@ public class CollectDao {
      * @param type
      * @return 集合数据
      */
-    public synchronized ArrayList<PublicData.ResultsEntity> queryAllCollectByType(String type) {
+    public synchronized ArrayList<GankEntity> queryAllCollectByType(String type) {
         db = helper.getReadableDatabase();
         Cursor cursor = db.query(GankMMHelper.TABLE_NAME_COLLECT, null, GankMMHelper.type + "=?", new String[]{type}, null, null, null);
 
-        ArrayList<PublicData.ResultsEntity> collectList = new ArrayList<>();
-        PublicData.ResultsEntity collect;
+        ArrayList<GankEntity> collectList = new ArrayList<>();
+        GankEntity collect;
         while (cursor.moveToNext()) {
             //查询
             String createdAt = cursor.getString(cursor.getColumnIndex(GankMMHelper.createdAt));
@@ -106,7 +106,7 @@ public class CollectDao {
             String url = cursor.getString(cursor.getColumnIndex(GankMMHelper.url));
             String who = cursor.getString(cursor.getColumnIndex(GankMMHelper.who));
 
-            collect = new PublicData.ResultsEntity();
+            collect = new GankEntity();
             collect.set_id(GankID);
             collect.set_ns(NS);
             collect.setCreatedAt(createdAt);

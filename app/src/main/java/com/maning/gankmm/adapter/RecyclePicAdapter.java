@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.maning.gankmm.R;
-import com.maning.gankmm.bean.PublicData;
+import com.maning.gankmm.bean.GankEntity;
 import com.maning.gankmm.db.CollectDao;
 
 import java.util.List;
@@ -27,10 +27,10 @@ import butterknife.ButterKnife;
 public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclePicAdapter.MyViewHolder> {
 
     private Context context;
-    private List<PublicData.ResultsEntity> commonDataResults;
+    private List<GankEntity> commonDataResults;
     private LayoutInflater layoutInflater;
 
-    public RecyclePicAdapter(Context context, List<PublicData.ResultsEntity> commonDataResults) {
+    public RecyclePicAdapter(Context context, List<GankEntity> commonDataResults) {
         this.context = context;
         this.commonDataResults = commonDataResults;
         layoutInflater = LayoutInflater.from(this.context);
@@ -43,7 +43,7 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclePicAdapter.My
         this.mOnItemClickLitener = mOnItemClickLitener;
     }
 
-    public void updateDatas(List<PublicData.ResultsEntity> commonDataResults){
+    public void updateDatas(List<GankEntity> commonDataResults){
         this.commonDataResults = commonDataResults;
         notifyDataSetChanged();
     }
@@ -59,7 +59,7 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclePicAdapter.My
     @Override
     public void onBindViewHolder(final MyViewHolder viewHolder, final int position) {
 
-        final PublicData.ResultsEntity resultsEntity = commonDataResults.get(position);
+        final GankEntity resultsEntity = commonDataResults.get(position);
 
         viewHolder.tvShowTime.setText(resultsEntity.getCreatedAt().split("T")[0]);
         viewHolder.tvShowWho.setText("来自：" + resultsEntity.getWho());

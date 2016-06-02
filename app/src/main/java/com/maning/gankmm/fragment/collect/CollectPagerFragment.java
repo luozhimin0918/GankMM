@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.maning.gankmm.R;
 import com.maning.gankmm.adapter.RecycleCollectAdapter;
-import com.maning.gankmm.bean.PublicData;
+import com.maning.gankmm.bean.GankEntity;
 import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.db.CollectDao;
 import com.maning.gankmm.utils.IntentUtils;
@@ -36,7 +36,7 @@ public class CollectPagerFragment extends LazyFragment implements OnRefreshListe
     RecyclerView swipeTarget;
 
     private String flag;
-    private ArrayList<PublicData.ResultsEntity> collects = new ArrayList<>();
+    private ArrayList<GankEntity> collects = new ArrayList<>();
     private boolean isPrepared;
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -97,9 +97,9 @@ public class CollectPagerFragment extends LazyFragment implements OnRefreshListe
         if (collects != null && collects.size() > 0) {
             KLog.i("排序前：" + collects.toString());
             //按时间排序
-            Collections.sort(collects, new Comparator<PublicData.ResultsEntity>() {
+            Collections.sort(collects, new Comparator<GankEntity>() {
                 @Override
-                public int compare(PublicData.ResultsEntity lhs, PublicData.ResultsEntity rhs) {
+                public int compare(GankEntity lhs, GankEntity rhs) {
                     try {
                         long l_time = sdf.parse(lhs.getCreatedAt().split("T")[0]).getTime();
                         long r_time = sdf.parse(rhs.getCreatedAt().split("T")[0]).getTime();
@@ -126,7 +126,7 @@ public class CollectPagerFragment extends LazyFragment implements OnRefreshListe
         recycleCollectAdapter.setOnItemClickLitener(new RecycleCollectAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
-                PublicData.ResultsEntity resultsEntity = collects.get(position);
+                GankEntity resultsEntity = collects.get(position);
                 if (Constants.FlagWelFare.equals(resultsEntity.getType())) {
                     ArrayList<String> imageList = new ArrayList<>();
                     for (int i = 0; i < collects.size(); i++) {

@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.maning.gankmm.app.MyApplication;
-import com.maning.gankmm.bean.PublicData;
+import com.maning.gankmm.bean.GankEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public class PublicDao {
     /**
      * 往数据库中插入一条收藏数据
      */
-    public synchronized void insertList(List<PublicData.ResultsEntity> list,String type) {
+    public synchronized void insertList(List<GankEntity> list,String type) {
         db = helper.getWritableDatabase();
         //插入
         db.beginTransaction();
@@ -37,7 +37,7 @@ public class PublicDao {
         deleteAll(type);
 
         for (int i = 0; i < list.size(); i++) {
-            PublicData.ResultsEntity gankResult = list.get(i);
+            GankEntity gankResult = list.get(i);
             //查看数据库中有没有
             boolean queryByID = queryByID(gankResult.get_id());
             if (!queryByID) {
@@ -94,12 +94,12 @@ public class PublicDao {
      * @param type
      * @return 集合数据
      */
-    public synchronized ArrayList<PublicData.ResultsEntity> queryAllCollectByType(String type) {
+    public synchronized ArrayList<GankEntity> queryAllCollectByType(String type) {
         db = helper.getReadableDatabase();
         Cursor cursor = db.query(GankMMHelper.TABLE_NAME_PUBLIC, null, GankMMHelper.type + "=?", new String[]{type}, null, null, null);
 
-        ArrayList<PublicData.ResultsEntity> collectList = new ArrayList<>();
-        PublicData.ResultsEntity collect;
+        ArrayList<GankEntity> collectList = new ArrayList<>();
+        GankEntity collect;
         while (cursor.moveToNext()) {
             //查询
             String createdAt = cursor.getString(cursor.getColumnIndex(GankMMHelper.createdAt));
@@ -111,7 +111,7 @@ public class PublicDao {
             String url = cursor.getString(cursor.getColumnIndex(GankMMHelper.url));
             String who = cursor.getString(cursor.getColumnIndex(GankMMHelper.who));
 
-            collect = new PublicData.ResultsEntity();
+            collect = new GankEntity();
             collect.set_id(GankID);
             collect.set_ns(NS);
             collect.setCreatedAt(createdAt);
