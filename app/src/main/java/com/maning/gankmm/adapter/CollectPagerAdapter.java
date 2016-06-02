@@ -1,8 +1,9 @@
-package com.maning.gankmm.fragment.collect;
+package com.maning.gankmm.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.fragment.collect.CollectPagerFragment;
@@ -10,7 +11,7 @@ import com.maning.gankmm.fragment.collect.CollectPagerFragment;
 /**
  * Created by maning on 16/3/5.
  */
-public class CollectPagerAdapter extends FragmentPagerAdapter {
+public class CollectPagerAdapter extends FragmentStatePagerAdapter {
 
     public final String[] TITLES = {
             Constants.FlagWelFare,

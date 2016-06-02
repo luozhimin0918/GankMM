@@ -7,7 +7,7 @@
             android:id="@+id/nav_fuli"
             android:icon="@drawable/icon_cool"
             android:title="福利" />
-        <item
+<!--        <item
             android:id="@+id/nav_android"
             android:icon="@drawable/icon_android"
             android:title="Android" />
@@ -36,7 +36,12 @@
         <item
             android:id="@+id/nav_app"
             android:icon="@drawable/icon_app"
-            android:title="App" />
+            android:title="App" />-->
+
+        <item
+            android:id="@+id/nav_category"
+            android:icon="@drawable/icon_expand"
+            android:title="分类浏览" />
 
         <item
             android:id="@+id/nav_collect"

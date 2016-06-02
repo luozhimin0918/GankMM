@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.maning.gankmm.R;
 import com.maning.gankmm.base.BaseActivity;
 import com.maning.gankmm.constant.Constants;
+import com.maning.gankmm.fragment.CategoryFragment;
 import com.maning.gankmm.fragment.collect.CollectFragment;
 import com.maning.gankmm.fragment.PublicFragment;
 import com.maning.gankmm.fragment.WelFareFragment;
@@ -42,16 +43,10 @@ public class MainActivity extends BaseActivity {
 
     private Context context;
     private WelFareFragment welFareFragment;
-    private PublicFragment androidFragment;
-    private PublicFragment iOSFragment;
-    private PublicFragment videoFragment;
-    private PublicFragment jsFragment;
-    private PublicFragment expandFragment;
-    private PublicFragment recommendFragment;
-    private PublicFragment appFragment;
+    private CollectFragment collectFragment;
+    private CategoryFragment categoryFragment;
 
     private long exitTime = 0;
-    private CollectFragment collectFragment;
     private FeedbackAgent umengAgent;
 
     @Override
@@ -133,60 +128,12 @@ public class MainActivity extends BaseActivity {
                     fragmentTransaction.show(collectFragment);
                 }
                 break;
-            case 2:
-                if (androidFragment == null) {
-                    androidFragment = PublicFragment.newInstance(toolbar.getTitle().toString());
-                    fragmentTransaction.add(R.id.frame_content, androidFragment);
+            case 9:
+                if (categoryFragment == null) {
+                    categoryFragment = CategoryFragment.newInstance();
+                    fragmentTransaction.add(R.id.frame_content, categoryFragment);
                 } else {
-                    fragmentTransaction.show(androidFragment);
-                }
-                break;
-            case 3:
-                if (iOSFragment == null) {
-                    iOSFragment = PublicFragment.newInstance(toolbar.getTitle().toString());
-                    fragmentTransaction.add(R.id.frame_content, iOSFragment);
-                } else {
-                    fragmentTransaction.show(iOSFragment);
-                }
-                break;
-            case 4:
-                if (videoFragment == null) {
-                    videoFragment = PublicFragment.newInstance(toolbar.getTitle().toString());
-                    fragmentTransaction.add(R.id.frame_content, videoFragment);
-                } else {
-                    fragmentTransaction.show(videoFragment);
-                }
-                break;
-            case 5:
-                if (jsFragment == null) {
-                    jsFragment = PublicFragment.newInstance(toolbar.getTitle().toString());
-                    fragmentTransaction.add(R.id.frame_content, jsFragment);
-                } else {
-                    fragmentTransaction.show(jsFragment);
-                }
-                break;
-            case 6:
-                if (expandFragment == null) {
-                    expandFragment = PublicFragment.newInstance(toolbar.getTitle().toString());
-                    fragmentTransaction.add(R.id.frame_content, expandFragment);
-                } else {
-                    fragmentTransaction.show(expandFragment);
-                }
-                break;
-            case 7:
-                if (recommendFragment == null) {
-                    recommendFragment = PublicFragment.newInstance(toolbar.getTitle().toString());
-                    fragmentTransaction.add(R.id.frame_content, recommendFragment);
-                } else {
-                    fragmentTransaction.show(recommendFragment);
-                }
-                break;
-            case 8:
-                if (appFragment == null) {
-                    appFragment = PublicFragment.newInstance(toolbar.getTitle().toString());
-                    fragmentTransaction.add(R.id.frame_content, appFragment);
-                } else {
-                    fragmentTransaction.show(appFragment);
+                    fragmentTransaction.show(categoryFragment);
                 }
                 break;
 
@@ -202,26 +149,8 @@ public class MainActivity extends BaseActivity {
         if (collectFragment != null) {
             transaction.hide(collectFragment);
         }
-        if (androidFragment != null) {
-            transaction.hide(androidFragment);
-        }
-        if (iOSFragment != null) {
-            transaction.hide(iOSFragment);
-        }
-        if (videoFragment != null) {
-            transaction.hide(videoFragment);
-        }
-        if (expandFragment != null) {
-            transaction.hide(expandFragment);
-        }
-        if (jsFragment != null) {
-            transaction.hide(jsFragment);
-        }
-        if (recommendFragment != null) {
-            transaction.hide(recommendFragment);
-        }
-        if (appFragment != null) {
-            transaction.hide(appFragment);
+        if (categoryFragment != null) {
+            transaction.hide(categoryFragment);
         }
 
     }
@@ -246,33 +175,9 @@ public class MainActivity extends BaseActivity {
                         toolbar.setTitle(menuItem.getTitle());
                         setMenuSelection(0);
                         break;
-                    case R.id.nav_android:
+                    case R.id.nav_category:
                         toolbar.setTitle(menuItem.getTitle());
-                        setMenuSelection(2);
-                        break;
-                    case R.id.nav_ios:
-                        toolbar.setTitle(menuItem.getTitle());
-                        setMenuSelection(3);
-                        break;
-                    case R.id.nav_video:
-                        toolbar.setTitle(menuItem.getTitle());
-                        setMenuSelection(4);
-                        break;
-                    case R.id.nav_js:
-                        toolbar.setTitle(menuItem.getTitle());
-                        setMenuSelection(5);
-                        break;
-                    case R.id.nav_expand:
-                        toolbar.setTitle(menuItem.getTitle());
-                        setMenuSelection(6);
-                        break;
-                    case R.id.nav_recommend:
-                        toolbar.setTitle(menuItem.getTitle());
-                        setMenuSelection(7);
-                        break;
-                    case R.id.nav_app:
-                        toolbar.setTitle(menuItem.getTitle());
-                        setMenuSelection(8);
+                        setMenuSelection(9);
                         break;
                     case R.id.about:
                         menuItem.setChecked(false); // 改变item选中状态

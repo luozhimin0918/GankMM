@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.maning.gankmm.R;
 import com.maning.gankmm.adapter.RecycleCollectAdapter;
+import com.maning.gankmm.base.BaseFragment;
 import com.maning.gankmm.bean.GankEntity;
 import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.db.CollectDao;
@@ -30,17 +31,15 @@ import butterknife.ButterKnife;
 /**
  * 收藏ViewPager的Fragment
  */
-public class CollectPagerFragment extends LazyFragment implements OnRefreshListener {
+public class CollectPagerFragment extends BaseFragment implements OnRefreshListener {
 
     @Bind(R.id.swipe_target)
     RecyclerView swipeTarget;
 
     private String flag;
     private ArrayList<GankEntity> collects = new ArrayList<>();
-    private boolean isPrepared;
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    private RecycleCollectAdapter recycleCollectAdapter;
 
 
     public static CollectPagerFragment newInstance(String flag) {
@@ -65,31 +64,15 @@ public class CollectPagerFragment extends LazyFragment implements OnRefreshListe
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_collect_pager, container, false);
         ButterKnife.bind(this, view);
-        KLog.i(flag);
-
-        isPrepared = true;
-        lazyLoad();
-
-        //因为共用一个Fragment视图，所以当前这个视图已被加载到Activity中，必须先清除后再加入Activity
-        ViewGroup parent = (ViewGroup) view.getParent();
-        if (parent != null) {
-            parent.removeView(view);
-        }
+        initRecycleView();
         return view;
-    }
-
-    @Override
-    protected void lazyLoad() {
-        if (isPrepared && isVisible && swipeTarget != null) {
-            initData();
-        }
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        KLog.i(flag);
-        initRecycleView();
+
+        initData();
     }
 
     public void initData() {
@@ -120,7 +103,7 @@ public class CollectPagerFragment extends LazyFragment implements OnRefreshListe
     }
 
     private void initAdapter() {
-        recycleCollectAdapter = new RecycleCollectAdapter(context, collects);
+        RecycleCollectAdapter recycleCollectAdapter = new RecycleCollectAdapter(context, collects);
         swipeTarget.setAdapter(recycleCollectAdapter);
         //点击事件
         recycleCollectAdapter.setOnItemClickLitener(new RecycleCollectAdapter.OnItemClickLitener() {

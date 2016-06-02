@@ -16,6 +16,7 @@ import com.maning.gankmm.R;
 import com.maning.gankmm.bean.GankEntity;
 import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.db.CollectDao;
+import com.socks.library.KLog;
 
 import java.util.List;
 
@@ -70,10 +71,11 @@ public class RecycleCollectAdapter extends RecyclerView.Adapter<RecycleCollectAd
         if (Constants.FlagWelFare.equals(resultsEntity.getType())) {
             viewHolder.image.setVisibility(View.VISIBLE);
             viewHolder.tvShowTitle.setVisibility(View.GONE);
+            String url = resultsEntity.getUrl();
+            KLog.i("图片地址："+url);
             //图片显示
-            Glide
-                    .with(context)
-                    .load(resultsEntity.getUrl())
+            Glide.with(context)
+                    .load(url)
                     .placeholder(R.drawable.pic_gray_bg)
                     .error(R.drawable.pic_gray_bg)
                     .centerCrop()
