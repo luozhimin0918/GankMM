@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
+import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.maning.gankmm.R;
 import com.maning.gankmm.adapter.RecycleCollectAdapter;
 import com.maning.gankmm.base.BaseFragment;
@@ -35,6 +36,8 @@ public class CollectPagerFragment extends BaseFragment implements OnRefreshListe
 
     @Bind(R.id.swipe_target)
     RecyclerView swipeTarget;
+    @Bind(R.id.swipeToLoadLayout)
+    SwipeToLoadLayout swipeToLoadLayout;
 
     private String flag;
     private ArrayList<GankEntity> collects = new ArrayList<>();
@@ -118,14 +121,18 @@ public class CollectPagerFragment extends BaseFragment implements OnRefreshListe
                     IntentUtils.startToImageShow(context, imageList, position);
 
                 } else {
-                    IntentUtils.startToWebActivity(getActivity(), flag,resultsEntity.getDesc(), resultsEntity.getUrl());
+                    IntentUtils.startToWebActivity(getActivity(), flag, resultsEntity.getDesc(), resultsEntity.getUrl());
                 }
             }
         });
 
+        overRefresh();
+
     }
 
     private void initRecycleView() {
+        swipeToLoadLayout.setOnRefreshListener(this);
+        swipeToLoadLayout.setRefreshEnabled(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         swipeTarget.setLayoutManager(linearLayoutManager);
         swipeTarget.setItemAnimator(new DefaultItemAnimator());
@@ -142,6 +149,12 @@ public class CollectPagerFragment extends BaseFragment implements OnRefreshListe
     @Override
     public void onRefresh() {
         initData();
+    }
+
+    private void overRefresh() {
+        if (swipeToLoadLayout.isRefreshing()) {
+            swipeToLoadLayout.setRefreshing(false);
+        }
     }
 
 }
