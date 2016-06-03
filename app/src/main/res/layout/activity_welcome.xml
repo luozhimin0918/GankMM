@@ -10,6 +10,7 @@
         android:layout_centerInParent="true"
         android:src="@drawable/welcome_gank" />
 
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,7 +18,19 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="24dp"
         android:gravity="center"
-        android:text="copyright©2016  干货营"
+        android:text="©2016 干货营 github.com/maning0303"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_app_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="44dp"
+        android:gravity="center"
+        android:text="v1.2.0"
         android:textColor="@color/white"
         android:textSize="14sp" />
 
