@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -55,6 +56,7 @@ public class MainActivity extends BaseActivity {
     private long exitTime = 0;
     private FeedbackAgent umengAgent;
     private MaterialDialog mMaterialDialog;
+    private MaterialDialog mMaterialDialogPush;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +77,25 @@ public class MainActivity extends BaseActivity {
         //umeng
         initUmeng();
 
+        initIntent();
+
+    }
+
+    private void initIntent() {
+        Intent intent = getIntent();
+        String pushMessage = intent.getStringExtra(IntentUtils.PushMessage);
+        if (!TextUtils.isEmpty(pushMessage)) {
+            mMaterialDialogPush = new MaterialDialog(this);
+            mMaterialDialogPush.setTitle("通知");
+            mMaterialDialogPush.setMessage(pushMessage);
+            mMaterialDialogPush.setPositiveButton("确定", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mMaterialDialogPush.dismiss();
+                }
+            });
+            mMaterialDialogPush.show();
+        }
     }
 
     private void initFeedbackDialog() {
