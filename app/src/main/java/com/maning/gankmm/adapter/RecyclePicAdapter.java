@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +18,7 @@ import com.maning.gankmm.R;
 import com.maning.gankmm.bean.GankEntity;
 import com.maning.gankmm.db.CollectDao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -29,11 +32,18 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclePicAdapter.My
     private Context context;
     private List<GankEntity> commonDataResults;
     private LayoutInflater layoutInflater;
+    private List<Integer> mHeights;
 
     public RecyclePicAdapter(Context context, List<GankEntity> commonDataResults) {
         this.context = context;
         this.commonDataResults = commonDataResults;
         layoutInflater = LayoutInflater.from(this.context);
+        //高度
+        mHeights = new ArrayList<>();
+        for (int i = 0; i < commonDataResults.size(); i++)
+        {
+            mHeights.add( (int) (400 + Math.random() * 500));
+        }
     }
 
     private OnItemClickLitener mOnItemClickLitener;
@@ -45,13 +55,17 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclePicAdapter.My
 
     public void updateDatas(List<GankEntity> commonDataResults){
         this.commonDataResults = commonDataResults;
+        for (int i = 0; i < commonDataResults.size(); i++)
+        {
+            mHeights.add( (int) (400 + Math.random() * 500));
+        }
         notifyDataSetChanged();
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View inflate = layoutInflater.inflate(R.layout.item_welfare, parent, false);
+        View inflate = layoutInflater.inflate(R.layout.item_welfare_staggered, parent, false);
 
         return new MyViewHolder(inflate);
     }
@@ -62,7 +76,6 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclePicAdapter.My
         final GankEntity resultsEntity = commonDataResults.get(position);
 
         viewHolder.tvShowTime.setText(resultsEntity.getCreatedAt().split("T")[0]);
-        viewHolder.tvShowWho.setText("来自：" + resultsEntity.getWho());
         //图片显示
         String url = resultsEntity.getUrl();
         Glide
@@ -72,6 +85,10 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclePicAdapter.My
                 .error(R.drawable.pic_gray_bg)
                 .centerCrop()
                 .into(viewHolder.image);
+
+        //高度
+        ViewGroup.LayoutParams layoutParams = viewHolder.rlRoot.getLayoutParams();
+        layoutParams.height = mHeights.get(position);
 
         //查询是否存在收藏
         boolean isCollect = new CollectDao().queryOneCollectByID(resultsEntity.get_id());
@@ -126,12 +143,12 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclePicAdapter.My
 
         @Bind(R.id.image)
         ImageView image;
-        @Bind(R.id.tvShowWho)
-        TextView tvShowWho;
         @Bind(R.id.tvShowTime)
         TextView tvShowTime;
         @Bind(R.id.btn_collect)
         LikeButton btnCollect;
+        @Bind(R.id.rl_root)
+        RelativeLayout rlRoot;
 
         public MyViewHolder(View itemView) {
             super(itemView);

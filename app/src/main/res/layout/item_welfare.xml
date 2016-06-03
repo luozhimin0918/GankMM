@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="240dp"
+    android:id="@+id/ll_root"
     android:background="@color/white">
 
     <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -24,17 +25,6 @@
             android:layout_height="44dp"
             android:layout_gravity="bottom"
             android:background="#a3181818">
-
-            <TextView
-                android:id="@+id/tvShowWho"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="16dp"
-                android:gravity="center"
-                android:text="图："
-                android:textColor="@color/white"
-                android:textSize="16sp" />
 
             <com.like.LikeButton
                 android:id="@+id/btn_collect"

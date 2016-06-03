@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +46,7 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
     private MyCallBack httpCallBack = new MyCallBack() {
         @Override
         public void onSuccessList(int what, List results) {
-            if(results == null){
+            if (results == null) {
                 overRefresh();
                 dissmissProgressDialog();
                 return;
@@ -61,7 +62,7 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
                     }
                     List<GankEntity> gankEntityList = results;
                     //过滤一下数据,筛除重的
-                    if (commonDataResults != null && commonDataResults.size() > 0 ) {
+                    if (commonDataResults != null && commonDataResults.size() > 0) {
                         for (int i = 0; i < results.size(); i++) {
                             GankEntity resultEntity2 = (GankEntity) results.get(i);
                             for (int j = 0; j < commonDataResults.size(); j++) {
@@ -81,7 +82,12 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
                         swipeToLoadLayout.setLoadMoreEnabled(true);
                     }
                     pageIndex++;
-                    overRefresh();
+                    //数据重复了，再请求一遍
+                    if (pageIndex == 2 && commonDataResults.size() == 20) {
+                        onLoadMore();
+                    }else{
+                        overRefresh();
+                    }
                     break;
                 case 0x002: //下拉刷新
                     pageIndex = 1;
@@ -213,13 +219,9 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
     private void initRefresh() {
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setOnLoadMoreListener(this);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
-        swipeTarget.setLayoutManager(linearLayoutManager);
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        swipeTarget.setLayoutManager(staggeredGridLayoutManager);
         swipeTarget.setItemAnimator(new DefaultItemAnimator());
-        //添加分割线
-//      swipeTarget.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).color(Color.LTGRAY).build());
-
         //到底自动刷新
 //        swipeTarget.addOnScrollListener(new RecyclerView.OnScrollListener() {
 //            @Override

@@ -133,6 +133,7 @@ public class CollectPagerFragment extends BaseFragment implements OnRefreshListe
     private void initRecycleView() {
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setRefreshEnabled(true);
+        swipeToLoadLayout.setLoadMoreEnabled(false);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         swipeTarget.setLayoutManager(linearLayoutManager);
         swipeTarget.setItemAnimator(new DefaultItemAnimator());
