@@ -7,6 +7,10 @@
 
     <color name="translate">#00000000</color>
     <color name="mainColoe">#54aee6</color>
+    <color name="backgroundGray">#efefef</color>
+
+    <color name="textBlack">#363636</color>
+    <color name="textGray">#ababab</color>
 
     <!--qita-->
     <color name="style_color_accent">#d32f2f</color>

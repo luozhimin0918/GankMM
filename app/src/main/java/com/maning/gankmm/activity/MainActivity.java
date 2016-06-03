@@ -8,7 +8,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.maning.gankmm.R;
@@ -20,6 +22,7 @@ import com.maning.gankmm.fragment.collect.CollectFragment;
 import com.maning.gankmm.fragment.PublicFragment;
 import com.maning.gankmm.fragment.WelFareFragment;
 import com.maning.gankmm.utils.IntentUtils;
+import com.maning.gankmm.utils.ShareUtil;
 import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
@@ -32,6 +35,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import me.drakeet.materialdialog.MaterialDialog;
 
 public class MainActivity extends BaseActivity {
 
@@ -50,6 +54,7 @@ public class MainActivity extends BaseActivity {
 
     private long exitTime = 0;
     private FeedbackAgent umengAgent;
+    private MaterialDialog mMaterialDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,27 +64,56 @@ public class MainActivity extends BaseActivity {
 
         context = this;
 
-        initToolBar(toolbar, Constants.FlagWelFare, R.drawable.icon_menu);
+        initToolBar(toolbar, Constants.FlagWelFare, R.drawable.icon_menu2);
 
         initNavigationView();
 
         setDefaultFragment();
+
+        initFeedbackDialog();
 
         //umeng
         initUmeng();
 
     }
 
+    private void initFeedbackDialog() {
+        mMaterialDialog = new MaterialDialog(this);
+        mMaterialDialog.setTitle("通知");
+        mMaterialDialog.setMessage("您的反馈有回复了，是否去查看？");
+        mMaterialDialog.setPositiveButton("查看", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMaterialDialog.dismiss();
+                //自定义意见反馈
+                startActivity(new Intent(context, FeedBackActivity.class));
+            }
+        });
+        mMaterialDialog.setNegativeButton("等一会去", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMaterialDialog.dismiss();
+
+            }
+        });
+    }
+
     private void initUmeng() {
         UmengUpdateAgent.update(this);
+        initUmengFeedback();
+    }
+
+    private void initUmengFeedback() {
         umengAgent = new FeedbackAgent(this);
         Conversation defaultConversation = umengAgent.getDefaultConversation();
         defaultConversation.sync(new SyncListener() {
             @Override
             public void onReceiveDevReply(List<Reply> list) {
-                KLog.i("Umeng反馈onSendUserReply");
                 if (list != null && list.size() > 0) {
-                    KLog.i("Umeng反馈用户回复了");
+                    ShareUtil.saveBooleanData(context, "feedback", true);
+                    if (mMaterialDialog != null) {
+                        mMaterialDialog.show();
+                    }
                 }
             }
 
@@ -201,11 +235,10 @@ public class MainActivity extends BaseActivity {
                         //跳转
                         IntentUtils.startAboutActivity(context);
                         break;
-                    case R.id.feenBack:
+                    case R.id.setting:
                         menuItem.setChecked(false); // 改变item选中状态
-//                        umengAgent.startFeedbackActivity();
-                        //自定义意见反馈
-                        startActivity(new Intent(MainActivity.this, FeedBackActivity.class));
+                        //跳转
+                        IntentUtils.startSettingActivity(context);
                         break;
                 }
                 return true;
@@ -218,6 +251,14 @@ public class MainActivity extends BaseActivity {
         if (drawerLayout.isDrawerOpen(navigationView)) {
             KLog.i("菜单没有关闭");
             drawerLayout.closeDrawers();
+            return;
+        }
+        //福利作为首页
+        if (welFareFragment.isHidden()) {
+            toolbar.setTitle("福利");
+            setMenuSelection(0);
+            Menu menu = navigationView.getMenu();
+            menu.findItem(R.id.nav_fuli).setChecked(true);
             return;
         }
         long currtTime = System.currentTimeMillis();

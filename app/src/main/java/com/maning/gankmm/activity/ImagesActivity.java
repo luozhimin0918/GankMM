@@ -33,6 +33,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import me.drakeet.materialdialog.MaterialDialog;
 
 public class ImagesActivity extends BaseActivity {
 
@@ -164,19 +165,14 @@ public class ImagesActivity extends BaseActivity {
             imageView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
-                    alertDialog.setTitle("提示");
-                    alertDialog.setMessage("是否要将图片保存到手机？");
-                    alertDialog.setCancelable(true);
-                    alertDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
 
-                        }
-                    });
-                    alertDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    final MaterialDialog mMaterialDialog = new MaterialDialog(mContext);
+                    mMaterialDialog.setTitle("保存图片");
+                    mMaterialDialog.setMessage("是否要将图片保存到手机？");
+                    mMaterialDialog.setPositiveButton("确定", new View.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onClick(View v) {
+                            mMaterialDialog.dismiss();
                             final Bitmap bitmap = ((GlideBitmapDrawable) imageView.getDrawable()).getBitmap();
                             //save Image
                             new Thread(new Runnable() {
@@ -195,10 +191,17 @@ public class ImagesActivity extends BaseActivity {
                                     });
                                 }
                             }).start();
+                        }
+                    });
+                    mMaterialDialog.setNegativeButton("取消", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mMaterialDialog.dismiss();
 
                         }
                     });
-                    alertDialog.show();
+                    mMaterialDialog.show();
+
                     return true;
                 }
             });

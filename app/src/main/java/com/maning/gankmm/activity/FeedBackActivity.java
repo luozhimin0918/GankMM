@@ -1,10 +1,6 @@
 package com.maning.gankmm.activity;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
@@ -18,7 +14,6 @@ import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,17 +23,15 @@ import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.base.BaseActivity;
 import com.maning.gankmm.utils.NetUtils;
 import com.maning.gankmm.utils.PrettyDate;
+import com.maning.gankmm.utils.ShareUtil;
 import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.fb.SyncListener;
 import com.umeng.fb.model.Conversation;
 import com.umeng.fb.model.Reply;
-import com.umeng.fb.model.UserInfo;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -74,35 +67,9 @@ public class FeedBackActivity extends BaseActivity implements SwipeRefreshLayout
 
         initUmeng();
 
-//        initUmengUserInfo();
+        //保存
+        ShareUtil.saveBooleanData(this, "feedback", false);
 
-    }
-
-    private void initUmengUserInfo() {
-
-        UserInfo info = mAgent.getUserInfo();
-        if (info == null) {
-            info = new UserInfo();
-        }
-        Map<String, String> contact = info.getContact();
-        if (contact == null) {
-            contact = new HashMap<>();
-        }
-        contact.put("phone", "123");
-        contact.put("name", "jack");
-        info.setContact(contact);
-        mAgent.setUserInfo(info);
-
-        new UpdateInfoTask().execute();
-
-    }
-
-    private class UpdateInfoTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... params) {
-            mAgent.updateUserInfo();
-            return null;
-        }
     }
 
     private void initUmeng() {

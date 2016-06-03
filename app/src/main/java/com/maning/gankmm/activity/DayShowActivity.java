@@ -27,6 +27,7 @@ import com.maning.gankmm.utils.StatusBarCompat;
 import com.maning.gankmm.view.FullyLinearLayoutManager;
 import com.maning.gankmm.view.ProgressWheel;
 import com.socks.library.KLog;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -267,6 +268,18 @@ public class DayShowActivity extends BaseActivity {
     private void initBar() {
         initToolBar(toolbar, dayDate, R.drawable.ic_back);
         collapsingToolbar.setTitle(dayDate);
+    }
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("DayShowActivity");
+        MobclickAgent.onResume(this);          //统计时长
+    }
+
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("DayShowActivity");
+        MobclickAgent.onPause(this);
     }
 
 }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import com.maning.gankmm.activity.AboutActivity;
 import com.maning.gankmm.activity.DayShowActivity;
 import com.maning.gankmm.activity.ImagesActivity;
+import com.maning.gankmm.activity.SettingActivity;
 import com.maning.gankmm.activity.WebActivity;
 
 import java.util.ArrayList;
@@ -41,6 +42,11 @@ public class IntentUtils {
 
     public static void startAboutActivity(Context context) {
         Intent intent = new Intent(context.getApplicationContext(), AboutActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void startSettingActivity(Context context) {
+        Intent intent = new Intent(context.getApplicationContext(), SettingActivity.class);
         context.startActivity(intent);
     }
 

@@ -43,6 +43,11 @@ public class BaseActivity extends AppCompatActivity {
         mSVProgressHUD.showWithStatus("加载中...", SVProgressHUD.SVProgressHUDMaskType.BlackCancel);
     }
 
+    public void showProgressDialog(String message) {
+        dissmissProgressDialog();
+        mSVProgressHUD.showWithStatus(message, SVProgressHUD.SVProgressHUDMaskType.BlackCancel);
+    }
+
     public void dissmissProgressDialog() {
         if (mSVProgressHUD.isShowing()) {
             mSVProgressHUD.dismiss();
@@ -71,4 +76,9 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dissmissProgressDialog();
+    }
 }

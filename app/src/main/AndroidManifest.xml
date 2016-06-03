@@ -61,7 +61,7 @@
         <service
             android:name="cn.jpush.android.service.DownloadService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
 
         <!-- Required SDK 核心功能 -->
         <!-- 可配置android:process参数将PushService放在其他进程中 -->
@@ -197,6 +197,7 @@
         <activity
             android:name=".activity.DayShowActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".activity.SettingActivity"></activity>
     </application>
 
 </manifest>
