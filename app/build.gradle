@@ -24,7 +24,9 @@ android {
 
     productFlavors {
         maning {}
-        gankmm {}
+        wandoujia {}
+        "360" {}
+        yingyongbao {}
 
         productFlavors.all { flavor ->
             flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
@@ -32,11 +34,12 @@ android {
 
     }
 
-
+    def File customerproguardFile = file('src/proguard.cfg')
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            proguardFiles customerproguardFile.path
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "boolean", "LOG_DEBUG", "false"
         }
         debug {
