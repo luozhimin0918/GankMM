@@ -13,7 +13,7 @@
         style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
         android:progressDrawable="@drawable/myprogressbar"
         android:layout_width="match_parent"
-        android:layout_height="4dp"
+        android:layout_height="2dp"
         android:max="100"
         android:progress="1" />
 

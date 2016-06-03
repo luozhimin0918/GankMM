@@ -176,6 +176,15 @@ public class WebActivity extends BaseActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        if(webView.canGoBack()){
+            webView.goBack();
+            return;
+        }
+        super.onBackPressed();
+    }
+
     public void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("WebActivity");

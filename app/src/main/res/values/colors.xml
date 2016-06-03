@@ -10,6 +10,8 @@
     <color name="mainColoe">#54aee6</color>
     <color name="backgroundGray">#efefef</color>
 
+    <color name="refreshBgBlack">#404040</color>
+
     <color name="textBlack">#363636</color>
     <color name="textGray">#ababab</color>
 
