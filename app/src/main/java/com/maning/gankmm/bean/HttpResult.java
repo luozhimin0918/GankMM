@@ -1,12 +1,15 @@
 package com.maning.gankmm.bean;
 
 
+import java.io.Serializable;
+
 /**
  * Created by maning on 16/6/2.
  * 接口返回总Bean
  */
-public class HttpResult<T> {
+public class HttpResult<T> implements Serializable{
 
+    private static final long serialVersionUID = 2369780845535121572L;
     private boolean error;
 
     private T results;

@@ -8,6 +8,7 @@ import android.os.Handler;
 
 import com.maning.gankmm.BuildConfig;
 import com.maning.gankmm.crash.CrashHandler;
+import com.maning.gankmm.utils.ACache;
 import com.socks.library.KLog;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -22,6 +23,7 @@ public class MyApplication extends Application {
 
     private static MyApplication application;
     private static Handler mHandler;
+    private static ACache aCache;
 
     @Override
     public void onCreate() {
@@ -38,6 +40,9 @@ public class MyApplication extends Application {
         //初始化Log
         KLog.init(BuildConfig.LOG_DEBUG);
 
+        //初始化ACache类
+        aCache = ACache.get(this);
+
     }
 
     private void initJpush() {
@@ -48,6 +53,10 @@ public class MyApplication extends Application {
     private void initBase() {
         application = this;
         mHandler = new Handler();
+    }
+
+    public static ACache getACache() {
+        return aCache;
     }
 
 
@@ -98,6 +107,22 @@ public class MyApplication extends Application {
             e.printStackTrace();
         }
         return pi;
+    }
+
+    /**
+     * 获取屏幕宽度
+     *
+     */
+    public static int getScreenWidth() {
+        return application.getResources().getDisplayMetrics().widthPixels;
+    }
+
+    /**
+     * 获取屏幕高度
+     * @return
+     */
+    public static int getScreenHeight() {
+        return application.getResources().getDisplayMetrics().heightPixels;
     }
 
 }

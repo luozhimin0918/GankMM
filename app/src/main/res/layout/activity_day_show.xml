@@ -22,14 +22,31 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:statusBarScrim="@android:color/transparent">
 
-            <ImageView
-                android:id="@+id/iv_top"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fitsSystemWindows="true"
-                android:scaleType="centerCrop"
-                app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.7" />
+                android:fitsSystemWindows="true">
+
+                <ImageView
+                    android:id="@+id/iv_top"
+                    android:adjustViewBounds="true"
+                    android:minHeight="200dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/translate"
+                    android:fitsSystemWindows="true"
+                    android:scaleType="centerCrop" />
+
+                <com.maning.gankmm.view.ProgressWheel
+                    android:id="@+id/progressbar"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true"
+                    app:matProg_barColor="#ffffff"
+                    app:matProg_barWidth="4dp"
+                    app:matProg_progressIndeterminate="true" />
+
+            </RelativeLayout>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -47,7 +64,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#f1f1f1"
+        android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycleView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#FFFFFF"
+                android:clipToPadding="false"
+                android:fadeScrollbars="true"
+                android:paddingBottom="10dp"
+                android:scrollbars="vertical" />
+        </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
 

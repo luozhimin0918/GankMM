@@ -19,12 +19,14 @@ import com.maning.gankmm.adapter.RecycleTimeAdapter;
 import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.base.BaseFragment;
 import com.maning.gankmm.bean.GankEntity;
+import com.maning.gankmm.bean.HttpResult;
 import com.maning.gankmm.callback.MyCallBack;
 import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.db.PublicDao;
 import com.maning.gankmm.http.GankApi;
 import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.utils.MyToast;
+import com.maning.gankmm.utils.NetUtils;
 import com.umeng.analytics.MobclickAgent;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
@@ -102,6 +104,15 @@ public class TimeFragment extends BaseFragment implements OnRefreshListener {
             }
         });
 
+        //缓存数据
+        HttpResult<List<String>> httpResult = (HttpResult<List<String>>) MyApplication.getACache().getAsObject("HistoryTime");
+        if (httpResult != null) {
+            List<String> results = httpResult.getResults();
+            if (results != null && results.size() > 0) {
+                timeList = results;
+                initRecycleView();
+            }
+        }
     }
 
 
@@ -112,11 +123,10 @@ public class TimeFragment extends BaseFragment implements OnRefreshListener {
         recyclePicAdapter.setOnItemClickLitener(new RecycleTimeAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
-                IntentUtils.startDayShowActivity(getActivity(),timeList.get(position));
+                IntentUtils.startDayShowActivity(getActivity(), timeList.get(position));
             }
         });
         overRefresh();
-
     }
 
     private void initRefresh() {
@@ -138,6 +148,7 @@ public class TimeFragment extends BaseFragment implements OnRefreshListener {
 
     @Override
     public void onRefresh() {
+
         GankApi.getHistoryData(0x001, httpCallBack);
 
     }
