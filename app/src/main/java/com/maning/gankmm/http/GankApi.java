@@ -49,7 +49,7 @@ public class GankApi {
             public void onFailure(Throwable t) {
                 KLog.i("httpCallBack-----onFailure：" + t.toString());
                 //数据错误
-                myCallBack.onFail(what, "获取数据失败");
+                myCallBack.onFail(what, t.toString());
             }
         });
 
@@ -90,7 +90,7 @@ public class GankApi {
             public void onFailure(Throwable t) {
                 KLog.i("httpCallBack-----onFailure：" + t.toString());
                 //数据错误
-                myCallBack.onFail(what, "获取数据失败");
+                myCallBack.onFail(what, t.toString());
             }
         });
 
@@ -134,7 +134,7 @@ public class GankApi {
             public void onFailure(Throwable t) {
                 KLog.i("httpCallBack-----onFailure：" + t.toString());
                 //数据错误
-                myCallBack.onFail(what, "获取数据失败");
+                myCallBack.onFail(what, t.toString());
             }
         });
 
