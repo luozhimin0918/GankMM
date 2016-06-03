@@ -17,6 +17,8 @@ import com.like.OnLikeListener;
 import com.maning.gankmm.R;
 import com.maning.gankmm.bean.GankEntity;
 import com.maning.gankmm.db.CollectDao;
+import com.maning.gankmm.utils.DensityUtil;
+import com.socks.library.KLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,33 +35,35 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclePicAdapter.My
     private List<GankEntity> commonDataResults;
     private LayoutInflater layoutInflater;
     private List<Integer> mHeights;
+    private int ScreenHeight ;
 
     public RecyclePicAdapter(Context context, List<GankEntity> commonDataResults) {
         this.context = context;
         this.commonDataResults = commonDataResults;
         layoutInflater = LayoutInflater.from(this.context);
+        ScreenHeight = DensityUtil.getHeight(context);
         //高度
         mHeights = new ArrayList<>();
-        for (int i = 0; i < commonDataResults.size(); i++)
-        {
-            mHeights.add( (int) (400 + Math.random() * 500));
-        }
+        addHeights();
     }
 
     private OnItemClickLitener mOnItemClickLitener;
 
-    public void setOnItemClickLitener(OnItemClickLitener mOnItemClickLitener)
-    {
+    public void setOnItemClickLitener(OnItemClickLitener mOnItemClickLitener) {
         this.mOnItemClickLitener = mOnItemClickLitener;
     }
 
-    public void updateDatas(List<GankEntity> commonDataResults){
+    public void updateDatas(List<GankEntity> commonDataResults) {
         this.commonDataResults = commonDataResults;
-        for (int i = 0; i < commonDataResults.size(); i++)
-        {
-            mHeights.add( (int) (400 + Math.random() * 500));
-        }
+        //这里多计算了高度，因为滑动太快的话，这么可能出现计算不及时崩溃现象
+        addHeights();
         notifyDataSetChanged();
+    }
+
+    private void addHeights(){
+        for (int i = 0; i < commonDataResults.size(); i++) {
+            mHeights.add((int) (ScreenHeight * 0.25 + Math.random() * ScreenHeight * 0.25));
+        }
     }
 
     @Override
