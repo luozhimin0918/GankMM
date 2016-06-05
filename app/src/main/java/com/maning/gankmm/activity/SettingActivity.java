@@ -41,14 +41,10 @@ public class SettingActivity extends BaseActivity {
     Toolbar toolbar;
     @Bind(R.id.iv_push)
     ImageView ivPush;
-    @Bind(R.id.rl_clean_cache)
-    RelativeLayout rlCleanCache;
     @Bind(R.id.tv_cache)
     TextView tvCache;
     @Bind(R.id.iv_feedback_red)
     ImageView ivFeedbackRed;
-    @Bind(R.id.rl_feedback)
-    RelativeLayout rlFeedback;
 
     FeedbackAgent umengAgent;
     private Context context;
@@ -63,7 +59,6 @@ public class SettingActivity extends BaseActivity {
 
         initToolBar(toolbar, "设置", R.drawable.ic_back);
 
-        //
         initPushState();
 
         initCache();

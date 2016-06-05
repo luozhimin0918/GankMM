@@ -50,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:layout_marginTop="20dp"
-        android:background="@color/white">
+        android:background="@drawable/item_selecter">
 
         <ImageView
             android:layout_width="match_parent"
@@ -92,7 +92,7 @@
         android:id="@+id/rl_feedback"
         android:layout_width="match_parent"
         android:layout_height="44dp"
-        android:background="@color/white">
+        android:background="@drawable/item_selecter">
 
         <ImageView
             android:layout_width="match_parent"
