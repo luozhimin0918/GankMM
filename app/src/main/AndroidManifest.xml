@@ -159,7 +159,8 @@
 
         <activity
             android:name=".activity.WelcomeActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -197,7 +198,9 @@
         <activity
             android:name=".activity.DayShowActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.SettingActivity"></activity>
+        <activity
+            android:name=".activity.SettingActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

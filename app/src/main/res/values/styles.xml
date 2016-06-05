@@ -6,14 +6,17 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowAnimationStyle">@style/AnimationActivity</item>
     </style>
 
     <style name="AppTheme" parent="@style/BaseAppTheme">
+        <item name="android:windowAnimationStyle">@style/AnimationActivity</item>
     </style>
 
-    <style name="CollapsingToolbarTitleStyle"
-        parent="@android:style/TextAppearance">
+    <style name="SplashTheme" parent="@style/AppTheme">
+        <item name="android:windowBackground">@color/mainColoe</item>
+    </style>
+
+    <style name="CollapsingToolbarTitleStyle" parent="@android:style/TextAppearance">
         <item name="android:textColor">@android:color/transparent</item>
     </style>
 
