@@ -38,6 +38,8 @@ import butterknife.ButterKnife;
  */
 public class WebActivity extends BaseActivity {
 
+    private static final String TAG = WebActivity.class.getSimpleName();
+
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.webView)
@@ -88,7 +90,7 @@ public class WebActivity extends BaseActivity {
                 // 将文本内容放到系统剪贴板里。
                 ClipData clipData = ClipData.newPlainText("text", url);
                 cm.setPrimaryClip(clipData);
-                MyToast.showShortToast("复制成功");
+                MyToast.showShortToast(getString(R.string.gank_hint_copy_success));
                 break;
             case R.id.action_open:
                 Intent intent = new Intent();
@@ -187,7 +189,7 @@ public class WebActivity extends BaseActivity {
 
     public void onResume() {
         super.onResume();
-        MobclickAgent.onPageStart("WebActivity");
+        MobclickAgent.onPageStart(TAG);
         MobclickAgent.onResume(this);
     }
 
@@ -197,7 +199,7 @@ public class WebActivity extends BaseActivity {
         //保证了webView退出后不再有声音
         webView.reload();
         //
-        MobclickAgent.onPageEnd("WebActivity");
+        MobclickAgent.onPageEnd(TAG);
         MobclickAgent.onPause(this);
     }
 

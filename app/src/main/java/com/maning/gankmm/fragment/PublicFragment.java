@@ -251,14 +251,4 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
         }
     }
 
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart(flagFragment);
-    }
-
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd(flagFragment);
-    }
-
 }

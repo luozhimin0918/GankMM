@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 
 
 /**
- * 收藏Fragment
+ * 分类Fragment
  */
 public class CategoryFragment extends BaseFragment {
 
@@ -104,12 +104,12 @@ public class CategoryFragment extends BaseFragment {
 
     public void onResume() {
         super.onResume();
-        MobclickAgent.onPageStart("CollectFragment");
+        MobclickAgent.onPageStart("CategoryFragment");
     }
 
     public void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd("CollectFragment");
+        MobclickAgent.onPageEnd("CategoryFragment");
     }
 
 }

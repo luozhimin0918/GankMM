@@ -20,6 +20,7 @@ import butterknife.OnClick;
 
 public class AboutActivity extends BaseActivity {
 
+    private static final String TAG = AboutActivity.class.getSimpleName();
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.collapsingToolbar)
@@ -111,13 +112,13 @@ public class AboutActivity extends BaseActivity {
 
     public void onResume() {
         super.onResume();
-        MobclickAgent.onPageStart("AboutActivity");
+        MobclickAgent.onPageStart(TAG);
         MobclickAgent.onResume(this);          //统计时长
     }
 
     public void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd("AboutActivity");
+        MobclickAgent.onPageEnd(TAG);
         MobclickAgent.onPause(this);
     }
 

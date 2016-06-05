@@ -1,5 +1,6 @@
 package com.maning.gankmm.http;
 
+import com.maning.gankmm.R;
 import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.bean.DayEntity;
 import com.maning.gankmm.bean.GankEntity;
@@ -21,6 +22,9 @@ import retrofit.Retrofit;
  */
 public class GankApi {
 
+    public final static String GET_DATA_FAIL = MyApplication.getIntstance().getString(R.string.gank_get_data_fail);
+    public final static String NET_FAIL = MyApplication.getIntstance().getString(R.string.gank_net_fail);
+
     public static Call<HttpResult<List<GankEntity>>> getCommonDataNew(String type, int count, int pageIndex, final int what, final MyCallBack myCallBack) {
         Call<HttpResult<List<GankEntity>>> commonDateNew = BuildApi.getAPIService().getCommonDateNew(type, count, pageIndex);
 
@@ -35,13 +39,13 @@ public class GankApi {
                             KLog.i("httpCallBack---gankEntityList：" + gankEntityList.toString());
                             myCallBack.onSuccessList(what, gankEntityList);
                         } else {
-                            myCallBack.onFail(what, "获取数据失败");
+                            myCallBack.onFail(what, GET_DATA_FAIL);
                         }
                     } else {
-                        myCallBack.onFail(what, "获取数据失败");
+                        myCallBack.onFail(what, GET_DATA_FAIL);
                     }
                 } else {
-                    myCallBack.onFail(what, "获取数据失败");
+                    myCallBack.onFail(what, GET_DATA_FAIL);
                 }
             }
 
@@ -49,7 +53,7 @@ public class GankApi {
             public void onFailure(Throwable t) {
                 KLog.i("httpCallBack-----onFailure：" + t.toString());
                 //数据错误
-                myCallBack.onFail(what, t.toString());
+                myCallBack.onFail(what, NET_FAIL);
             }
         });
 
@@ -73,16 +77,16 @@ public class GankApi {
                             myCallBack.onSuccessList(what, gankEntityList);
 
                             //保存到缓存
-                            MyApplication.getACache().put("HistoryTime",httpResult);
+                            MyApplication.getACache().put("HistoryTime", httpResult);
 
                         } else {
-                            myCallBack.onFail(what, "获取数据失败");
+                            myCallBack.onFail(what, GET_DATA_FAIL);
                         }
                     } else {
-                        myCallBack.onFail(what, "获取数据失败");
+                        myCallBack.onFail(what, GET_DATA_FAIL);
                     }
                 } else {
-                    myCallBack.onFail(what, "获取数据失败");
+                    myCallBack.onFail(what, GET_DATA_FAIL);
                 }
             }
 
@@ -90,7 +94,7 @@ public class GankApi {
             public void onFailure(Throwable t) {
                 KLog.i("httpCallBack-----onFailure：" + t.toString());
                 //数据错误
-                myCallBack.onFail(what, t.toString());
+                myCallBack.onFail(what, NET_FAIL);
             }
         });
 
@@ -100,6 +104,7 @@ public class GankApi {
 
     /**
      * 获取一天的数据
+     *
      * @param year
      * @param month
      * @param day
@@ -120,13 +125,13 @@ public class GankApi {
                             KLog.i("httpCallBack---gankEntityList：" + body.toString());
                             myCallBack.onSuccess(what, body);
                         } else {
-                            myCallBack.onFail(what, "获取数据失败");
+                            myCallBack.onFail(what, GET_DATA_FAIL);
                         }
                     } else {
-                        myCallBack.onFail(what, "获取数据失败");
+                        myCallBack.onFail(what, GET_DATA_FAIL);
                     }
                 } else {
-                    myCallBack.onFail(what, "获取数据失败");
+                    myCallBack.onFail(what, GET_DATA_FAIL);
                 }
             }
 
@@ -134,7 +139,7 @@ public class GankApi {
             public void onFailure(Throwable t) {
                 KLog.i("httpCallBack-----onFailure：" + t.toString());
                 //数据错误
-                myCallBack.onFail(what, t.toString());
+                myCallBack.onFail(what, NET_FAIL);
             }
         });
 

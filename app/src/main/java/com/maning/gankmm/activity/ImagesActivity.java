@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -37,6 +38,7 @@ import me.drakeet.materialdialog.MaterialDialog;
 
 public class ImagesActivity extends BaseActivity {
 
+    private static final String TAG = ImagesActivity.class.getSimpleName();
     @Bind(R.id.viewPager)
     ViewPager viewPager;
     @Bind(R.id.tv_showNum)
@@ -48,6 +50,8 @@ public class ImagesActivity extends BaseActivity {
 
     private ArrayList<String> mDatas = new ArrayList<>();
     private int startIndex;
+    private static MaterialDialog mMaterialDialogSaveImage;
+    private static MaterialDialog mMaterialDialogHint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +60,7 @@ public class ImagesActivity extends BaseActivity {
         ButterKnife.bind(this);
         mContext = this;
 
-        initToolBar(toolbar, "美女~", R.drawable.ic_back);
+        initToolBar(toolbar, getString(R.string.gank_page_title_girls), R.drawable.ic_back);
 
         initIntent();
 
@@ -73,19 +77,20 @@ public class ImagesActivity extends BaseActivity {
     private void initShowHint() {
         boolean booleanData = ShareUtil.getBooleanData(MyApplication.getIntstance(), Constants.HasShowHint, false);
         if (booleanData) {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
-            alertDialog.setTitle("提示");
-            alertDialog.setMessage("长按图片即可保存，试试吧！");
-            alertDialog.setCancelable(false);
-            alertDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    ShareUtil.saveBooleanData(MyApplication.getIntstance(), Constants.HasShowHint, true);
-                }
-            });
-            alertDialog.show();
+            if (mMaterialDialogHint == null) {
+                mMaterialDialogHint = new MaterialDialog(mContext);
+                mMaterialDialogHint.setTitle(getString(R.string.gank_dialog_title_tishi));
+                mMaterialDialogHint.setMessage(getString(R.string.gank_dialog_msg_savehint));
+                mMaterialDialogHint.setPositiveButton(getString(R.string.gank_dialog_confirm), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mMaterialDialogHint.dismiss();
+                        ShareUtil.saveBooleanData(MyApplication.getIntstance(), Constants.HasShowHint, true);
+                    }
+                });
+            }
+            mMaterialDialogHint.show();
         }
-
     }
 
     @Override
@@ -166,41 +171,44 @@ public class ImagesActivity extends BaseActivity {
                 @Override
                 public boolean onLongClick(View v) {
 
-                    final MaterialDialog mMaterialDialog = new MaterialDialog(mContext);
-                    mMaterialDialog.setTitle("保存图片");
-                    mMaterialDialog.setMessage("是否要将图片保存到手机？");
-                    mMaterialDialog.setPositiveButton("确定", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mMaterialDialog.dismiss();
-                            final Bitmap bitmap = ((GlideBitmapDrawable) imageView.getDrawable()).getBitmap();
-                            //save Image
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    final boolean saveBitmapToSD = BitmapUtils.saveBitmapToSD(bitmap, Constants.BasePath, System.currentTimeMillis() + ".jpg");
-                                    MyApplication.getHandler().post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            if (saveBitmapToSD) {
-                                                Toast.makeText(mContext, "保存成功，保存目录：" + Constants.BasePath, Toast.LENGTH_SHORT).show();
-                                            } else {
-                                                Toast.makeText(mContext, "图片保存失败", Toast.LENGTH_SHORT).show();
+                    if (mMaterialDialogSaveImage == null) {
+                        mMaterialDialogSaveImage = new MaterialDialog(mContext);
+                        mMaterialDialogSaveImage.setTitle(mContext.getString(R.string.gank_dialog_title_tishi));
+                        mMaterialDialogSaveImage.setMessage(mContext.getString(R.string.gank_dialog_msg_save_image));
+                        mMaterialDialogSaveImage.setPositiveButton(mContext.getString(R.string.gank_dialog_confirm), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mMaterialDialogSaveImage.dismiss();
+                                final Bitmap bitmap = ((GlideBitmapDrawable) imageView.getDrawable()).getBitmap();
+                                //save Image
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        final boolean saveBitmapToSD = BitmapUtils.saveBitmapToSD(bitmap, Constants.BasePath, System.currentTimeMillis() + ".jpg");
+                                        MyApplication.getHandler().post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                if (saveBitmapToSD) {
+                                                    Toast.makeText(mContext, "保存成功，保存目录：" + Constants.BasePath, Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    Toast.makeText(mContext, R.string.gank_hint_save_pic_fail, Toast.LENGTH_SHORT).show();
+                                                }
                                             }
-                                        }
-                                    });
-                                }
-                            }).start();
-                        }
-                    });
-                    mMaterialDialog.setNegativeButton("取消", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mMaterialDialog.dismiss();
+                                        });
+                                    }
+                                }).start();
+                            }
+                        });
+                        mMaterialDialogSaveImage.setNegativeButton(mContext.getString(R.string.gank_dialog_cancle), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mMaterialDialogSaveImage.dismiss();
 
-                        }
-                    });
-                    mMaterialDialog.show();
+                            }
+                        });
+                    }
+                    mMaterialDialogSaveImage.show();
+
 
                     return true;
                 }
@@ -224,13 +232,13 @@ public class ImagesActivity extends BaseActivity {
 
     public void onResume() {
         super.onResume();
-        MobclickAgent.onPageStart("ImagesActivity");
+        MobclickAgent.onPageStart(TAG);
         MobclickAgent.onResume(this);          //统计时长
     }
 
     public void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd("ImagesActivity");
+        MobclickAgent.onPageEnd(TAG);
         MobclickAgent.onPause(this);
     }
 

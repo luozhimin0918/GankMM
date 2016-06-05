@@ -39,6 +39,7 @@ import butterknife.OnClick;
 public class DayShowActivity extends BaseActivity {
 
 
+    private static final String TAG = DayShowActivity.class.getSimpleName();
     @Bind(R.id.iv_top)
     ImageView ivTop;
     @Bind(R.id.toolbar)
@@ -272,13 +273,13 @@ public class DayShowActivity extends BaseActivity {
 
     public void onResume() {
         super.onResume();
-        MobclickAgent.onPageStart("DayShowActivity");
+        MobclickAgent.onPageStart(TAG);
         MobclickAgent.onResume(this);          //统计时长
     }
 
     public void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd("DayShowActivity");
+        MobclickAgent.onPageEnd(TAG);
         MobclickAgent.onPause(this);
     }
 

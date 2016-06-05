@@ -88,9 +88,9 @@ public class MainActivity extends BaseActivity {
         String pushMessage = intent.getStringExtra(IntentUtils.PushMessage);
         if (!TextUtils.isEmpty(pushMessage)) {
             mMaterialDialogPush = new MaterialDialog(this);
-            mMaterialDialogPush.setTitle("通知");
+            mMaterialDialogPush.setTitle(getString(R.string.gank_dialog_title_notify));
             mMaterialDialogPush.setMessage(pushMessage);
-            mMaterialDialogPush.setPositiveButton("确定", new View.OnClickListener() {
+            mMaterialDialogPush.setPositiveButton(getString(R.string.gank_dialog_confirm), new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mMaterialDialogPush.dismiss();
@@ -102,8 +102,8 @@ public class MainActivity extends BaseActivity {
 
     private void initFeedbackDialog() {
         mMaterialDialog = new MaterialDialog(this);
-        mMaterialDialog.setTitle("通知");
-        mMaterialDialog.setMessage("您的反馈有回复了，是否去查看？");
+        mMaterialDialog.setTitle(getString(R.string.gank_dialog_title_notify));
+        mMaterialDialog.setMessage(getString(R.string.gank_dialog_msg_feedback));
         mMaterialDialog.setPositiveButton("查看", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -285,7 +285,6 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(navigationView)) {
-            KLog.i("菜单没有关闭");
             drawerLayout.closeDrawers();
             return;
         }
@@ -299,7 +298,7 @@ public class MainActivity extends BaseActivity {
         }
         long currtTime = System.currentTimeMillis();
         if (currtTime - exitTime > 2000) {
-            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.gank_hint_exit_app, Toast.LENGTH_SHORT).show();
             exitTime = currtTime;
             return;
         }

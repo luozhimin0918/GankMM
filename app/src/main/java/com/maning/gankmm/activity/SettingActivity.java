@@ -141,7 +141,7 @@ public class SettingActivity extends BaseActivity {
     private void initCacheDialog() {
         mMaterialDialog = new MaterialDialog(this);
         mMaterialDialog.setTitle("缓存清理");
-        mMaterialDialog.setMessage("确定要清除应用的缓存吗？");
+        mMaterialDialog.setMessage("确定要清除图片的缓存吗？");
         mMaterialDialog.setPositiveButton("确定", new View.OnClickListener() {
             @Override
             public void onClick(View v) {

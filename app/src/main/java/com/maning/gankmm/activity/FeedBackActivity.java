@@ -39,6 +39,7 @@ import butterknife.OnClick;
 
 public class FeedBackActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
 
+    private static final String TAG = FeedBackActivity.class.getSimpleName();
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.umeng_fb_send_content)
@@ -63,7 +64,7 @@ public class FeedBackActivity extends BaseActivity implements SwipeRefreshLayout
 
         mContext = this;
 
-        initToolBar(toolbar, "意见反馈", R.drawable.ic_back);
+        initToolBar(toolbar, getString(R.string.gank_page_title_feedback), R.drawable.ic_back);
 
         initUmeng();
 
@@ -190,13 +191,13 @@ public class FeedBackActivity extends BaseActivity implements SwipeRefreshLayout
 
     public void onResume() {
         super.onResume();
-        MobclickAgent.onPageStart("FeedBackActivity");
+        MobclickAgent.onPageStart(TAG);
         MobclickAgent.onResume(this);          //统计时长
     }
 
     public void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd("FeedBackActivity");
+        MobclickAgent.onPageEnd(TAG);
         MobclickAgent.onPause(this);
     }
 

@@ -38,7 +38,7 @@ import butterknife.ButterKnife;
 
 
 /**
- * 福利Fragment
+ * 历史时间
  */
 public class TimeFragment extends BaseFragment implements OnRefreshListener {
 
@@ -159,11 +159,11 @@ public class TimeFragment extends BaseFragment implements OnRefreshListener {
 
     public void onResume() {
         super.onResume();
-        MobclickAgent.onPageStart("WelFareFragment");
+        MobclickAgent.onPageStart("TimeFragment");
     }
 
     public void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd("WelFareFragment");
+        MobclickAgent.onPageEnd("TimeFragment");
     }
 }
