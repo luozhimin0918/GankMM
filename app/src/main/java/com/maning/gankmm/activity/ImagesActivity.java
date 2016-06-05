@@ -76,7 +76,7 @@ public class ImagesActivity extends BaseActivity {
 
     private void initShowHint() {
         boolean booleanData = ShareUtil.getBooleanData(MyApplication.getIntstance(), Constants.HasShowHint, false);
-        if (booleanData) {
+        if (!booleanData) {
             if (mMaterialDialogHint == null) {
                 mMaterialDialogHint = new MaterialDialog(mContext);
                 mMaterialDialogHint.setTitle(getString(R.string.gank_dialog_title_tishi));
