@@ -62,6 +62,9 @@ public class DayShowActivity extends BaseActivity {
 
         @Override
         public void onSuccess(int what, Object result) {
+            if (isFinishing()) {
+                return;
+            }
             dayEntity = (DayEntity) result;
             if (dayEntity != null) {
                 String url = dayEntity.getResults().get福利().get(0).getUrl();
@@ -78,6 +81,9 @@ public class DayShowActivity extends BaseActivity {
 
         @Override
         public void onFail(int what, String result) {
+            if (isFinishing()) {
+                return;
+            }
             dissmissProgressDialog();
             if (!TextUtils.isEmpty(result)) {
                 MyToast.showShortToast(result);

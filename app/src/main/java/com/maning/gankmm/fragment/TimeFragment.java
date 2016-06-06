@@ -143,6 +143,7 @@ public class TimeFragment extends BaseFragment implements OnRefreshListener {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        overRefresh();
         ButterKnife.unbind(this);
     }
 
