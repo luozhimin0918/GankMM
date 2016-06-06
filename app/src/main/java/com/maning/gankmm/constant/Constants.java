@@ -16,6 +16,7 @@ public class Constants {
 
     //保存图片的地址
     public static final String BasePath = Environment.getExternalStorageDirectory() + "/GankMM";
+
     //保存图片操作提示的Key
     public static final String HasShowHint = "PicFlag";
 

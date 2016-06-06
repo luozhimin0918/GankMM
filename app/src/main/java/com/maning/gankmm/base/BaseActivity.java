@@ -48,6 +48,16 @@ public class BaseActivity extends AppCompatActivity {
         mSVProgressHUD.showWithStatus(message, SVProgressHUD.SVProgressHUDMaskType.BlackCancel);
     }
 
+    public void showProgressSuccess(String message) {
+        dissmissProgressDialog();
+        mSVProgressHUD.showSuccessWithStatus(message, SVProgressHUD.SVProgressHUDMaskType.BlackCancel);
+    }
+
+    public void showProgressError(String message) {
+        dissmissProgressDialog();
+        mSVProgressHUD.showErrorWithStatus(message, SVProgressHUD.SVProgressHUDMaskType.BlackCancel);
+    }
+
     public void dissmissProgressDialog() {
         if (mSVProgressHUD.isShowing()) {
             mSVProgressHUD.dismiss();

@@ -22,7 +22,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
     private static final String TAG = "CrashHandler";
     private static final boolean DEBUG = true;
 
-    private static final String PATH = Environment.getExternalStorageDirectory().getPath() + "/GankMMCrashLog";
+    private static final String PATH = Environment.getExternalStorageDirectory().getPath() + "/GankMM/CrashLog";
     private static final String FILE_NAME = "crash";
 
     //log文件的后缀名

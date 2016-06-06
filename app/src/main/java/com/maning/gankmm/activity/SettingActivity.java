@@ -18,6 +18,7 @@ import com.bumptech.glide.load.engine.cache.DiskCache;
 import com.maning.gankmm.R;
 import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.base.BaseActivity;
+import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.utils.ShareUtil;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
@@ -170,9 +171,7 @@ public class SettingActivity extends BaseActivity {
                     public void run() {
                         //清除内存缓存
                         Glide.get(SettingActivity.this).clearMemory();
-                        //清除完毕
-                        dissmissProgressDialog();
-                        new SVProgressHUD(SettingActivity.this).showSuccessWithStatus("清除完毕");
+                        showProgressSuccess("清除完毕");
                         new GetDiskCacheSizeTask(tvCache).execute(new File(getCacheDir(), DiskCache.Factory.DEFAULT_DISK_CACHE_DIR));
                     }
                 });

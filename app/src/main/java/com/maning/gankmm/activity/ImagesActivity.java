@@ -1,5 +1,6 @@
 package com.maning.gankmm.activity;
 
+import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.Image;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -19,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
 import com.maning.gankmm.R;
@@ -28,12 +31,16 @@ import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.utils.BitmapUtils;
 import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.utils.ShareUtil;
+import com.maning.gankmm.view.PinchImageView;
+import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import me.drakeet.materialdialog.MaterialDialog;
 
 public class ImagesActivity extends BaseActivity {
@@ -50,8 +57,7 @@ public class ImagesActivity extends BaseActivity {
 
     private ArrayList<String> mDatas = new ArrayList<>();
     private int startIndex;
-    private static MaterialDialog mMaterialDialogSaveImage;
-    private static MaterialDialog mMaterialDialogHint;
+    private TouchImageAdapter touchImageAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,28 +75,6 @@ public class ImagesActivity extends BaseActivity {
         //初始化ViewPager
         initViewPager();
 
-        //展示提示
-        initShowHint();
-
-    }
-
-    private void initShowHint() {
-        boolean booleanData = ShareUtil.getBooleanData(MyApplication.getIntstance(), Constants.HasShowHint, false);
-        if (!booleanData) {
-            if (mMaterialDialogHint == null) {
-                mMaterialDialogHint = new MaterialDialog(mContext);
-                mMaterialDialogHint.setTitle(getString(R.string.gank_dialog_title_tishi));
-                mMaterialDialogHint.setMessage(getString(R.string.gank_dialog_msg_savehint));
-                mMaterialDialogHint.setPositiveButton(getString(R.string.gank_dialog_confirm), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mMaterialDialogHint.dismiss();
-                        ShareUtil.saveBooleanData(MyApplication.getIntstance(), Constants.HasShowHint, true);
-                    }
-                });
-            }
-            mMaterialDialogHint.show();
-        }
     }
 
     @Override
@@ -104,7 +88,7 @@ public class ImagesActivity extends BaseActivity {
     }
 
     private void initViewPager() {
-        TouchImageAdapter touchImageAdapter = new TouchImageAdapter(mContext, mDatas);
+        touchImageAdapter = new TouchImageAdapter(mContext, mDatas);
         viewPager.setAdapter(touchImageAdapter);
         if (startIndex > 0) {
             viewPager.setCurrentItem(startIndex);
@@ -138,12 +122,77 @@ public class ImagesActivity extends BaseActivity {
         tvShowNum.setText((startIndex + 1) + "/" + mDatas.size());
     }
 
+    @OnClick(R.id.btn_save)
+    void btn_save() {
+        PinchImageView imageView = getCurrentImageView();
+        if (imageView == null) {
+            showProgressError(getResources().getString(R.string.gank_hint_save_pic_fail));
+            return;
+        }
+        //显示dialog
+        showProgressDialog("正在保存...");
+        final Bitmap bitmap = ((GlideBitmapDrawable) imageView.getDrawable()).getBitmap();
+        //save Image
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final boolean saveBitmapToSD = BitmapUtils.saveBitmapToSD(bitmap, Constants.BasePath, System.currentTimeMillis() + ".jpg");
+                MyApplication.getHandler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (saveBitmapToSD) {
+                            showProgressSuccess("保存成功，保存目录：" + Constants.BasePath);
+                        } else {
+                            showProgressError(getResources().getString(R.string.gank_hint_save_pic_fail));
+                        }
+                    }
+                });
+            }
+        }).start();
+
+    }
+
+    @Nullable
+    private PinchImageView getCurrentImageView() {
+        View currentItem = touchImageAdapter.getPrimaryItem();
+        if (currentItem == null) {
+            KLog.i("btn_save----currentItem是空");
+            return null;
+        }
+        PinchImageView imageView = (PinchImageView) currentItem.findViewById(R.id.imageView);
+        if (imageView == null) {
+            KLog.i("btn_save----imageView是空");
+            return null;
+        }
+        return imageView;
+    }
+
+    @OnClick(R.id.btn_wallpaper)
+    void btn_wallpaper() {
+        PinchImageView imageView = getCurrentImageView();
+        if (imageView == null) {
+            showProgressError("设置失败");
+            return;
+        }
+        Bitmap bitmap = ((GlideBitmapDrawable) imageView.getDrawable()).getBitmap();
+        WallpaperManager manager = WallpaperManager.getInstance(mContext);
+        try {
+            showProgressDialog("正在设置壁纸...");
+            manager.setBitmap(bitmap);
+            showProgressSuccess("设置成功");
+        } catch (IOException e) {
+            e.printStackTrace();
+            showProgressError("设置失败");
+        }
+    }
+
 
     static class TouchImageAdapter extends PagerAdapter {
 
         private Context mContext;
         private ArrayList<String> mDatas;
         private LayoutInflater layoutInflater;
+        private View mCurrentView;
 
         public TouchImageAdapter(Context mContext, ArrayList<String> mDatas) {
             this.mContext = mContext;
@@ -157,6 +206,16 @@ public class ImagesActivity extends BaseActivity {
         }
 
         @Override
+        public void setPrimaryItem(ViewGroup container, int position, Object object) {
+            super.setPrimaryItem(container, position, object);
+            mCurrentView = (View) object;
+        }
+
+        public View getPrimaryItem() {
+            return mCurrentView;
+        }
+
+        @Override
         public View instantiateItem(ViewGroup container, int position) {
             final String imageUrl = mDatas.get(position);
             View inflate = layoutInflater.inflate(R.layout.item_show_image, container, false);
@@ -166,54 +225,6 @@ public class ImagesActivity extends BaseActivity {
                     .load(imageUrl)
                     .into(imageView);
             container.addView(inflate);
-
-            imageView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-
-                    if (mMaterialDialogSaveImage == null) {
-                        mMaterialDialogSaveImage = new MaterialDialog(mContext);
-                        mMaterialDialogSaveImage.setTitle(mContext.getString(R.string.gank_dialog_title_tishi));
-                        mMaterialDialogSaveImage.setMessage(mContext.getString(R.string.gank_dialog_msg_save_image));
-                        mMaterialDialogSaveImage.setPositiveButton(mContext.getString(R.string.gank_dialog_confirm), new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                mMaterialDialogSaveImage.dismiss();
-                                final Bitmap bitmap = ((GlideBitmapDrawable) imageView.getDrawable()).getBitmap();
-                                //save Image
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        final boolean saveBitmapToSD = BitmapUtils.saveBitmapToSD(bitmap, Constants.BasePath, System.currentTimeMillis() + ".jpg");
-                                        MyApplication.getHandler().post(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                if (saveBitmapToSD) {
-                                                    Toast.makeText(mContext, "保存成功，保存目录：" + Constants.BasePath, Toast.LENGTH_SHORT).show();
-                                                } else {
-                                                    Toast.makeText(mContext, R.string.gank_hint_save_pic_fail, Toast.LENGTH_SHORT).show();
-                                                }
-                                            }
-                                        });
-                                    }
-                                }).start();
-                            }
-                        });
-                        mMaterialDialogSaveImage.setNegativeButton(mContext.getString(R.string.gank_dialog_cancle), new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                mMaterialDialogSaveImage.dismiss();
-
-                            }
-                        });
-                    }
-                    mMaterialDialogSaveImage.show();
-
-
-                    return true;
-                }
-            });
-
 
             return inflate;
         }
