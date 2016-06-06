@@ -15,6 +15,17 @@
 ![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_003.png)
 ![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_004.png)
 
+##更新日志：
+###V1.2.0:
+    1.界面大更改，添加时间浏览和分类浏览，图片浏览改为瀑布流形式（假瀑布流形式，高度随机给的）。
+    2.添加推送功能 
+    3.修复部分Bug
+
+###V1.1.0: 
+    1.所有ListView替换为RecycleView
+    2.修复Bug
+    3.更换图标，APP名字
+
 ##感谢：
 ######[代码家-干货集中营](https://github.com/daimajia)
 ######[drakeet](https://github.com/drakeet/Meizhi)
