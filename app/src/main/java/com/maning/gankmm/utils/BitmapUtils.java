@@ -1,15 +1,19 @@
 package com.maning.gankmm.utils;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import com.maning.gankmm.R;
 import com.maning.gankmm.app.MyApplication;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * Created by maning on 16/3/9.
@@ -18,7 +22,7 @@ import java.io.FileOutputStream;
  */
 public class BitmapUtils {
 
-    public static boolean saveBitmapToSD(Bitmap bitmap, String dir, String name) {
+    public static boolean saveBitmapToSD(Bitmap bitmap, String dir, String name, boolean isShowPhotos) {
         File path = new File(dir);
         if (!path.exists()) {
             path.mkdirs();
@@ -56,16 +60,24 @@ public class BitmapUtils {
         }
 
         // 其次把文件插入到系统图库
-        try {
-            MediaStore.Images.Media.insertImage(MyApplication.getIntstance().getContentResolver(),
-                    file.getAbsolutePath(), name, null);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        if (isShowPhotos) {
+            try {
+                MediaStore.Images.Media.insertImage(MyApplication.getIntstance().getContentResolver(),
+                        file.getAbsolutePath(), name, null);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            // 最后通知图库更新
+            MyApplication.getIntstance().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + file)));
         }
-        // 最后通知图库更新
-        MyApplication.getIntstance().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + file)));
 
         return true;
+    }
+
+    public static boolean saveResToSD(Context context, int resID, String dir, String name) {
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resID);
+
+        return saveBitmapToSD(bitmap, dir, name, false);
     }
 
 }

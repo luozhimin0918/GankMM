@@ -1,7 +1,10 @@
 package com.maning.gankmm.activity;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -9,7 +12,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,8 +25,7 @@ import com.maning.gankmm.fragment.TimeFragment;
 import com.maning.gankmm.fragment.WelFareFragment;
 import com.maning.gankmm.fragment.collect.CollectFragment;
 import com.maning.gankmm.utils.IntentUtils;
-import com.maning.gankmm.utils.ShareUtil;
-import com.socks.library.KLog;
+import com.maning.gankmm.utils.SharePreUtil;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.fb.SyncListener;
@@ -57,8 +58,6 @@ public class MainActivity extends BaseActivity {
     private FeedbackAgent umengAgent;
     private MaterialDialog mMaterialDialog;
     private MaterialDialog mMaterialDialogPush;
-    private MaterialDialog mMaterialDialogShare;
-    private View inflateShare;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +132,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onReceiveDevReply(List<Reply> list) {
                 if (list != null && list.size() > 0) {
-                    ShareUtil.saveBooleanData(context, "feedback", true);
+                    SharePreUtil.saveBooleanData(context, "feedback", true);
                     if (mMaterialDialog != null) {
                         mMaterialDialog.show();
                     }
@@ -265,16 +264,8 @@ public class MainActivity extends BaseActivity {
                         break;
                     case R.id.share_app:
                         menuItem.setChecked(false); // 改变item选中状态
-                        //弹出二维码
-                        if (inflateShare == null) {
-                            inflateShare = LayoutInflater.from(MainActivity.this).inflate(R.layout.gank_share, null, false);
-                        }
-                        if (mMaterialDialogShare == null) {
-                            mMaterialDialogShare = new MaterialDialog(MainActivity.this).setView(inflateShare);
-                            mMaterialDialogShare.setBackgroundResource(R.drawable.translate_bg);
-                            mMaterialDialogShare.setCanceledOnTouchOutside(true);
-                        }
-                        mMaterialDialogShare.show();
+                        //分享
+                        IntentUtils.startAppShareText(context, "干货营", "干货营Android客户端：" + getString(R.string.download_url));
                         break;
                 }
                 return true;
@@ -321,7 +312,5 @@ public class MainActivity extends BaseActivity {
         umengAgent = null;
         mMaterialDialog = null;
         mMaterialDialogPush = null;
-        mMaterialDialogShare = null;
-        inflateShare = null;
     }
 }

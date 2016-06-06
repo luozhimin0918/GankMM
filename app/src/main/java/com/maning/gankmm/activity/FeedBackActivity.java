@@ -23,7 +23,7 @@ import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.base.BaseActivity;
 import com.maning.gankmm.utils.NetUtils;
 import com.maning.gankmm.utils.PrettyDate;
-import com.maning.gankmm.utils.ShareUtil;
+import com.maning.gankmm.utils.SharePreUtil;
 import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
@@ -69,7 +69,7 @@ public class FeedBackActivity extends BaseActivity implements SwipeRefreshLayout
         initUmeng();
 
         //保存
-        ShareUtil.saveBooleanData(this, "feedback", false);
+        SharePreUtil.saveBooleanData(this, "feedback", false);
 
     }
 

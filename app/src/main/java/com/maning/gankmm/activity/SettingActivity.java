@@ -4,22 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.cache.DiskCache;
 import com.maning.gankmm.R;
 import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.base.BaseActivity;
-import com.maning.gankmm.constant.Constants;
-import com.maning.gankmm.utils.ShareUtil;
+import com.maning.gankmm.utils.SharePreUtil;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.fb.SyncListener;
@@ -75,7 +71,7 @@ public class SettingActivity extends BaseActivity {
             @Override
             public void onReceiveDevReply(List<Reply> list) {
                 if (list != null && list.size() > 0) {
-                    ShareUtil.saveBooleanData(context, "feedback", true);
+                    SharePreUtil.saveBooleanData(context, "feedback", true);
                     initUmengFeedBack();
                 }
             }
@@ -89,7 +85,7 @@ public class SettingActivity extends BaseActivity {
 
 
     private void initUmengFeedBack() {
-        boolean feedback = ShareUtil.getBooleanData(this, "feedback", false);
+        boolean feedback = SharePreUtil.getBooleanData(this, "feedback", false);
         if (feedback) {
             ivFeedbackRed.setVisibility(View.VISIBLE);
         } else {
@@ -103,7 +99,7 @@ public class SettingActivity extends BaseActivity {
 
     private void initPushState() {
 
-        boolean jpush = ShareUtil.getBooleanData(this, "jpush", true);
+        boolean jpush = SharePreUtil.getBooleanData(this, "jpush", true);
         if (jpush) {
             JPushInterface.resumePush(getApplicationContext());
             ivPush.setImageResource(R.drawable.icon_setting_on);
@@ -181,13 +177,13 @@ public class SettingActivity extends BaseActivity {
 
     @OnClick(R.id.iv_push)
     void iv_push() {
-        boolean jpush = ShareUtil.getBooleanData(this, "jpush", true);
+        boolean jpush = SharePreUtil.getBooleanData(this, "jpush", true);
         if (!jpush) {
-            ShareUtil.saveBooleanData(this, "jpush", true);
+            SharePreUtil.saveBooleanData(this, "jpush", true);
             JPushInterface.resumePush(getApplicationContext());
             ivPush.setImageResource(R.drawable.icon_setting_on);
         } else {
-            ShareUtil.saveBooleanData(this, "jpush", false);
+            SharePreUtil.saveBooleanData(this, "jpush", false);
             ivPush.setImageResource(R.drawable.icon_setting_off);
             JPushInterface.stopPush(getApplicationContext());
         }

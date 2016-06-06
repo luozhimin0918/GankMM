@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
  * 存储和去除配置信息的工具类
  * @author Administrator	maning
  */
-public class ShareUtil {
+public class SharePreUtil {
 	
 	private static String CONFIG = "config";
 	private static SharedPreferences sp;

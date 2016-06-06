@@ -2,16 +2,12 @@ package com.maning.gankmm.activity;
 
 import android.app.WallpaperManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,9 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
 import com.maning.gankmm.R;
@@ -30,7 +24,6 @@ import com.maning.gankmm.base.BaseActivity;
 import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.utils.BitmapUtils;
 import com.maning.gankmm.utils.IntentUtils;
-import com.maning.gankmm.utils.ShareUtil;
 import com.maning.gankmm.view.PinchImageView;
 import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
@@ -41,7 +34,6 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import me.drakeet.materialdialog.MaterialDialog;
 
 public class ImagesActivity extends BaseActivity {
 
@@ -136,7 +128,7 @@ public class ImagesActivity extends BaseActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                final boolean saveBitmapToSD = BitmapUtils.saveBitmapToSD(bitmap, Constants.BasePath, System.currentTimeMillis() + ".jpg");
+                final boolean saveBitmapToSD = BitmapUtils.saveBitmapToSD(bitmap, Constants.BasePath, System.currentTimeMillis() + ".jpg",true);
                 MyApplication.getHandler().post(new Runnable() {
                     @Override
                     public void run() {
