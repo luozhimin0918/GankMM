@@ -10,10 +10,10 @@
 ####[点击下载](http://fir.im/gankmm)
 
 ##项目截图：
-![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_001.jpg)
-![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_002.jpg)
-![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_003.jpg)
-![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_004.jpg)
+![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_001.png)
+![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_002.png)
+![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_003.png)
+![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_004.png)
 
 ##感谢：
 ######[代码家-干货集中营](https://github.com/daimajia)
