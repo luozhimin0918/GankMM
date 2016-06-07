@@ -17,9 +17,6 @@ public class Constants {
     //保存图片的地址
     public static final String BasePath = Environment.getExternalStorageDirectory() + "/GankMM";
 
-    //保存图片操作提示的Key
-    public static final String HasShowHint = "PicFlag";
-
     //标签
     public static final String FlagFragment = "Flag";
     public static final String FlagWelFare = "福利";
@@ -31,6 +28,11 @@ public class Constants {
     public static final String FlagRecommend = "瞎推荐";
     public static final String FlagAPP = "App";
     public static final String FlagCollect = "收藏";
+
+    //SharePreferences  ---- Key
+    public static final String SPFeedback = "feedback";
+    public static final String SPJpush = "jpush";
+    public static final String SPAppUpdate = "update";
 
 
 }

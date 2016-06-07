@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.maning.gankmm.R;
@@ -35,7 +36,7 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclePicAdapter.My
     private List<GankEntity> commonDataResults;
     private LayoutInflater layoutInflater;
     private List<Integer> mHeights;
-    private int ScreenHeight ;
+    private int ScreenHeight;
 
     public RecyclePicAdapter(Context context, List<GankEntity> commonDataResults) {
         this.context = context;
@@ -60,7 +61,7 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclePicAdapter.My
         notifyDataSetChanged();
     }
 
-    private void addHeights(){
+    private void addHeights() {
         for (int i = 0; i < commonDataResults.size(); i++) {
             mHeights.add((int) (ScreenHeight * 0.25 + Math.random() * ScreenHeight * 0.25));
         }
@@ -82,12 +83,12 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclePicAdapter.My
         viewHolder.tvShowTime.setText(resultsEntity.getCreatedAt().split("T")[0]);
         //图片显示
         String url = resultsEntity.getUrl();
+
         Glide
                 .with(context)
                 .load(url)
                 .placeholder(R.drawable.pic_gray_bg)
-                .error(R.drawable.pic_gray_bg)
-                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(viewHolder.image);
 
         //高度

@@ -87,20 +87,20 @@ public class MyApplication extends Application {
     }
 
     //版本名
-    public static String getVersionName(Context context) {
-        return getPackageInfo(context).versionName;
+    public static String getVersionName() {
+        return getPackageInfo().versionName;
     }
 
     //版本号
-    public static int getVersionCode(Context context) {
-        return getPackageInfo(context).versionCode;
+    public static int getVersionCode() {
+        return getPackageInfo().versionCode;
     }
 
-    private static PackageInfo getPackageInfo(Context context) {
+    private static PackageInfo getPackageInfo() {
         PackageInfo pi = null;
         try {
-            PackageManager pm = context.getPackageManager();
-            pi = pm.getPackageInfo(context.getPackageName(),
+            PackageManager pm = application.getPackageManager();
+            pi = pm.getPackageInfo(application.getPackageName(),
                     PackageManager.GET_CONFIGURATIONS);
             return pi;
         } catch (Exception e) {

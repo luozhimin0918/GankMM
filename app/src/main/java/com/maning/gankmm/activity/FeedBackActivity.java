@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.maning.gankmm.R;
 import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.base.BaseActivity;
+import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.utils.NetUtils;
 import com.maning.gankmm.utils.PrettyDate;
 import com.maning.gankmm.utils.SharePreUtil;
@@ -69,7 +70,7 @@ public class FeedBackActivity extends BaseActivity implements SwipeRefreshLayout
         initUmeng();
 
         //保存
-        SharePreUtil.saveBooleanData(this, "feedback", false);
+        SharePreUtil.saveBooleanData(this, Constants.SPFeedback, false);
 
     }
 

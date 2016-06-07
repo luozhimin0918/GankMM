@@ -1,10 +1,7 @@
 package com.maning.gankmm.activity;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -18,6 +15,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.maning.gankmm.R;
+import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.base.BaseActivity;
 import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.fragment.CategoryFragment;
@@ -26,14 +24,20 @@ import com.maning.gankmm.fragment.WelFareFragment;
 import com.maning.gankmm.fragment.collect.CollectFragment;
 import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.utils.SharePreUtil;
+import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.fb.SyncListener;
 import com.umeng.fb.model.Conversation;
 import com.umeng.fb.model.Reply;
+import com.umeng.update.UmengDialogButtonListener;
 import com.umeng.update.UmengUpdateAgent;
+import com.umeng.update.UmengUpdateListener;
+import com.umeng.update.UpdateResponse;
+import com.umeng.update.UpdateStatus;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -115,32 +119,6 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 mMaterialDialog.dismiss();
-
-            }
-        });
-    }
-
-    private void initUmeng() {
-        UmengUpdateAgent.update(this);
-        initUmengFeedback();
-    }
-
-    private void initUmengFeedback() {
-        umengAgent = new FeedbackAgent(this);
-        Conversation defaultConversation = umengAgent.getDefaultConversation();
-        defaultConversation.sync(new SyncListener() {
-            @Override
-            public void onReceiveDevReply(List<Reply> list) {
-                if (list != null && list.size() > 0) {
-                    SharePreUtil.saveBooleanData(context, "feedback", true);
-                    if (mMaterialDialog != null) {
-                        mMaterialDialog.show();
-                    }
-                }
-            }
-
-            @Override
-            public void onSendUserReply(List<Reply> list) {
 
             }
         });
@@ -312,5 +290,79 @@ public class MainActivity extends BaseActivity {
         umengAgent = null;
         mMaterialDialog = null;
         mMaterialDialogPush = null;
+    }
+
+    //----------------Umeng------------
+
+
+    private void initUmeng() {
+        initUmengFeedback();
+        initUmengUpdate();
+    }
+
+    private void initUmengFeedback() {
+        umengAgent = new FeedbackAgent(this);
+        Conversation defaultConversation = umengAgent.getDefaultConversation();
+        defaultConversation.sync(new SyncListener() {
+            @Override
+            public void onReceiveDevReply(List<Reply> list) {
+                if (list != null && list.size() > 0) {
+                    SharePreUtil.saveBooleanData(context, Constants.SPFeedback, true);
+                    if (mMaterialDialog != null) {
+                        mMaterialDialog.show();
+                    }
+                }
+            }
+
+            @Override
+            public void onSendUserReply(List<Reply> list) {
+
+            }
+        });
+    }
+
+    private void initUmengUpdate() {
+        UmengUpdateAgent.setDeltaUpdate(true);//增量更新，默认true
+        UmengUpdateAgent.setUpdateAutoPopup(true);
+        UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
+            @Override
+            public void onUpdateReturned(int updateStatus, UpdateResponse updateResponse) {
+                switch (updateStatus) {
+                    case UpdateStatus.Yes:
+                        KLog.i("Umeng更新-----有新版本了---新版文件大小为：" + updateResponse.target_size + "---下载文件大小为：" + updateResponse.size);
+                        SharePreUtil.saveBooleanData(context, Constants.SPAppUpdate + MyApplication.getVersionCode(), true);
+                        break;
+                    case UpdateStatus.No:
+                        KLog.i("Umeng更新-----没有新版本");
+                        SharePreUtil.saveBooleanData(context, Constants.SPAppUpdate + MyApplication.getVersionCode(), false);
+                        break;
+                    case UpdateStatus.Timeout:
+                        KLog.i("Umeng更新-----超时");
+                        break;
+                }
+            }
+        });
+
+        //对话框按键的监听，对于强制更新的版本，如果用户未选择更新的行为，关闭app
+        UmengUpdateAgent.setDialogListener(new UmengDialogButtonListener() {
+            @Override
+            public void onClick(int status) {
+                switch (status) {
+                    case UpdateStatus.Update:
+                        KLog.i("Umeng更新-----点击了更新");
+                        SharePreUtil.saveBooleanData(context, Constants.SPAppUpdate + MyApplication.getVersionCode(), false);
+                        break;
+                    case UpdateStatus.Ignore:
+                        KLog.i("Umeng更新-----点击了忽略");
+                        break;
+                    case UpdateStatus.NotNow:
+                        KLog.i("Umeng更新-----点击了暂时不更新");
+                        break;
+                }
+            }
+        });
+
+        //检测更新
+        UmengUpdateAgent.update(this);
     }
 }

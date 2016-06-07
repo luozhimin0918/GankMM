@@ -42,7 +42,7 @@ public class AboutActivity extends BaseActivity {
 
     private void initAppVersionName() {
 
-        tvAppVersion.setText("当前版本号：" + MyApplication.getVersionName(this));
+        tvAppVersion.setText("当前版本号：" + MyApplication.getVersionName());
 
     }
 

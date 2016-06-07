@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.format.Formatter;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,12 +16,20 @@ import com.bumptech.glide.load.engine.cache.DiskCache;
 import com.maning.gankmm.R;
 import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.base.BaseActivity;
+import com.maning.gankmm.constant.Constants;
+import com.maning.gankmm.utils.MyToast;
+import com.maning.gankmm.utils.NetUtils;
 import com.maning.gankmm.utils.SharePreUtil;
+import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.fb.SyncListener;
 import com.umeng.fb.model.Conversation;
 import com.umeng.fb.model.Reply;
+import com.umeng.update.UmengUpdateAgent;
+import com.umeng.update.UmengUpdateListener;
+import com.umeng.update.UpdateResponse;
+import com.umeng.update.UpdateStatus;
 
 import java.io.File;
 import java.util.Arrays;
@@ -42,6 +51,8 @@ public class SettingActivity extends BaseActivity {
     TextView tvCache;
     @Bind(R.id.iv_feedback_red)
     ImageView ivFeedbackRed;
+    @Bind(R.id.iv_update_red)
+    ImageView ivUpdateRed;
 
     FeedbackAgent umengAgent;
     private Context context;
@@ -62,6 +73,32 @@ public class SettingActivity extends BaseActivity {
 
         initUmengFeedback();
 
+        initUmengUpdate();
+
+    }
+
+    private void initUmengUpdate() {
+        boolean umengUpdate = SharePreUtil.getBooleanData(context, Constants.SPAppUpdate + MyApplication.getVersionCode(), false);
+        if (umengUpdate) {
+            ivUpdateRed.setVisibility(View.VISIBLE);
+        } else {
+            ivUpdateRed.setVisibility(View.GONE);
+        }
+        UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
+            @Override
+            public void onUpdateReturned(int updateStatus, UpdateResponse updateResponse) {
+                switch (updateStatus) {
+                    case UpdateStatus.Yes:
+                        break;
+                    case UpdateStatus.No:
+                        MyToast.showShortToast("当前版本为最新版本");
+                        break;
+                    case UpdateStatus.Timeout:
+                        KLog.i("Umeng更新-----超时");
+                        break;
+                }
+            }
+        });
     }
 
     private void initUmengFeedback() {
@@ -71,7 +108,7 @@ public class SettingActivity extends BaseActivity {
             @Override
             public void onReceiveDevReply(List<Reply> list) {
                 if (list != null && list.size() > 0) {
-                    SharePreUtil.saveBooleanData(context, "feedback", true);
+                    SharePreUtil.saveBooleanData(context, Constants.SPFeedback, true);
                     initUmengFeedBack();
                 }
             }
@@ -85,7 +122,7 @@ public class SettingActivity extends BaseActivity {
 
 
     private void initUmengFeedBack() {
-        boolean feedback = SharePreUtil.getBooleanData(this, "feedback", false);
+        boolean feedback = SharePreUtil.getBooleanData(this, Constants.SPFeedback, false);
         if (feedback) {
             ivFeedbackRed.setVisibility(View.VISIBLE);
         } else {
@@ -99,7 +136,7 @@ public class SettingActivity extends BaseActivity {
 
     private void initPushState() {
 
-        boolean jpush = SharePreUtil.getBooleanData(this, "jpush", true);
+        boolean jpush = SharePreUtil.getBooleanData(this, Constants.SPJpush, true);
         if (jpush) {
             JPushInterface.resumePush(getApplicationContext());
             ivPush.setImageResource(R.drawable.icon_setting_on);
@@ -132,6 +169,17 @@ public class SettingActivity extends BaseActivity {
             initCacheDialog();
         }
         mMaterialDialog.show();
+    }
+
+    @OnClick(R.id.rl_update)
+    public void rl_update() {
+        //版本更新检查
+        if (NetUtils.hasNetWorkConection(context)) {
+            //检测更新
+            UmengUpdateAgent.update(this);
+        } else {
+            MyToast.showShortToast(getString(R.string.mm_no_net));
+        }
     }
 
 
@@ -177,13 +225,13 @@ public class SettingActivity extends BaseActivity {
 
     @OnClick(R.id.iv_push)
     void iv_push() {
-        boolean jpush = SharePreUtil.getBooleanData(this, "jpush", true);
+        boolean jpush = SharePreUtil.getBooleanData(this, Constants.SPJpush, true);
         if (!jpush) {
-            SharePreUtil.saveBooleanData(this, "jpush", true);
+            SharePreUtil.saveBooleanData(this, Constants.SPJpush, true);
             JPushInterface.resumePush(getApplicationContext());
             ivPush.setImageResource(R.drawable.icon_setting_on);
         } else {
-            SharePreUtil.saveBooleanData(this, "jpush", false);
+            SharePreUtil.saveBooleanData(this, Constants.SPJpush, false);
             ivPush.setImageResource(R.drawable.icon_setting_off);
             JPushInterface.stopPush(getApplicationContext());
         }
@@ -223,7 +271,7 @@ public class SettingActivity extends BaseActivity {
 
         @Override
         protected void onPostExecute(Long size) {
-            String sizeText = android.text.format.Formatter.formatFileSize(resultView.getContext(), size);
+            String sizeText = Formatter.formatFileSize(resultView.getContext(), size);
             resultView.setText(sizeText);
         }
 

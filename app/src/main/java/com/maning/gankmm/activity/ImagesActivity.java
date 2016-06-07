@@ -215,6 +215,7 @@ public class ImagesActivity extends BaseActivity {
             Glide
                     .with(mContext)
                     .load(imageUrl)
+                    .thumbnail(0.2f)
                     .into(imageView);
             container.addView(inflate);
 

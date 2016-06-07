@@ -31,7 +31,7 @@ public class WelcomeActivity extends Activity {
             }
         }, 2000);
 
-        tv_app_version.setText(String.valueOf("V " + MyApplication.getVersionName(this)));
+        tv_app_version.setText(String.valueOf("V " + MyApplication.getVersionName()));
 
     }
 
