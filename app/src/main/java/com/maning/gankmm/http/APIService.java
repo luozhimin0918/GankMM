@@ -7,16 +7,19 @@ import com.maning.gankmm.constant.Constants;
 
 import java.util.List;
 
-import retrofit.Call;
-import retrofit.http.GET;
-import retrofit.http.Path;
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Headers;
+import retrofit2.http.Path;
+
 
 /**
  * 接口调用的工具类
  */
 public interface APIService {
 
-    //    //这里填写全部路径就会覆盖掉Build得BaseUrl
+    //这里填写全部路径就会覆盖掉Build得BaseUrl
+    @Headers("Cache-Control: public, max-age=60")
     @GET(Constants.URL_HistoryDate)
     Call<HttpResult<List<String>>> getGankHistoryDate();
 
@@ -28,6 +31,7 @@ public interface APIService {
     );
 
     //http://gank.io/api/day/2015/08/06 --- 每日数据
+    @Headers("Cache-Control: public, max-age=60")
     @GET("day/{year}/{month}/{day}")
     Call<DayEntity> getOneDayData(@Path("year") String year,
                                   @Path("month") String month,

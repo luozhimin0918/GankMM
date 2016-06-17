@@ -10,10 +10,10 @@ import com.socks.library.KLog;
 
 import java.util.List;
 
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 /**
  * Created by maning on 16/3/2.
@@ -30,13 +30,13 @@ public class GankApi {
 
         commonDateNew.enqueue(new Callback<HttpResult<List<GankEntity>>>() {
             @Override
-            public void onResponse(Response<HttpResult<List<GankEntity>>> response, Retrofit retrofit) {
-                if (response.isSuccess()) {
+            public void onResponse(Call<HttpResult<List<GankEntity>>> call, Response<HttpResult<List<GankEntity>>> response) {
+                if (response.isSuccessful()) {
                     HttpResult<List<GankEntity>> httpResult = response.body();
                     if (httpResult != null) {
                         if (!httpResult.isError()) {
                             List<GankEntity> gankEntityList = httpResult.getResults();
-                            KLog.i("httpCallBack---gankEntityList：" + gankEntityList.toString());
+                            KLog.i("getCommonDataNew---success：" + gankEntityList.toString());
                             myCallBack.onSuccessList(what, gankEntityList);
                         } else {
                             myCallBack.onFail(what, GET_DATA_FAIL);
@@ -50,8 +50,8 @@ public class GankApi {
             }
 
             @Override
-            public void onFailure(Throwable t) {
-                KLog.i("httpCallBack-----onFailure：" + t.toString());
+            public void onFailure(Call<HttpResult<List<GankEntity>>> call, Throwable t) {
+                KLog.i("getCommonDataNew-----onFailure：" + t.toString());
                 //数据错误
                 myCallBack.onFail(what, NET_FAIL);
             }
@@ -67,13 +67,13 @@ public class GankApi {
 
         gankHistoryDate.enqueue(new Callback<HttpResult<List<String>>>() {
             @Override
-            public void onResponse(Response<HttpResult<List<String>>> response, Retrofit retrofit) {
-                if (response.isSuccess()) {
+            public void onResponse(Call<HttpResult<List<String>>> call, Response<HttpResult<List<String>>> response) {
+                if (response.isSuccessful()) {
                     HttpResult<List<String>> httpResult = response.body();
                     if (httpResult != null) {
                         if (!httpResult.isError()) {
                             List<String> gankEntityList = httpResult.getResults();
-                            KLog.i("httpCallBack---gankEntityList：" + gankEntityList.toString());
+                            KLog.i("getHistoryData---success：" + gankEntityList.toString());
                             myCallBack.onSuccessList(what, gankEntityList);
 
                             //保存到缓存
@@ -91,8 +91,8 @@ public class GankApi {
             }
 
             @Override
-            public void onFailure(Throwable t) {
-                KLog.i("httpCallBack-----onFailure：" + t.toString());
+            public void onFailure(Call<HttpResult<List<String>>> call, Throwable t) {
+                KLog.i("getHistoryData-----success：" + t.toString());
                 //数据错误
                 myCallBack.onFail(what, NET_FAIL);
             }
@@ -115,14 +115,15 @@ public class GankApi {
     public static Call<DayEntity> getOneDayData(String year, String month, String day, final int what, final MyCallBack myCallBack) {
 
         Call<DayEntity> oneDayData = BuildApi.getAPIService().getOneDayData(year, month, day);
+
         oneDayData.enqueue(new Callback<DayEntity>() {
             @Override
-            public void onResponse(Response<DayEntity> response, Retrofit retrofit) {
-                if (response.isSuccess()) {
+            public void onResponse(Call<DayEntity> call, Response<DayEntity> response) {
+                if (response.isSuccessful()) {
                     DayEntity body = response.body();
                     if (body != null) {
                         if (!body.isError()) {
-                            KLog.i("httpCallBack---gankEntityList：" + body.toString());
+                            KLog.i("getOneDayData---success：" + body.toString());
                             myCallBack.onSuccess(what, body);
                         } else {
                             myCallBack.onFail(what, GET_DATA_FAIL);
@@ -136,8 +137,8 @@ public class GankApi {
             }
 
             @Override
-            public void onFailure(Throwable t) {
-                KLog.i("httpCallBack-----onFailure：" + t.toString());
+            public void onFailure(Call<DayEntity> call, Throwable t) {
+                KLog.i("getOneDayData-----onFailure：" + t.toString());
                 //数据错误
                 myCallBack.onFail(what, NET_FAIL);
             }

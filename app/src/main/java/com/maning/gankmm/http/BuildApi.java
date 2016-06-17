@@ -3,8 +3,9 @@ package com.maning.gankmm.http;
 import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.constant.Constants;
 
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 
 /**
  * 获取网络框架类

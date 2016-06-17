@@ -21,6 +21,7 @@ import com.maning.gankmm.bean.DayEntity;
 import com.maning.gankmm.bean.GankEntity;
 import com.maning.gankmm.callback.MyCallBack;
 import com.maning.gankmm.http.GankApi;
+import com.maning.gankmm.utils.DensityUtil;
 import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.utils.MyToast;
 import com.maning.gankmm.utils.StatusBarCompat;
@@ -235,7 +236,7 @@ public class DayShowActivity extends BaseActivity {
         myRecycleView.setLayoutManager(linearLayoutManager);
         myRecycleView.setItemAnimator(new DefaultItemAnimator());
         //设置图片的最大高度
-        ivTop.setMaxHeight((int) (MyApplication.getScreenHeight() * 0.75));
+        ivTop.setMaxHeight((int) (DensityUtil.getHeight(this) * 0.75));
     }
 
     private void initAdapter() {
