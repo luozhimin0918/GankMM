@@ -20,6 +20,7 @@ import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.utils.MyToast;
 import com.maning.gankmm.utils.NetUtils;
 import com.maning.gankmm.utils.SharePreUtil;
+import com.maning.gankmm.view.MySettingItemView;
 import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
@@ -47,16 +48,17 @@ public class SettingActivity extends BaseActivity {
     Toolbar toolbar;
     @Bind(R.id.iv_push)
     ImageView ivPush;
-    @Bind(R.id.tv_cache)
-    TextView tvCache;
-    @Bind(R.id.iv_feedback_red)
-    ImageView ivFeedbackRed;
-    @Bind(R.id.iv_update_red)
-    ImageView ivUpdateRed;
 
-    FeedbackAgent umengAgent;
+    @Bind(R.id.item_clean_cache)
+    MySettingItemView itemCleanCache;
+    @Bind(R.id.item_feedback)
+    MySettingItemView itemFeedback;
+    @Bind(R.id.item_app_update)
+    MySettingItemView itemAppUpdate;
+
     private Context context;
     private MaterialDialog mMaterialDialog;
+    private FeedbackAgent umengAgent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,9 +82,9 @@ public class SettingActivity extends BaseActivity {
     private void initUmengUpdate() {
         boolean umengUpdate = SharePreUtil.getBooleanData(context, Constants.SPAppUpdate + MyApplication.getVersionCode(), false);
         if (umengUpdate) {
-            ivUpdateRed.setVisibility(View.VISIBLE);
+            itemAppUpdate.setRedDot(true);
         } else {
-            ivUpdateRed.setVisibility(View.GONE);
+            itemAppUpdate.setRedDot(false);
         }
         UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
             @Override
@@ -124,14 +126,14 @@ public class SettingActivity extends BaseActivity {
     private void initUmengFeedBack() {
         boolean feedback = SharePreUtil.getBooleanData(this, Constants.SPFeedback, false);
         if (feedback) {
-            ivFeedbackRed.setVisibility(View.VISIBLE);
+            itemFeedback.setRedDot(true);
         } else {
-            ivFeedbackRed.setVisibility(View.GONE);
+            itemFeedback.setRedDot(false);
         }
     }
 
     private void initCache() {
-        new GetDiskCacheSizeTask(tvCache).execute(new File(getCacheDir(), DiskCache.Factory.DEFAULT_DISK_CACHE_DIR));
+        new GetDiskCacheSizeTask(itemCleanCache).execute(new File(getCacheDir(), DiskCache.Factory.DEFAULT_DISK_CACHE_DIR));
     }
 
     private void initPushState() {
@@ -157,22 +159,22 @@ public class SettingActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick(R.id.rl_feedback)
-    void rl_feedback() {
+    @OnClick(R.id.item_feedback)
+    void item_feedback() {
         //自定义意见反馈
         startActivity(new Intent(this, FeedBackActivity.class));
     }
 
-    @OnClick(R.id.rl_clean_cache)
-    void rl_clean_cache() {
+    @OnClick(R.id.item_clean_cache)
+    void item_clean_cache() {
         if (mMaterialDialog == null) {
             initCacheDialog();
         }
         mMaterialDialog.show();
     }
 
-    @OnClick(R.id.rl_update)
-    public void rl_update() {
+    @OnClick(R.id.item_app_update)
+    public void item_app_update() {
         //版本更新检查
         if (NetUtils.hasNetWorkConection(context)) {
             //检测更新
@@ -216,7 +218,7 @@ public class SettingActivity extends BaseActivity {
                         //清除内存缓存
                         Glide.get(SettingActivity.this).clearMemory();
                         showProgressSuccess("清除完毕");
-                        new GetDiskCacheSizeTask(tvCache).execute(new File(getCacheDir(), DiskCache.Factory.DEFAULT_DISK_CACHE_DIR));
+                        new GetDiskCacheSizeTask(itemCleanCache).execute(new File(getCacheDir(), DiskCache.Factory.DEFAULT_DISK_CACHE_DIR));
                     }
                 });
             }
@@ -240,15 +242,15 @@ public class SettingActivity extends BaseActivity {
     //----------------------------
 
     class GetDiskCacheSizeTask extends AsyncTask<File, Long, Long> {
-        private final TextView resultView;
+        private final MySettingItemView itemCleanCache;
 
-        public GetDiskCacheSizeTask(TextView resultView) {
-            this.resultView = resultView;
+        public GetDiskCacheSizeTask(MySettingItemView itemCleanCache) {
+            this.itemCleanCache = itemCleanCache;
         }
 
         @Override
         protected void onPreExecute() {
-            resultView.setText("计算中...");
+            itemCleanCache.setRightText("计算中...");
         }
 
         @Override
@@ -271,8 +273,8 @@ public class SettingActivity extends BaseActivity {
 
         @Override
         protected void onPostExecute(Long size) {
-            String sizeText = Formatter.formatFileSize(resultView.getContext(), size);
-            resultView.setText(sizeText);
+            String sizeText = Formatter.formatFileSize(itemCleanCache.getContext(), size);
+            itemCleanCache.setRightText(sizeText);
         }
 
     }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/item_selecter">
+
+    <TextView
+        android:id="@+id/setting_tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:text="图片缓存"
+        android:textColor="@color/textBlack"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/setting_right_arrows"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="2dp"
+        android:background="@drawable/ic_chevron_right" />
+
+    <TextView
+        android:id="@+id/setting_tv_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/setting_right_arrows"
+        android:text="文本"
+        android:layout_marginLeft="8dp"
+        android:textColor="@color/textGray"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/setting_iv_red"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/setting_tv_right"
+        android:src="@drawable/circle_red" />
+
+</RelativeLayout>
