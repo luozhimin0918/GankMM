@@ -6,7 +6,6 @@
     android:background="@color/backgroundGray"
     android:orientation="vertical">
 
-
     <include layout="@layout/toolbar" />
 
     <RelativeLayout
