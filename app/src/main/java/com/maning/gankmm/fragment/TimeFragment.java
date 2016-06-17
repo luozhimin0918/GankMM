@@ -103,16 +103,6 @@ public class TimeFragment extends BaseFragment implements OnRefreshListener {
                 swipeToLoadLayout.setRefreshing(true);
             }
         });
-
-        //缓存数据
-        HttpResult<List<String>> httpResult = (HttpResult<List<String>>) MyApplication.getACache().getAsObject("HistoryTime");
-        if (httpResult != null) {
-            List<String> results = httpResult.getResults();
-            if (results != null && results.size() > 0) {
-                timeList = results;
-                initRecycleView();
-            }
-        }
     }
 
 

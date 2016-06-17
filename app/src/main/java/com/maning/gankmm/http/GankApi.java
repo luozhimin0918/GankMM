@@ -75,10 +75,6 @@ public class GankApi {
                             List<String> gankEntityList = httpResult.getResults();
                             KLog.i("getHistoryData---success：" + gankEntityList.toString());
                             myCallBack.onSuccessList(what, gankEntityList);
-
-                            //保存到缓存
-                            MyApplication.getACache().put("HistoryTime", httpResult);
-
                         } else {
                             myCallBack.onFail(what, GET_DATA_FAIL);
                         }
