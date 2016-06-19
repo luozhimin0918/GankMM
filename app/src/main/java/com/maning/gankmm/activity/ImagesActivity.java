@@ -4,6 +4,9 @@ import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
@@ -24,6 +27,7 @@ import com.maning.gankmm.base.BaseActivity;
 import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.utils.BitmapUtils;
 import com.maning.gankmm.utils.IntentUtils;
+import com.maning.gankmm.utils.MyToast;
 import com.maning.gankmm.view.PinchImageView;
 import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
@@ -116,19 +120,18 @@ public class ImagesActivity extends BaseActivity {
 
     @OnClick(R.id.btn_save)
     void btn_save() {
-        PinchImageView imageView = getCurrentImageView();
-        if (imageView == null) {
+        //显示dialog
+        showProgressDialog("正在保存...");
+        final Bitmap bitmap = getCurrentImageViewBitmap();
+        if (bitmap == null) {
             showProgressError(getResources().getString(R.string.gank_hint_save_pic_fail));
             return;
         }
-        //显示dialog
-        showProgressDialog("正在保存...");
-        final Bitmap bitmap = ((GlideBitmapDrawable) imageView.getDrawable()).getBitmap();
         //save Image
         new Thread(new Runnable() {
             @Override
             public void run() {
-                final boolean saveBitmapToSD = BitmapUtils.saveBitmapToSD(bitmap, Constants.BasePath, System.currentTimeMillis() + ".jpg",true);
+                final boolean saveBitmapToSD = BitmapUtils.saveBitmapToSD(bitmap, Constants.BasePath, System.currentTimeMillis() + ".jpg", true);
                 MyApplication.getHandler().post(new Runnable() {
                     @Override
                     public void run() {
@@ -145,7 +148,7 @@ public class ImagesActivity extends BaseActivity {
     }
 
     @Nullable
-    private PinchImageView getCurrentImageView() {
+    private Bitmap getCurrentImageViewBitmap() {
         View currentItem = touchImageAdapter.getPrimaryItem();
         if (currentItem == null) {
             KLog.i("btn_save----currentItem是空");
@@ -156,26 +159,56 @@ public class ImagesActivity extends BaseActivity {
             KLog.i("btn_save----imageView是空");
             return null;
         }
-        return imageView;
+
+        imageView.setDrawingCacheEnabled(true);
+
+        Bitmap bitmap = Bitmap.createBitmap(imageView.getDrawingCache());
+
+        imageView.setDrawingCacheEnabled(false);
+
+        return bitmap;
     }
 
     @OnClick(R.id.btn_wallpaper)
     void btn_wallpaper() {
-        PinchImageView imageView = getCurrentImageView();
-        if (imageView == null) {
+        showProgressDialog("正在设置壁纸...");
+
+        final Bitmap bitmap = getCurrentImageViewBitmap();
+        if (bitmap == null) {
             showProgressError("设置失败");
             return;
         }
-        Bitmap bitmap = ((GlideBitmapDrawable) imageView.getDrawable()).getBitmap();
-        WallpaperManager manager = WallpaperManager.getInstance(mContext);
-        try {
-            showProgressDialog("正在设置壁纸...");
-            manager.setBitmap(bitmap);
-            showProgressSuccess("设置成功");
-        } catch (IOException e) {
-            e.printStackTrace();
-            showProgressError("设置失败");
-        }
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean flag = false;
+                WallpaperManager manager = WallpaperManager.getInstance(mContext);
+                try {
+                    manager.setBitmap(bitmap);
+                    flag = true;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    flag = false;
+                } finally {
+                    if (flag) {
+                        MyApplication.getHandler().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                showProgressSuccess("设置成功");
+                            }
+                        });
+                    } else {
+                        MyApplication.getHandler().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                showProgressError("设置失败");
+                            }
+                        });
+                    }
+                }
+            }
+        }).start();
     }
 
 
