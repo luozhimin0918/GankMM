@@ -21,12 +21,11 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.maning.gankmm.R;
 import com.maning.gankmm.base.BaseActivity;
 import com.maning.gankmm.utils.IntentUtils;
-import com.maning.gankmm.utils.MyToast;
+import com.maning.gankmm.utils.MySnackbar;
 import com.maning.gankmm.utils.NetUtils;
 import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
@@ -91,7 +90,7 @@ public class WebActivity extends BaseActivity {
                 // 将文本内容放到系统剪贴板里。
                 ClipData clipData = ClipData.newPlainText("text", url);
                 cm.setPrimaryClip(clipData);
-                MyToast.showShortToast(getString(R.string.gank_hint_copy_success));
+                MySnackbar.makeSnackBarBlue(toolbar, getString(R.string.gank_hint_copy_success));
                 break;
             case R.id.action_open:
                 Intent intent = new Intent();

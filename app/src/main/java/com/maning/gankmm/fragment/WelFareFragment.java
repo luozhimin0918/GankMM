@@ -2,7 +2,6 @@ package com.maning.gankmm.fragment;
 
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
@@ -15,15 +14,13 @@ import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.maning.gankmm.R;
 import com.maning.gankmm.adapter.RecyclePicAdapter;
-import com.maning.gankmm.app.MyApplication;
-import com.maning.gankmm.bean.GankEntity;
-import com.maning.gankmm.constant.Constants;
-import com.maning.gankmm.db.PublicDao;
-import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.base.BaseFragment;
+import com.maning.gankmm.bean.GankEntity;
 import com.maning.gankmm.callback.MyCallBack;
+import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.http.GankApi;
-import com.maning.gankmm.utils.MyToast;
+import com.maning.gankmm.utils.IntentUtils;
+import com.maning.gankmm.utils.MySnackbar;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -92,7 +89,7 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
             dissmissProgressDialog();
             overRefresh();
             if (!TextUtils.isEmpty(result)) {
-                MyToast.showShortToast(result);
+                MySnackbar.makeSnackBarRed(swipeTarget, result);
             }
         }
     };

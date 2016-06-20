@@ -26,6 +26,7 @@ import com.maning.gankmm.callback.MyCallBack;
 import com.maning.gankmm.http.GankApi;
 import com.maning.gankmm.utils.DensityUtil;
 import com.maning.gankmm.utils.IntentUtils;
+import com.maning.gankmm.utils.MySnackbar;
 import com.maning.gankmm.utils.MyToast;
 import com.maning.gankmm.utils.StatusBarCompat;
 import com.maning.gankmm.view.FullyLinearLayoutManager;
@@ -90,7 +91,7 @@ public class DayShowActivity extends BaseActivity {
             }
             dissmissProgressDialog();
             if (!TextUtils.isEmpty(result)) {
-                MyToast.showShortToast(result);
+                MySnackbar.makeSnackBarRed(toolbar,result);
             }
         }
     };

@@ -9,7 +9,6 @@ import android.text.format.Formatter;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.cache.DiskCache;
@@ -17,7 +16,7 @@ import com.maning.gankmm.R;
 import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.base.BaseActivity;
 import com.maning.gankmm.constant.Constants;
-import com.maning.gankmm.utils.MyToast;
+import com.maning.gankmm.utils.MySnackbar;
 import com.maning.gankmm.utils.NetUtils;
 import com.maning.gankmm.utils.SharePreUtil;
 import com.maning.gankmm.view.MySettingItemView;
@@ -93,7 +92,7 @@ public class SettingActivity extends BaseActivity {
                     case UpdateStatus.Yes:
                         break;
                     case UpdateStatus.No:
-                        MyToast.showShortToast("当前版本为最新版本");
+                        MySnackbar.makeSnackBarBlue(toolbar,"当前版本为最新版本");
                         break;
                     case UpdateStatus.Timeout:
                         KLog.i("Umeng更新-----超时");
@@ -180,7 +179,7 @@ public class SettingActivity extends BaseActivity {
             //检测更新
             UmengUpdateAgent.update(this);
         } else {
-            MyToast.showShortToast(getString(R.string.mm_no_net));
+            MySnackbar.makeSnackBarBlue(toolbar,getString(R.string.mm_no_net));
         }
     }
 
