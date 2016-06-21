@@ -16,6 +16,7 @@ import com.maning.gankmm.R;
 import com.maning.gankmm.bean.GankEntity;
 import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.db.CollectDao;
+import com.maning.gankmm.utils.MySnackbar;
 import com.socks.library.KLog;
 
 import java.util.List;
@@ -99,9 +100,9 @@ public class RecycleCollectAdapter extends RecyclerView.Adapter<RecycleCollectAd
             public void liked(LikeButton likeButton) {
                 boolean insertResult = new CollectDao().insertOneCollect(resultsEntity);
                 if (insertResult) {
-                    Toast.makeText(context, "收藏成功", Toast.LENGTH_SHORT).show();
+                    MySnackbar.makeSnackBarBlack(viewHolder.tvShowTime, "收藏成功");
                 } else {
-                    Toast.makeText(context, "收藏失败", Toast.LENGTH_SHORT).show();
+                    MySnackbar.makeSnackBarRed(viewHolder.tvShowTime, "收藏失败");
                     likeButton.setLiked(false);
                 }
             }
@@ -110,11 +111,12 @@ public class RecycleCollectAdapter extends RecyclerView.Adapter<RecycleCollectAd
             public void unLiked(LikeButton likeButton) {
                 boolean deleteResult = new CollectDao().deleteOneCollect(resultsEntity.get_id());
                 if (deleteResult) {
-                    Toast.makeText(context, "取消收藏成功", Toast.LENGTH_SHORT).show();
+                    MySnackbar.makeSnackBarBlack(viewHolder.tvShowTime, "取消收藏成功");
                 } else {
-                    Toast.makeText(context, "取消收藏失败", Toast.LENGTH_SHORT).show();
+                    MySnackbar.makeSnackBarRed(viewHolder.tvShowTime, "取消收藏失败");
                     likeButton.setLiked(true);
                 }
+
             }
         });
 
