@@ -1,47 +1,26 @@
 package com.maning.gankmm.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.format.Formatter;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.cache.DiskCache;
 import com.maning.gankmm.R;
-import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.ui.base.BaseActivity;
-import com.maning.gankmm.constant.Constants;
-import com.maning.gankmm.utils.MySnackbar;
-import com.maning.gankmm.utils.NetUtils;
-import com.maning.gankmm.utils.SharePreUtil;
+import com.maning.gankmm.ui.iView.ISettingView;
+import com.maning.gankmm.ui.presenter.impl.SettingPresenterImpl;
 import com.maning.gankmm.ui.view.MySettingItemView;
-import com.socks.library.KLog;
+import com.maning.gankmm.utils.MySnackbar;
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.fb.FeedbackAgent;
-import com.umeng.fb.SyncListener;
-import com.umeng.fb.model.Conversation;
-import com.umeng.fb.model.Reply;
-import com.umeng.update.UmengUpdateAgent;
-import com.umeng.update.UmengUpdateListener;
-import com.umeng.update.UpdateResponse;
-import com.umeng.update.UpdateStatus;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.jpush.android.api.JPushInterface;
 import me.drakeet.materialdialog.MaterialDialog;
 
-public class SettingActivity extends BaseActivity {
+public class SettingActivity extends BaseActivity implements ISettingView {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -55,97 +34,31 @@ public class SettingActivity extends BaseActivity {
     @Bind(R.id.item_app_update)
     MySettingItemView itemAppUpdate;
 
-    private Context context;
     private MaterialDialog mMaterialDialog;
-    private FeedbackAgent umengAgent;
+
+    private SettingPresenterImpl settingPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         ButterKnife.bind(this);
-        context = this;
 
         initToolBar(toolbar, "设置", R.drawable.ic_back);
 
-        initPushState();
+        initPresenter();
 
-        initCache();
+        //初始化Push状态
+        settingPresenter.initPushState();
 
-        initUmengFeedback();
+        settingPresenter.initCache();
 
-        initUmengUpdate();
+        settingPresenter.initUmeng();
 
     }
 
-    private void initUmengUpdate() {
-        boolean umengUpdate = SharePreUtil.getBooleanData(context, Constants.SPAppUpdate + MyApplication.getVersionCode(), false);
-        if (umengUpdate) {
-            itemAppUpdate.setRedDot(true);
-        } else {
-            itemAppUpdate.setRedDot(false);
-        }
-        UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
-            @Override
-            public void onUpdateReturned(int updateStatus, UpdateResponse updateResponse) {
-                switch (updateStatus) {
-                    case UpdateStatus.Yes:
-                        break;
-                    case UpdateStatus.No:
-                        MySnackbar.makeSnackBarBlue(toolbar,"当前版本为最新版本");
-                        break;
-                    case UpdateStatus.Timeout:
-                        KLog.i("Umeng更新-----超时");
-                        break;
-                }
-            }
-        });
-    }
-
-    private void initUmengFeedback() {
-        umengAgent = new FeedbackAgent(this);
-        Conversation defaultConversation = umengAgent.getDefaultConversation();
-        defaultConversation.sync(new SyncListener() {
-            @Override
-            public void onReceiveDevReply(List<Reply> list) {
-                if (list != null && list.size() > 0) {
-                    SharePreUtil.saveBooleanData(context, Constants.SPFeedback, true);
-                    initUmengFeedBack();
-                }
-            }
-
-            @Override
-            public void onSendUserReply(List<Reply> list) {
-
-            }
-        });
-    }
-
-
-    private void initUmengFeedBack() {
-        boolean feedback = SharePreUtil.getBooleanData(this, Constants.SPFeedback, false);
-        if (feedback) {
-            itemFeedback.setRedDot(true);
-        } else {
-            itemFeedback.setRedDot(false);
-        }
-    }
-
-    private void initCache() {
-        new GetDiskCacheSizeTask(itemCleanCache).execute(new File(getCacheDir(), DiskCache.Factory.DEFAULT_DISK_CACHE_DIR));
-    }
-
-    private void initPushState() {
-
-        boolean jpush = SharePreUtil.getBooleanData(this, Constants.SPJpush, true);
-        if (jpush) {
-            JPushInterface.resumePush(getApplicationContext());
-            ivPush.setImageResource(R.drawable.icon_setting_on);
-        } else {
-            ivPush.setImageResource(R.drawable.icon_setting_off);
-            JPushInterface.stopPush(getApplicationContext());
-        }
-
+    public void initPresenter() {
+        settingPresenter = new SettingPresenterImpl(this, this);
     }
 
     @Override
@@ -164,23 +77,17 @@ public class SettingActivity extends BaseActivity {
         startActivity(new Intent(this, FeedBackActivity.class));
     }
 
+    @OnClick(R.id.item_app_update)
+    public void item_app_update() {
+        settingPresenter.checkAppUpdate();
+    }
+
     @OnClick(R.id.item_clean_cache)
     void item_clean_cache() {
         if (mMaterialDialog == null) {
             initCacheDialog();
         }
         mMaterialDialog.show();
-    }
-
-    @OnClick(R.id.item_app_update)
-    public void item_app_update() {
-        //版本更新检查
-        if (NetUtils.hasNetWorkConection(context)) {
-            //检测更新
-            UmengUpdateAgent.update(this);
-        } else {
-            MySnackbar.makeSnackBarBlue(toolbar,getString(R.string.mm_no_net));
-        }
     }
 
 
@@ -192,7 +99,7 @@ public class SettingActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 mMaterialDialog.dismiss();
-                cleanCache();
+                settingPresenter.cleanCache();
             }
         });
         mMaterialDialog.setNegativeButton("取消", new View.OnClickListener() {
@@ -204,96 +111,65 @@ public class SettingActivity extends BaseActivity {
         });
     }
 
-    private void cleanCache() {
-        showProgressDialog("正在清理缓存...");
-        //清楚硬盘缓存,需要后台线程清楚
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Glide.get(MyApplication.getIntstance()).clearDiskCache();
-                MyApplication.getHandler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        //清除内存缓存
-                        Glide.get(SettingActivity.this).clearMemory();
-                        showProgressSuccess("清除完毕");
-                        new GetDiskCacheSizeTask(itemCleanCache).execute(new File(getCacheDir(), DiskCache.Factory.DEFAULT_DISK_CACHE_DIR));
-                    }
-                });
-            }
-        }).start();
-    }
-
     @OnClick(R.id.iv_push)
     void iv_push() {
-        boolean jpush = SharePreUtil.getBooleanData(this, Constants.SPJpush, true);
-        if (!jpush) {
-            SharePreUtil.saveBooleanData(this, Constants.SPJpush, true);
-            JPushInterface.resumePush(getApplicationContext());
-            ivPush.setImageResource(R.drawable.icon_setting_on);
-        } else {
-            SharePreUtil.saveBooleanData(this, Constants.SPJpush, false);
-            ivPush.setImageResource(R.drawable.icon_setting_off);
-            JPushInterface.stopPush(getApplicationContext());
-        }
+        settingPresenter.changePushState();
     }
 
-    //----------------------------
-
-    class GetDiskCacheSizeTask extends AsyncTask<File, Long, Long> {
-        private final MySettingItemView itemCleanCache;
-
-        public GetDiskCacheSizeTask(MySettingItemView itemCleanCache) {
-            this.itemCleanCache = itemCleanCache;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            itemCleanCache.setRightText("计算中...");
-        }
-
-        @Override
-        protected void onProgressUpdate(Long... values) { /* onPostExecute(values[values.length - 1]); */ }
-
-        @Override
-        protected Long doInBackground(File... dirs) {
-            try {
-                long totalSize = 0;
-                for (File dir : dirs) {
-                    publishProgress(totalSize);
-                    totalSize += calculateSize(dir);
-                }
-                return totalSize;
-            } catch (RuntimeException ex) {
-                final String message = String.format("Cannot get size of %s: %s", Arrays.toString(dirs), ex);
-            }
-            return 0L;
-        }
-
-        @Override
-        protected void onPostExecute(Long size) {
-            String sizeText = Formatter.formatFileSize(itemCleanCache.getContext(), size);
-            itemCleanCache.setRightText(sizeText);
-        }
-
+    @Override
+    public void openPush() {
+        ivPush.setImageResource(R.drawable.icon_setting_on);
     }
 
-    private long calculateSize(File dir) {
-        if (dir == null) return 0;
-        if (!dir.isDirectory()) return dir.length();
-        long result = 0;
-        File[] children = dir.listFiles();
-        if (children != null)
-            for (File child : children)
-                result += calculateSize(child);
-        return result;
+    @Override
+    public void closePush() {
+        ivPush.setImageResource(R.drawable.icon_setting_off);
+    }
+
+    @Override
+    public void setCacheSize(String cacheSize) {
+        itemCleanCache.setRightText(cacheSize);
+    }
+
+    @Override
+    public void setUmengFeedbackState(boolean flag) {
+        itemFeedback.setRedDot(flag);
+    }
+
+    @Override
+    public void setUmengUpdateState(boolean flag) {
+        itemAppUpdate.setRedDot(flag);
+    }
+
+    @Override
+    public void showBaseProgressDialog(String msg) {
+        showProgressDialog(msg);
+    }
+
+    @Override
+    public void hideBaseProgressDialog() {
+        dissmissProgressDialog();
+    }
+
+    @Override
+    public void showBasesProgressSuccess(String msg) {
+        showProgressSuccess(msg);
+    }
+
+    @Override
+    public void showBasesProgressError(String msg) {
+        showProgressError(msg);
+    }
+
+    @Override
+    public void showToast(String msg) {
+        MySnackbar.makeSnackBarBlue(toolbar, msg);
     }
 
     public void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("SettingActivity");
         MobclickAgent.onResume(this);          //统计时长
-        initUmengFeedBack();
     }
 
     public void onPause() {
@@ -305,6 +181,6 @@ public class SettingActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        dissmissProgressDialog();
+        settingPresenter.detachView();
     }
 }

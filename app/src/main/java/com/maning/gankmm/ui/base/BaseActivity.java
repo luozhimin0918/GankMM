@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 
 import com.bigkoo.svprogresshud.SVProgressHUD;
@@ -44,8 +45,12 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void showProgressDialog(String message) {
-        dissmissProgressDialog();
-        mSVProgressHUD.showWithStatus(message, SVProgressHUD.SVProgressHUDMaskType.BlackCancel);
+        if (TextUtils.isEmpty(message)) {
+            showProgressDialog();
+        } else {
+            dissmissProgressDialog();
+            mSVProgressHUD.showWithStatus(message, SVProgressHUD.SVProgressHUDMaskType.BlackCancel);
+        }
     }
 
     public void showProgressSuccess(String message) {

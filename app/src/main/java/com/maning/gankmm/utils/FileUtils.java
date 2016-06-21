@@ -431,5 +431,16 @@ public class FileUtils {
         return result;
     }
 
+    public static long calculateSize(File dir) {
+        if (dir == null) return 0;
+        if (!dir.isDirectory()) return dir.length();
+        long result = 0;
+        File[] children = dir.listFiles();
+        if (children != null)
+            for (File child : children)
+                result += calculateSize(child);
+        return result;
+    }
+
 
 }
