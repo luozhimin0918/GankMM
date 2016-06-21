@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.maning.gankmm.view.ClassicLoadMoreFooterView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.maning.gankmm.ui.view.ClassicLoadMoreFooterView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:wheel="http://schemas.android.com/apk/res-auto">
@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/load_more_footer_height_twitter">
 
-        <com.maning.gankmm.view.ProgressWheel
+        <com.maning.gankmm.ui.view.ProgressWheel
             android:id="@+id/progressbar"
             android:layout_width="24dp"
             android:layout_height="24dp"
@@ -38,4 +38,4 @@
             android:text="LoadMore"
             android:textColor="@color/white" />
     </RelativeLayout>
-</com.maning.gankmm.view.ClassicLoadMoreFooterView>
+</com.maning.gankmm.ui.view.ClassicLoadMoreFooterView>

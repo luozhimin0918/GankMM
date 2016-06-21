@@ -123,7 +123,7 @@
 
         <!-- User defined.  For test only  用户自定义的广播接收器 -->
         <receiver
-            android:name=".receiver.MyReceiver"
+            android:name=".ui.receiver.MyReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
@@ -161,7 +161,7 @@
             android:value="${UMENG_CHANNEL_VALUE}" />
 
         <activity
-            android:name=".activity.WelcomeActivity"
+            android:name=".ui.activity.WelcomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -171,13 +171,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ImagesActivity"
+            android:name=".ui.activity.ImagesActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.WebActivity"
+            android:name=".ui.activity.WebActivity"
             android:screenOrientation="portrait" />
 
         <!-- Umeng自动更新 -->
@@ -193,16 +193,16 @@
             android:name="com.umeng.fb.ConversationActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.AboutActivity"
+            android:name=".ui.activity.AboutActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.FeedBackActivity"
+            android:name=".ui.activity.FeedBackActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.DayShowActivity"
+            android:name=".ui.activity.DayShowActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.SettingActivity"
+            android:name=".ui.activity.SettingActivity"
             android:screenOrientation="portrait" />
     </application>
 

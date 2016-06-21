@@ -5,7 +5,6 @@ import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.bean.DayEntity;
 import com.maning.gankmm.bean.GankEntity;
 import com.maning.gankmm.bean.HttpResult;
-import com.maning.gankmm.callback.MyCallBack;
 import com.socks.library.KLog;
 
 import java.util.List;

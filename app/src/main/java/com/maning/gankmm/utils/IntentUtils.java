@@ -1,20 +1,15 @@
 package com.maning.gankmm.utils;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-import com.maning.gankmm.R;
-import com.maning.gankmm.activity.AboutActivity;
-import com.maning.gankmm.activity.DayShowActivity;
-import com.maning.gankmm.activity.ImagesActivity;
-import com.maning.gankmm.activity.SettingActivity;
-import com.maning.gankmm.activity.WebActivity;
-import com.maning.gankmm.constant.Constants;
-import com.socks.library.KLog;
+import com.maning.gankmm.ui.activity.AboutActivity;
+import com.maning.gankmm.ui.activity.DayShowActivity;
+import com.maning.gankmm.ui.activity.ImagesActivity;
+import com.maning.gankmm.ui.activity.SettingActivity;
+import com.maning.gankmm.ui.activity.WebActivity;
 
-import java.io.File;
 import java.util.ArrayList;
 
 /**

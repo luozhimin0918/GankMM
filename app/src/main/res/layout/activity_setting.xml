@@ -46,7 +46,7 @@
         android:layout_marginTop="10dp"
         android:background="@color/lineColor" />
 
-    <com.maning.gankmm.view.MySettingItemView
+    <com.maning.gankmm.ui.view.MySettingItemView
         android:id="@+id/item_clean_cache"
         android:layout_width="match_parent"
         android:layout_height="44dp"
@@ -61,7 +61,7 @@
         android:layout_marginLeft="16dp"
         android:background="@color/lineColor" />
 
-    <com.maning.gankmm.view.MySettingItemView
+    <com.maning.gankmm.ui.view.MySettingItemView
         android:id="@+id/item_feedback"
         android:layout_width="match_parent"
         android:layout_height="44dp"
@@ -76,7 +76,7 @@
         android:background="@color/lineColor" />
 
 
-    <com.maning.gankmm.view.MySettingItemView
+    <com.maning.gankmm.ui.view.MySettingItemView
         android:id="@+id/item_app_update"
         android:layout_width="match_parent"
         android:layout_height="44dp"
