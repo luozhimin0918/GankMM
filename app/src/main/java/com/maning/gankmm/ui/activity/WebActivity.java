@@ -1,9 +1,6 @@
 package com.maning.gankmm.ui.activity;
 
 import android.annotation.SuppressLint;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -24,6 +21,8 @@ import android.widget.ProgressBar;
 
 import com.maning.gankmm.R;
 import com.maning.gankmm.ui.base.BaseActivity;
+import com.maning.gankmm.ui.iView.IWebView;
+import com.maning.gankmm.ui.presenter.impl.WebPresenterImpl;
 import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.utils.MySnackbar;
 import com.maning.gankmm.utils.NetUtils;
@@ -36,7 +35,7 @@ import butterknife.ButterKnife;
 /**
  * 展示网页的
  */
-public class WebActivity extends BaseActivity {
+public class WebActivity extends BaseActivity implements IWebView {
 
     private static final String TAG = WebActivity.class.getSimpleName();
 
@@ -52,21 +51,25 @@ public class WebActivity extends BaseActivity {
     private String titleContent;
     private String url;
 
+    private WebPresenterImpl webPresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
         ButterKnife.bind(this);
 
+        webPresenter = new WebPresenterImpl(this, this);
+
         initIntent();
 
         String title;
-        if(TextUtils.isEmpty(flagTitle)){
+        if (TextUtils.isEmpty(flagTitle)) {
             title = titleContent;
-        }else{
+        } else {
             title = flagTitle + "+" + titleContent;
         }
-        initToolBar(toolbar, title , R.drawable.ic_back);
+        initToolBar(toolbar, title, R.drawable.ic_back);
 
         initWebView();
 
@@ -85,31 +88,20 @@ public class WebActivity extends BaseActivity {
                 this.finish();
                 break;
             case R.id.action_copy:
-                // 从API11开始android推荐使用android.content.ClipboardManager
-                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                // 将文本内容放到系统剪贴板里。
-                ClipData clipData = ClipData.newPlainText("text", url);
-                cm.setPrimaryClip(clipData);
-                MySnackbar.makeSnackBarBlue(toolbar, getString(R.string.gank_hint_copy_success));
+                webPresenter.copy(url);
                 break;
             case R.id.action_open:
-                Intent intent = new Intent();
-                intent.setAction("android.intent.action.VIEW");
-                Uri content_url = Uri.parse(url);
-                intent.setData(content_url);
-                startActivity(intent);
+                webPresenter.openBrowser(url);
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void initIntent() {
-
         Intent intent = getIntent();
         flagTitle = intent.getStringExtra(IntentUtils.WebTitleFlag);
         titleContent = intent.getStringExtra(IntentUtils.WebTitle);
         url = intent.getStringExtra(IntentUtils.WebUrl);
-
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -194,7 +186,7 @@ public class WebActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if(webView.canGoBack()){
+        if (webView.canGoBack()) {
             webView.goBack();
             return;
         }
@@ -219,8 +211,25 @@ public class WebActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+        webPresenter.detachView();
         webView.destroy();
+        super.onDestroy();
+    }
+
+
+    @Override
+    public void showToast(String msg) {
+        MySnackbar.makeSnackBarBlue(toolbar, msg);
+    }
+
+    @Override
+    public void showBaseProgressDialog(String msg) {
+        showProgressDialog();
+    }
+
+    @Override
+    public void hideBaseProgressDialog() {
+        dissmissProgressDialog();
     }
 
 }
