@@ -39,16 +39,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DayShowActivity extends BaseActivity {
+public class GankActivity extends BaseActivity {
 
 
-    private static final String TAG = DayShowActivity.class.getSimpleName();
+    private static final String TAG = GankActivity.class.getSimpleName();
     @Bind(R.id.iv_top)
     ImageView ivTop;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.collapsingToolbar)
-    CollapsingToolbarLayout collapsingToolbar;
     @Bind(R.id.recycleView)
     RecyclerView myRecycleView;
     @Bind(R.id.progressbar)
@@ -197,7 +195,7 @@ public class DayShowActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_day_show);
         //设置状态栏的颜色
-        StatusBarCompat.setStatusBarColor(DayShowActivity.this, StatusBarCompat.COLOR_DEFAULT_TRANSLATE);
+        StatusBarCompat.setStatusBarColor(GankActivity.this, StatusBarCompat.COLOR_DEFAULT_TRANSLATE);
         ButterKnife.bind(this);
 
         initIntent();
@@ -250,7 +248,7 @@ public class DayShowActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, int position) {
                 if (!dayEntityArrayList.get(position).getType().equals("title")) {
-                    IntentUtils.startToWebActivity(DayShowActivity.this, dayEntityArrayList.get(position).getType(), dayEntityArrayList.get(position).getDesc(), dayEntityArrayList.get(position).getUrl());
+                    IntentUtils.startToWebActivity(GankActivity.this, dayEntityArrayList.get(position).getType(), dayEntityArrayList.get(position).getDesc(), dayEntityArrayList.get(position).getUrl());
                 }
             }
         });

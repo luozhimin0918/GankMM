@@ -161,7 +161,7 @@
             android:value="${UMENG_CHANNEL_VALUE}" />
 
         <activity
-            android:name=".ui.activity.WelcomeActivity"
+            android:name=".ui.activity.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -199,7 +199,7 @@
             android:name=".ui.activity.FeedBackActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.DayShowActivity"
+            android:name=".ui.activity.GankActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.SettingActivity"

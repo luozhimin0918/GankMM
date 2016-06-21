@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.maning.gankmm.ui.activity.AboutActivity;
-import com.maning.gankmm.ui.activity.DayShowActivity;
+import com.maning.gankmm.ui.activity.GankActivity;
 import com.maning.gankmm.ui.activity.ImagesActivity;
 import com.maning.gankmm.ui.activity.SettingActivity;
 import com.maning.gankmm.ui.activity.WebActivity;
@@ -54,7 +54,7 @@ public class IntentUtils {
     }
 
     public static void startDayShowActivity(Context context, String date) {
-        Intent intent = new Intent(context.getApplicationContext(), DayShowActivity.class);
+        Intent intent = new Intent(context.getApplicationContext(), GankActivity.class);
         intent.putExtra(DayDate, date);
         context.startActivity(intent);
     }

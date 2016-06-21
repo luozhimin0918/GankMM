@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.maning.gankmm.ui.activity.DayShowActivity;
+import com.maning.gankmm.ui.activity.GankActivity;
 import com.maning.gankmm.ui.activity.MainActivity;
 import com.maning.gankmm.ui.activity.WebActivity;
 import com.maning.gankmm.utils.IntentUtils;
@@ -124,7 +124,7 @@ public class MyReceiver extends BroadcastReceiver {
     }
 
     private void startDayShowActivity(String date) {
-        Intent intent = new Intent(context.getApplicationContext(), DayShowActivity.class);
+        Intent intent = new Intent(context.getApplicationContext(), GankActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(IntentUtils.DayDate, date);
         context.startActivity(intent);

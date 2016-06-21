@@ -12,7 +12,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.jpush.android.api.JPushInterface;
 
-public class WelcomeActivity extends Activity {
+public class SplashActivity extends Activity {
 
     @Bind(R.id.tv_app_version)
     TextView tv_app_version;
@@ -26,8 +26,8 @@ public class WelcomeActivity extends Activity {
         MyApplication.getHandler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
-                WelcomeActivity.this.finish();
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                SplashActivity.this.finish();
             }
         }, 2000);
 
