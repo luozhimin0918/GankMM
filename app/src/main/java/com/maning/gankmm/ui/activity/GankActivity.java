@@ -23,6 +23,8 @@ import com.maning.gankmm.bean.DayEntity;
 import com.maning.gankmm.bean.GankEntity;
 import com.maning.gankmm.http.MyCallBack;
 import com.maning.gankmm.http.GankApi;
+import com.maning.gankmm.ui.iView.IGankView;
+import com.maning.gankmm.ui.presenter.impl.GankPresenterImpl;
 import com.maning.gankmm.utils.DensityUtil;
 import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.utils.MySnackbar;
@@ -39,7 +41,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class GankActivity extends BaseActivity {
+public class GankActivity extends BaseActivity implements IGankView {
 
 
     private static final String TAG = GankActivity.class.getSimpleName();
@@ -53,142 +55,10 @@ public class GankActivity extends BaseActivity {
     ProgressWheel progressbar;
 
     private String dayDate;
-    private DayEntity dayEntity;
-
-    private MyCallBack httpCallBack = new MyCallBack() {
-        @Override
-        public void onSuccessList(int what, List results) {
-
-        }
-
-        @Override
-        public void onSuccess(int what, Object result) {
-            if (isFinishing()) {
-                return;
-            }
-            dayEntity = (DayEntity) result;
-            if (dayEntity != null) {
-                String url = dayEntity.getResults().get福利().get(0).getUrl();
-                initImageView(url);
-                //初始化数据
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        initDatas(dayEntity);
-                    }
-                }).start();
-            }
-        }
-
-        @Override
-        public void onFail(int what, String result) {
-            if (isFinishing()) {
-                return;
-            }
-            dissmissProgressDialog();
-            if (!TextUtils.isEmpty(result)) {
-                MySnackbar.makeSnackBarRed(toolbar,result);
-            }
-        }
-    };
-
-    private List<GankEntity> dayEntityArrayList = new ArrayList<>();
-
-    private void initDatas(DayEntity dayEntity) {
-        dayEntityArrayList.clear();
-
-        GankEntity gankEntity_other;
-        List<DayEntity.ResultsEntity.AndroidEntity> androidEntityList = dayEntity.getResults().getAndroid();
-        if (androidEntityList != null && androidEntityList.size() > 0) {
-            GankEntity gankEntity_title = new GankEntity();
-            gankEntity_title.setType("title");
-            gankEntity_title.setDesc("Android");
-            dayEntityArrayList.add(gankEntity_title);
-            for (int i = 0; i < androidEntityList.size(); i++) {
-                DayEntity.ResultsEntity.AndroidEntity androidEntity = androidEntityList.get(i);
-                gankEntity_other = new GankEntity();
-                gankEntity_other.set_id(androidEntity.get_id());
-                gankEntity_other.setDesc(androidEntity.getDesc());
-                gankEntity_other.setType(androidEntity.getType());
-                gankEntity_other.setCreatedAt(androidEntity.getCreatedAt());
-                gankEntity_other.setPublishedAt(androidEntity.getPublishedAt());
-                gankEntity_other.setUrl(androidEntity.getUrl());
-                dayEntityArrayList.add(gankEntity_other);
-            }
-        }
-
-        List<DayEntity.ResultsEntity.IOSEntity> iosEntityList = dayEntity.getResults().getIOS();
-        if (iosEntityList != null && iosEntityList.size() > 0) {
-            GankEntity gankEntity_title02 = new GankEntity();
-            gankEntity_title02.setType("title");
-            gankEntity_title02.setDesc("iOS");
-            dayEntityArrayList.add(gankEntity_title02);
-
-            for (int i = 0; i < iosEntityList.size(); i++) {
-                DayEntity.ResultsEntity.IOSEntity entity = iosEntityList.get(i);
-                gankEntity_other = new GankEntity();
-                gankEntity_other.set_id(entity.get_id());
-                gankEntity_other.setDesc(entity.getDesc());
-                gankEntity_other.setType(entity.getType());
-                gankEntity_other.setCreatedAt(entity.getCreatedAt());
-                gankEntity_other.setPublishedAt(entity.getPublishedAt());
-                gankEntity_other.setUrl(entity.getUrl());
-                dayEntityArrayList.add(gankEntity_other);
-            }
-        }
-
-        List<DayEntity.ResultsEntity.休息视频Entity> 休息视频EntityList = dayEntity.getResults().get休息视频();
-        if (休息视频EntityList != null && 休息视频EntityList.size() > 0) {
-            GankEntity gankEntity_title03 = new GankEntity();
-            gankEntity_title03.setType("title");
-            gankEntity_title03.setDesc("休息视频");
-            dayEntityArrayList.add(gankEntity_title03);
-
-            for (int i = 0; i < 休息视频EntityList.size(); i++) {
-                DayEntity.ResultsEntity.休息视频Entity entity = 休息视频EntityList.get(i);
-                gankEntity_other = new GankEntity();
-                gankEntity_other.set_id(entity.get_id());
-                gankEntity_other.setDesc(entity.getDesc());
-                gankEntity_other.setType(entity.getType());
-                gankEntity_other.setCreatedAt(entity.getCreatedAt());
-                gankEntity_other.setPublishedAt(entity.getPublishedAt());
-                gankEntity_other.setUrl(entity.getUrl());
-                dayEntityArrayList.add(gankEntity_other);
-            }
-        }
-
-
-        List<DayEntity.ResultsEntity.拓展资源Entity> 拓展资源EntityList = dayEntity.getResults().get拓展资源();
-        if (拓展资源EntityList != null && 拓展资源EntityList.size() > 0) {
-            GankEntity gankEntity_title04 = new GankEntity();
-            gankEntity_title04.setType("title");
-            gankEntity_title04.setDesc("拓展资源");
-            dayEntityArrayList.add(gankEntity_title04);
-
-            for (int i = 0; i < 拓展资源EntityList.size(); i++) {
-                DayEntity.ResultsEntity.拓展资源Entity entity = 拓展资源EntityList.get(i);
-                gankEntity_other = new GankEntity();
-                gankEntity_other.set_id(entity.get_id());
-                gankEntity_other.setDesc(entity.getDesc());
-                gankEntity_other.setType(entity.getType());
-                gankEntity_other.setCreatedAt(entity.getCreatedAt());
-                gankEntity_other.setPublishedAt(entity.getPublishedAt());
-                gankEntity_other.setUrl(entity.getUrl());
-                dayEntityArrayList.add(gankEntity_other);
-            }
-        }
-
-
-        KLog.i("dayEntityArrayList---" + dayEntityArrayList.size());
-        this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                initAdapter();
-            }
-        });
-    }
 
     private ArrayList<String> images;
+
+    private GankPresenterImpl gankPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -198,30 +68,16 @@ public class GankActivity extends BaseActivity {
         StatusBarCompat.setStatusBarColor(GankActivity.this, StatusBarCompat.COLOR_DEFAULT_TRANSLATE);
         ButterKnife.bind(this);
 
+        gankPresenter = new GankPresenterImpl(this, this);
+
         initIntent();
 
         initBar();
 
         initView();
 
-        //切割
-        String[] dayArray = dayDate.split("-");
-        if (dayArray.length > 2) {
-            GankApi.getOneDayData(dayArray[0], dayArray[1], dayArray[2], 0x001, httpCallBack);
-        }
+        gankPresenter.getOneDayDatas(dayDate);
 
-    }
-
-    private void initImageView(String imageUrl) {
-        progressbar.setVisibility(View.GONE);
-        Glide
-                .with(this)
-                .load(imageUrl)
-                .fitCenter()
-                .into(ivTop);
-        //添加到集合
-        images = new ArrayList<>();
-        images.add(imageUrl);
     }
 
     @OnClick(R.id.iv_top)
@@ -239,16 +95,16 @@ public class GankActivity extends BaseActivity {
         ivTop.setMaxHeight((int) (DensityUtil.getHeight(this) * 0.75));
     }
 
-    private void initAdapter() {
-        RecycleDayAdapter recycleDayAdapter = new RecycleDayAdapter(this, dayEntityArrayList);
+    private void initAdapter(final List<GankEntity> gankList) {
+        RecycleDayAdapter recycleDayAdapter = new RecycleDayAdapter(this, gankList);
         myRecycleView.setAdapter(recycleDayAdapter);
         myRecycleView.setNestedScrollingEnabled(false);
         myRecycleView.setHasFixedSize(true);
         recycleDayAdapter.setOnItemClickLitener(new RecycleDayAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (!dayEntityArrayList.get(position).getType().equals("title")) {
-                    IntentUtils.startToWebActivity(GankActivity.this, dayEntityArrayList.get(position).getType(), dayEntityArrayList.get(position).getDesc(), dayEntityArrayList.get(position).getUrl());
+                if (!gankList.get(position).getType().equals("title")) {
+                    IntentUtils.startToWebActivity(GankActivity.this, gankList.get(position).getType(), gankList.get(position).getDesc(), gankList.get(position).getUrl());
                 }
             }
         });
@@ -265,23 +121,18 @@ public class GankActivity extends BaseActivity {
     }
 
     private void initIntent() {
-
         Intent intent = getIntent();
-
         dayDate = intent.getStringExtra(IntentUtils.DayDate);
-
     }
 
 
     private void initBar() {
         initToolBar(toolbar, dayDate, R.drawable.ic_back);
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             final Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
-
     }
 
     public void onResume() {
@@ -296,4 +147,46 @@ public class GankActivity extends BaseActivity {
         MobclickAgent.onPause(this);
     }
 
+    @Override
+    protected void onDestroy() {
+        gankPresenter.detachView();
+        super.onDestroy();
+    }
+
+    @Override
+    public void showToast(String msg) {
+        MySnackbar.makeSnackBarBlue(toolbar, msg);
+    }
+
+    @Override
+    public void showImageView(String url) {
+        Glide
+                .with(this)
+                .load(url)
+                .fitCenter()
+                .into(ivTop);
+        //添加到集合
+        images = new ArrayList<>();
+        images.add(url);
+    }
+
+    @Override
+    public void setGankList(List<GankEntity> gankList) {
+        initAdapter(gankList);
+    }
+
+    @Override
+    public void setProgressBarVisility(int visility) {
+        progressbar.setVisibility(visility);
+    }
+
+    @Override
+    public void showBaseProgressDialog(String msg) {
+        showProgressDialog(msg);
+    }
+
+    @Override
+    public void hideBaseProgressDialog() {
+        dissmissProgressDialog();
+    }
 }
