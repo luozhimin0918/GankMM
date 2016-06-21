@@ -17,13 +17,13 @@ import butterknife.ButterKnife;
 /**
  * Created by maning on 16/5/17.
  */
-public class RecycleTimeAdapter extends RecyclerView.Adapter<RecycleTimeAdapter.MyViewHolder> {
+public class RecycleHistoryAdapter extends RecyclerView.Adapter<RecycleHistoryAdapter.MyViewHolder> {
 
     private Context context;
     private List<String> mDatas;
     private LayoutInflater layoutInflater;
 
-    public RecycleTimeAdapter(Context context, List<String> mDatas) {
+    public RecycleHistoryAdapter(Context context, List<String> mDatas) {
         this.context = context;
         this.mDatas = mDatas;
         layoutInflater = LayoutInflater.from(this.context);

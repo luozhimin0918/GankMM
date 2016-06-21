@@ -16,6 +16,8 @@ import com.maning.gankmm.ui.base.BaseFragment;
 import com.maning.gankmm.bean.GankEntity;
 import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.db.CollectDao;
+import com.maning.gankmm.ui.iView.ICollectPagerView;
+import com.maning.gankmm.ui.presenter.impl.CollectPagerPresenterImpl;
 import com.maning.gankmm.utils.IntentUtils;
 import com.socks.library.KLog;
 
@@ -32,7 +34,7 @@ import butterknife.ButterKnife;
 /**
  * 收藏ViewPager的Fragment
  */
-public class CollectPagerFragment extends BaseFragment implements OnRefreshListener {
+public class CollectPagerFragment extends BaseFragment implements OnRefreshListener, ICollectPagerView {
 
     @Bind(R.id.swipe_target)
     RecyclerView swipeTarget;
@@ -40,9 +42,8 @@ public class CollectPagerFragment extends BaseFragment implements OnRefreshListe
     SwipeToLoadLayout swipeToLoadLayout;
 
     private String flag;
-    private ArrayList<GankEntity> collects = new ArrayList<>();
 
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private CollectPagerPresenterImpl collectPagerPresenter;
 
 
     public static CollectPagerFragment newInstance(String flag) {
@@ -75,37 +76,13 @@ public class CollectPagerFragment extends BaseFragment implements OnRefreshListe
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initData();
+        collectPagerPresenter = new CollectPagerPresenterImpl(getActivity(), this);
+
+        collectPagerPresenter.getCollectLists(flag);
+
     }
 
-    public void initData() {
-        collects = new CollectDao().queryAllCollectByType(flag);
-        if (collects != null && collects.size() > 0) {
-            KLog.i("排序前：" + collects.toString());
-            //按时间排序
-            Collections.sort(collects, new Comparator<GankEntity>() {
-                @Override
-                public int compare(GankEntity lhs, GankEntity rhs) {
-                    try {
-                        long l_time = sdf.parse(lhs.getCreatedAt().split("T")[0]).getTime();
-                        long r_time = sdf.parse(rhs.getCreatedAt().split("T")[0]).getTime();
-                        if (l_time < r_time) {
-                            return 1;
-                        } else {
-                            return -1;
-                        }
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    return 0;
-                }
-            });
-            KLog.i("排序后：" + collects.toString());
-        }
-        initAdapter();
-    }
-
-    private void initAdapter() {
+    private void initAdapter(final ArrayList<GankEntity> collects) {
         RecycleCollectAdapter recycleCollectAdapter = new RecycleCollectAdapter(context, collects);
         swipeTarget.setAdapter(recycleCollectAdapter);
         //点击事件
@@ -140,21 +117,22 @@ public class CollectPagerFragment extends BaseFragment implements OnRefreshListe
     }
 
 
-
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
+        collectPagerPresenter.detachView();
         overRefresh();
         ButterKnife.unbind(this);
+        super.onDestroyView();
     }
 
     @Override
     public void onRefresh() {
-        initData();
+        collectPagerPresenter.getCollectLists(flag);
     }
 
-    private void overRefresh() {
-        if(swipeToLoadLayout==null){
+    @Override
+    public void overRefresh() {
+        if (swipeToLoadLayout == null) {
             return;
         }
         if (swipeToLoadLayout.isRefreshing()) {
@@ -162,4 +140,8 @@ public class CollectPagerFragment extends BaseFragment implements OnRefreshListe
         }
     }
 
+    @Override
+    public void setCollectList(ArrayList<GankEntity> collectList) {
+        initAdapter(collectList);
+    }
 }

@@ -13,6 +13,7 @@ import com.like.OnLikeListener;
 import com.maning.gankmm.R;
 import com.maning.gankmm.bean.GankEntity;
 import com.maning.gankmm.db.CollectDao;
+import com.maning.gankmm.utils.MySnackbar;
 
 import java.util.List;
 
@@ -36,12 +37,11 @@ public class RecyclePublicAdapter extends RecyclerView.Adapter<RecyclePublicAdap
 
     private OnItemClickLitener mOnItemClickLitener;
 
-    public void setOnItemClickLitener(OnItemClickLitener mOnItemClickLitener)
-    {
+    public void setOnItemClickLitener(OnItemClickLitener mOnItemClickLitener) {
         this.mOnItemClickLitener = mOnItemClickLitener;
     }
 
-    public void updateDatas(List<GankEntity> commonDataResults){
+    public void updateDatas(List<GankEntity> commonDataResults) {
         this.commonDataResults = commonDataResults;
         notifyDataSetChanged();
     }
@@ -75,9 +75,9 @@ public class RecyclePublicAdapter extends RecyclerView.Adapter<RecyclePublicAdap
             public void liked(LikeButton likeButton) {
                 boolean insertResult = new CollectDao().insertOneCollect(resultsEntity);
                 if (insertResult) {
-                    Toast.makeText(context, "收藏成功", Toast.LENGTH_SHORT).show();
+                    MySnackbar.makeSnackBarBlack(viewHolder.tvShowTime, "收藏成功");
                 } else {
-                    Toast.makeText(context, "收藏失败", Toast.LENGTH_SHORT).show();
+                    MySnackbar.makeSnackBarRed(viewHolder.tvShowTime, "收藏失败");
                     likeButton.setLiked(false);
                 }
             }
@@ -86,9 +86,9 @@ public class RecyclePublicAdapter extends RecyclerView.Adapter<RecyclePublicAdap
             public void unLiked(LikeButton likeButton) {
                 boolean deleteResult = new CollectDao().deleteOneCollect(resultsEntity.get_id());
                 if (deleteResult) {
-                    Toast.makeText(context, "取消收藏成功", Toast.LENGTH_SHORT).show();
+                    MySnackbar.makeSnackBarBlack(viewHolder.tvShowTime, "取消收藏成功");
                 } else {
-                    Toast.makeText(context, "取消收藏失败", Toast.LENGTH_SHORT).show();
+                    MySnackbar.makeSnackBarRed(viewHolder.tvShowTime, "取消收藏失败");
                     likeButton.setLiked(true);
                 }
 

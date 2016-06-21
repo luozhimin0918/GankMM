@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.maning.gankmm.R;
 import com.maning.gankmm.bean.GankEntity;
-import com.maning.gankmm.ui.adapter.RecycleDayAdapter;
+import com.maning.gankmm.ui.adapter.RecycleGankAdapter;
 import com.maning.gankmm.ui.base.BaseActivity;
 import com.maning.gankmm.ui.iView.IGankView;
 import com.maning.gankmm.ui.presenter.impl.GankPresenterImpl;
@@ -90,11 +90,11 @@ public class GankActivity extends BaseActivity implements IGankView {
     }
 
     private void initAdapter(final List<GankEntity> gankList) {
-        RecycleDayAdapter recycleDayAdapter = new RecycleDayAdapter(this, gankList);
-        myRecycleView.setAdapter(recycleDayAdapter);
+        RecycleGankAdapter recycleGankAdapter = new RecycleGankAdapter(this, gankList);
+        myRecycleView.setAdapter(recycleGankAdapter);
         myRecycleView.setNestedScrollingEnabled(false);
         myRecycleView.setHasFixedSize(true);
-        recycleDayAdapter.setOnItemClickLitener(new RecycleDayAdapter.OnItemClickLitener() {
+        recycleGankAdapter.setOnItemClickLitener(new RecycleGankAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
                 if (!gankList.get(position).getType().equals("title")) {

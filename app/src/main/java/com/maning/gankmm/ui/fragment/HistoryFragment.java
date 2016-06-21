@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.maning.gankmm.R;
-import com.maning.gankmm.ui.adapter.RecycleTimeAdapter;
+import com.maning.gankmm.ui.adapter.RecycleHistoryAdapter;
 import com.maning.gankmm.ui.base.BaseFragment;
 import com.maning.gankmm.ui.iView.IHistoryView;
 import com.maning.gankmm.ui.presenter.impl.HistoryPresenterImpl;
@@ -77,10 +77,10 @@ public class HistoryFragment extends BaseFragment implements OnRefreshListener, 
 
 
     private void initRecycleView(final List<String> historyList) {
-        RecycleTimeAdapter recyclePicAdapter = new RecycleTimeAdapter(context, historyList);
+        RecycleHistoryAdapter recyclePicAdapter = new RecycleHistoryAdapter(context, historyList);
         swipeTarget.setAdapter(recyclePicAdapter);
         //点击事件
-        recyclePicAdapter.setOnItemClickLitener(new RecycleTimeAdapter.OnItemClickLitener() {
+        recyclePicAdapter.setOnItemClickLitener(new RecycleHistoryAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
                 IntentUtils.startDayShowActivity(getActivity(), historyList.get(position));

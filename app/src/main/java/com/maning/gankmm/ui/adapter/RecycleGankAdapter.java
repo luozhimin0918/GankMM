@@ -16,13 +16,13 @@ import java.util.List;
 /**
  * Created by maning on 16/5/17.
  */
-public class RecycleDayAdapter extends RecyclerView.Adapter<RecycleDayAdapter.MyViewHolder> {
+public class RecycleGankAdapter extends RecyclerView.Adapter<RecycleGankAdapter.MyViewHolder> {
 
     private Context context;
     private List<GankEntity> mDatas;
     private LayoutInflater layoutInflater;
 
-    public RecycleDayAdapter(Context context, List<GankEntity> mDatas) {
+    public RecycleGankAdapter(Context context, List<GankEntity> mDatas) {
         this.context = context;
         this.mDatas = mDatas;
         layoutInflater = LayoutInflater.from(this.context);
