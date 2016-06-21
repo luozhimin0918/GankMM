@@ -165,6 +165,7 @@ public class SettingActivity extends BaseActivity implements ISettingView {
         super.onResume();
         MobclickAgent.onPageStart("SettingActivity");
         MobclickAgent.onResume(this);          //统计时长
+        settingPresenter.initUmeng();
     }
 
     public void onPause() {

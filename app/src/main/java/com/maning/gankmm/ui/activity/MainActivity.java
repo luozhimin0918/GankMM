@@ -21,6 +21,8 @@ import com.maning.gankmm.ui.fragment.CategoryFragment;
 import com.maning.gankmm.ui.fragment.HistoryFragment;
 import com.maning.gankmm.ui.fragment.WelFareFragment;
 import com.maning.gankmm.ui.fragment.collect.CollectFragment;
+import com.maning.gankmm.ui.iView.IMainView;
+import com.maning.gankmm.ui.presenter.impl.MainPresenterImpl;
 import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.utils.MySnackbar;
 import com.maning.gankmm.utils.SharePreUtil;
@@ -42,7 +44,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import me.drakeet.materialdialog.MaterialDialog;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements IMainView {
 
     @Bind(R.id.navigationView)
     NavigationView navigationView;
@@ -58,9 +60,10 @@ public class MainActivity extends BaseActivity {
     private HistoryFragment timeFragment;
 
     private long exitTime = 0;
-    private FeedbackAgent umengAgent;
-    private MaterialDialog mMaterialDialog;
+    private MaterialDialog mMaterialDialogFeedBack;
     private MaterialDialog mMaterialDialogPush;
+
+    private MainPresenterImpl mainPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,10 +79,8 @@ public class MainActivity extends BaseActivity {
 
         setDefaultFragment();
 
-        initFeedbackDialog();
-
-        //umeng
-        initUmeng();
+        mainPresenter = new MainPresenterImpl(this, this);
+        mainPresenter.initUmeng();
 
         initIntent();
 
@@ -103,22 +104,21 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initFeedbackDialog() {
-        mMaterialDialog = new MaterialDialog(this);
-        mMaterialDialog.setTitle(getString(R.string.gank_dialog_title_notify));
-        mMaterialDialog.setMessage(getString(R.string.gank_dialog_msg_feedback));
-        mMaterialDialog.setPositiveButton("查看", new View.OnClickListener() {
+        mMaterialDialogFeedBack = new MaterialDialog(this);
+        mMaterialDialogFeedBack.setTitle(getString(R.string.gank_dialog_title_notify));
+        mMaterialDialogFeedBack.setMessage(getString(R.string.gank_dialog_msg_feedback));
+        mMaterialDialogFeedBack.setPositiveButton("查看", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMaterialDialog.dismiss();
+                mMaterialDialogFeedBack.dismiss();
                 //自定义意见反馈
                 startActivity(new Intent(context, FeedBackActivity.class));
             }
         });
-        mMaterialDialog.setNegativeButton("等一会去", new View.OnClickListener() {
+        mMaterialDialogFeedBack.setNegativeButton("等一会去", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMaterialDialog.dismiss();
-
+                mMaterialDialogFeedBack.dismiss();
             }
         });
     }
@@ -266,7 +266,7 @@ public class MainActivity extends BaseActivity {
         }
         long currtTime = System.currentTimeMillis();
         if (currtTime - exitTime > 2000) {
-            MySnackbar.makeSnackBarBlack(toolbar,getString(R.string.gank_hint_exit_app));
+            MySnackbar.makeSnackBarBlack(toolbar, getString(R.string.gank_hint_exit_app));
             exitTime = currtTime;
             return;
         }
@@ -285,83 +285,17 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
-        umengAgent = null;
-        mMaterialDialog = null;
+        mainPresenter.detachView();
+        mMaterialDialogFeedBack = null;
         mMaterialDialogPush = null;
+        super.onDestroy();
     }
 
-    //----------------Umeng------------
-
-
-    private void initUmeng() {
-        initUmengFeedback();
-        initUmengUpdate();
-    }
-
-    private void initUmengFeedback() {
-        umengAgent = new FeedbackAgent(this);
-        Conversation defaultConversation = umengAgent.getDefaultConversation();
-        defaultConversation.sync(new SyncListener() {
-            @Override
-            public void onReceiveDevReply(List<Reply> list) {
-                if (list != null && list.size() > 0) {
-                    SharePreUtil.saveBooleanData(context, Constants.SPFeedback, true);
-                    if (mMaterialDialog != null) {
-                        mMaterialDialog.show();
-                    }
-                }
-            }
-
-            @Override
-            public void onSendUserReply(List<Reply> list) {
-
-            }
-        });
-    }
-
-    private void initUmengUpdate() {
-        UmengUpdateAgent.setDeltaUpdate(true);//增量更新，默认true
-        UmengUpdateAgent.setUpdateAutoPopup(true);
-        UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
-            @Override
-            public void onUpdateReturned(int updateStatus, UpdateResponse updateResponse) {
-                switch (updateStatus) {
-                    case UpdateStatus.Yes:
-                        KLog.i("Umeng更新-----有新版本了---新版文件大小为：" + updateResponse.target_size + "---下载文件大小为：" + updateResponse.size);
-                        SharePreUtil.saveBooleanData(context, Constants.SPAppUpdate + MyApplication.getVersionCode(), true);
-                        break;
-                    case UpdateStatus.No:
-                        KLog.i("Umeng更新-----没有新版本");
-                        SharePreUtil.saveBooleanData(context, Constants.SPAppUpdate + MyApplication.getVersionCode(), false);
-                        break;
-                    case UpdateStatus.Timeout:
-                        KLog.i("Umeng更新-----超时");
-                        break;
-                }
-            }
-        });
-
-        //对话框按键的监听，对于强制更新的版本，如果用户未选择更新的行为，关闭app
-        UmengUpdateAgent.setDialogListener(new UmengDialogButtonListener() {
-            @Override
-            public void onClick(int status) {
-                switch (status) {
-                    case UpdateStatus.Update:
-                        KLog.i("Umeng更新-----点击了更新");
-                        SharePreUtil.saveBooleanData(context, Constants.SPAppUpdate + MyApplication.getVersionCode(), false);
-                        break;
-                    case UpdateStatus.Ignore:
-                        KLog.i("Umeng更新-----点击了忽略");
-                        break;
-                    case UpdateStatus.NotNow:
-                        KLog.i("Umeng更新-----点击了暂时不更新");
-                        break;
-                }
-            }
-        });
-
-        //检测更新
-        UmengUpdateAgent.update(this);
+    @Override
+    public void showFeedBackDialog() {
+        if (mMaterialDialogFeedBack == null) {
+            initFeedbackDialog();
+        }
+        mMaterialDialogFeedBack.show();
     }
 }
