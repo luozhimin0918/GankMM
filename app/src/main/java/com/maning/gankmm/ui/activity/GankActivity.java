@@ -149,7 +149,7 @@ public class GankActivity extends BaseActivity implements IGankView {
 
     @Override
     public void showToast(String msg) {
-        MySnackbar.makeSnackBarBlue(toolbar, msg);
+        MySnackbar.makeSnackBarBlack(toolbar, msg);
     }
 
     @Override

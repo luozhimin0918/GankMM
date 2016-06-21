@@ -219,7 +219,7 @@ public class WebActivity extends BaseActivity implements IWebView {
 
     @Override
     public void showToast(String msg) {
-        MySnackbar.makeSnackBarBlue(toolbar, msg);
+        MySnackbar.makeSnackBarBlack(toolbar, msg);
     }
 
     @Override
