@@ -23,6 +23,7 @@ import com.maning.gankmm.ui.fragment.TimeFragment;
 import com.maning.gankmm.ui.fragment.WelFareFragment;
 import com.maning.gankmm.ui.fragment.collect.CollectFragment;
 import com.maning.gankmm.utils.IntentUtils;
+import com.maning.gankmm.utils.MySnackbar;
 import com.maning.gankmm.utils.SharePreUtil;
 import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
@@ -266,7 +267,7 @@ public class MainActivity extends BaseActivity {
         }
         long currtTime = System.currentTimeMillis();
         if (currtTime - exitTime > 2000) {
-            Toast.makeText(this, R.string.gank_hint_exit_app, Toast.LENGTH_SHORT).show();
+            MySnackbar.makeSnackBarBlack(toolbar,getString(R.string.gank_hint_exit_app));
             exitTime = currtTime;
             return;
         }

@@ -2,7 +2,10 @@ package com.maning.gankmm.utils;
 
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.maning.gankmm.R;
@@ -34,14 +37,9 @@ public class ColoredSnackbar {
             //设置背景色
             snackBarView.setBackgroundColor(colorId);
             //设置透明度
-            snackBarView.setAlpha(0.8f);
+            snackBarView.setAlpha(0.95f);
             //这只内容文字的颜色
             ((TextView) snackBarView.findViewById(R.id.snackbar_text)).setTextColor(Color.parseColor("#FFFFFF"));
-            //设置显示位置
-//            ViewGroup.LayoutParams vl = snackBarView.getLayoutParams();
-//            LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(vl.width, vl.height);
-//            ll.gravity = Gravity.TOP;
-//            snackBarView.setLayoutParams(ll);
         }
 
         return snackbar;
