@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
 /**
  * 历史时间
  */
-public class TimeFragment extends BaseFragment implements OnRefreshListener {
+public class HistoryFragment extends BaseFragment implements OnRefreshListener {
 
     @Bind(R.id.swipe_target)
     RecyclerView swipeTarget;
@@ -55,15 +55,15 @@ public class TimeFragment extends BaseFragment implements OnRefreshListener {
             dissmissProgressDialog();
             overRefresh();
             if (!TextUtils.isEmpty(result)) {
-                MySnackbar.makeSnackBarRed(swipeTarget,result);
+                MySnackbar.makeSnackBarRed(swipeTarget, result);
             }
         }
     };
 
     private List<String> timeList;
 
-    public static TimeFragment newInstance() {
-        return new TimeFragment();
+    public static HistoryFragment newInstance() {
+        return new HistoryFragment();
     }
 
     @Override
@@ -141,11 +141,11 @@ public class TimeFragment extends BaseFragment implements OnRefreshListener {
 
     public void onResume() {
         super.onResume();
-        MobclickAgent.onPageStart("TimeFragment");
+        MobclickAgent.onPageStart("HistoryFragment");
     }
 
     public void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd("TimeFragment");
+        MobclickAgent.onPageEnd("HistoryFragment");
     }
 }

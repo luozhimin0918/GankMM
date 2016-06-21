@@ -12,14 +12,13 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.maning.gankmm.R;
 import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.ui.base.BaseActivity;
 import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.ui.fragment.CategoryFragment;
-import com.maning.gankmm.ui.fragment.TimeFragment;
+import com.maning.gankmm.ui.fragment.HistoryFragment;
 import com.maning.gankmm.ui.fragment.WelFareFragment;
 import com.maning.gankmm.ui.fragment.collect.CollectFragment;
 import com.maning.gankmm.utils.IntentUtils;
@@ -56,7 +55,7 @@ public class MainActivity extends BaseActivity {
     private WelFareFragment welFareFragment;
     private CollectFragment collectFragment;
     private CategoryFragment categoryFragment;
-    private TimeFragment timeFragment;
+    private HistoryFragment timeFragment;
 
     private long exitTime = 0;
     private FeedbackAgent umengAgent;
