@@ -14,9 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.maning.gankmm.R;
-import com.maning.gankmm.app.MyApplication;
-import com.maning.gankmm.ui.base.BaseActivity;
 import com.maning.gankmm.constant.Constants;
+import com.maning.gankmm.ui.base.BaseActivity;
 import com.maning.gankmm.ui.fragment.CategoryFragment;
 import com.maning.gankmm.ui.fragment.HistoryFragment;
 import com.maning.gankmm.ui.fragment.WelFareFragment;
@@ -25,20 +24,7 @@ import com.maning.gankmm.ui.iView.IMainView;
 import com.maning.gankmm.ui.presenter.impl.MainPresenterImpl;
 import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.utils.MySnackbar;
-import com.maning.gankmm.utils.SharePreUtil;
-import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.fb.FeedbackAgent;
-import com.umeng.fb.SyncListener;
-import com.umeng.fb.model.Conversation;
-import com.umeng.fb.model.Reply;
-import com.umeng.update.UmengDialogButtonListener;
-import com.umeng.update.UmengUpdateAgent;
-import com.umeng.update.UmengUpdateListener;
-import com.umeng.update.UpdateResponse;
-import com.umeng.update.UpdateStatus;
-
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
