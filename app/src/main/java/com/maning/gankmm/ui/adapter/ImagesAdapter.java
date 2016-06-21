@@ -1,6 +1,7 @@
 package com.maning.gankmm.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.maning.gankmm.R;
+import com.maning.gankmm.ui.view.PinchImageView;
+import com.socks.library.KLog;
 
 import java.util.ArrayList;
 
@@ -67,5 +70,22 @@ public class ImagesAdapter extends PagerAdapter {
     @Override
     public boolean isViewFromObject(View view, Object object) {
         return view == object;
+    }
+
+    public Bitmap getCurrentImageViewBitmap() {
+        View currentItem = getPrimaryItem();
+        if (currentItem == null) {
+            KLog.i("btn_save----currentItem是空");
+            return null;
+        }
+        PinchImageView imageView = (PinchImageView) currentItem.findViewById(R.id.imageView);
+        if (imageView == null) {
+            KLog.i("btn_save----imageView是空");
+            return null;
+        }
+        imageView.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(imageView.getDrawingCache());
+        imageView.setDrawingCacheEnabled(false);
+        return bitmap;
     }
 }

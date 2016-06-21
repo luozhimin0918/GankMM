@@ -1,36 +1,22 @@
 package com.maning.gankmm.ui.activity;
 
-import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.maning.gankmm.R;
-import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.ui.adapter.ImagesAdapter;
 import com.maning.gankmm.ui.base.BaseActivity;
-import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.ui.iView.IImageView;
 import com.maning.gankmm.ui.presenter.impl.ImagePresenterImpl;
-import com.maning.gankmm.utils.BitmapUtils;
 import com.maning.gankmm.utils.IntentUtils;
-import com.maning.gankmm.ui.view.PinchImageView;
-import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -68,7 +54,7 @@ public class ImagesActivity extends BaseActivity implements IImageView {
 
         initIntent();
 
-        tvShowNum.setText((startIndex + 1) + "/" + mDatas.size());
+        tvShowNum.setText(String.valueOf((startIndex + 1) + "/" + mDatas.size()));
 
         //初始化ViewPager
         initViewPager();
@@ -99,7 +85,7 @@ public class ImagesActivity extends BaseActivity implements IImageView {
 
             @Override
             public void onPageSelected(int position) {
-                tvShowNum.setText((position + 1) + "/" + mDatas.size());
+                tvShowNum.setText(String.valueOf((position + 1) + "/" + mDatas.size()));
             }
 
             @Override
@@ -119,23 +105,6 @@ public class ImagesActivity extends BaseActivity implements IImageView {
     @OnClick(R.id.btn_save)
     void btn_save() {
         imagePresenter.saveImage();
-    }
-
-    public Bitmap getCurrentImageViewBitmap() {
-        View currentItem = imageAdapter.getPrimaryItem();
-        if (currentItem == null) {
-            KLog.i("btn_save----currentItem是空");
-            return null;
-        }
-        PinchImageView imageView = (PinchImageView) currentItem.findViewById(R.id.imageView);
-        if (imageView == null) {
-            KLog.i("btn_save----imageView是空");
-            return null;
-        }
-        imageView.setDrawingCacheEnabled(true);
-        Bitmap bitmap = Bitmap.createBitmap(imageView.getDrawingCache());
-        imageView.setDrawingCacheEnabled(false);
-        return bitmap;
     }
 
     @OnClick(R.id.btn_wallpaper)
@@ -162,6 +131,11 @@ public class ImagesActivity extends BaseActivity implements IImageView {
     @Override
     public void showBasesProgressError(String msg) {
         showProgressError(msg);
+    }
+
+    @Override
+    public Bitmap getCurrentImageViewBitmap() {
+        return imageAdapter.getCurrentImageViewBitmap();
     }
 
     public void onResume() {
