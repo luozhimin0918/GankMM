@@ -4,128 +4,42 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.maning.gankmm.R;
-import com.maning.gankmm.ui.adapter.RecyclePublicAdapter;
-import com.maning.gankmm.app.MyApplication;
-import com.maning.gankmm.ui.base.BaseFragment;
 import com.maning.gankmm.bean.GankEntity;
-import com.maning.gankmm.http.MyCallBack;
 import com.maning.gankmm.constant.Constants;
-import com.maning.gankmm.db.PublicDao;
-import com.maning.gankmm.http.GankApi;
+import com.maning.gankmm.ui.adapter.RecyclePublicAdapter;
+import com.maning.gankmm.ui.base.BaseFragment;
+import com.maning.gankmm.ui.iView.IPublicView;
+import com.maning.gankmm.ui.presenter.impl.PublicPresenterImpl;
 import com.maning.gankmm.utils.IntentUtils;
+import com.maning.gankmm.utils.MySnackbar;
 import com.socks.library.KLog;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+
 /**
  * 公用的Fragment：Android，ios，休息视频，前端，拓展资源，瞎推荐，App
  */
-public class PublicFragment extends BaseFragment implements OnRefreshListener, OnLoadMoreListener {
+public class PublicFragment extends BaseFragment implements OnRefreshListener, OnLoadMoreListener, IPublicView {
 
     @Bind(R.id.swipe_target)
     RecyclerView swipeTarget;
     @Bind(R.id.swipeToLoadLayout)
     SwipeToLoadLayout swipeToLoadLayout;
 
-    private MyCallBack myCallBack = new MyCallBack() {
-
-        @Override
-        public void onSuccessList(int what, List results) {
-            if (results == null) {
-                overRefresh();
-                dissmissProgressDialog();
-                return;
-            }
-            switch (what) {
-                case 0x001:
-                    dissmissProgressDialog();
-                    if (publicDataResults == null) {
-                        publicDataResults = new ArrayList<>();
-                    }
-                    List<GankEntity> gankEntityList = results;
-                    //过滤一下数据,筛除重的
-                    if (publicDataResults.size() > 0) {
-                        for (int i = 0; i < results.size(); i++) {
-                            GankEntity resultEntity2 = gankEntityList.get(i);
-                            for (int j = 0; j < publicDataResults.size(); j++) {
-                                GankEntity resultsEntity1 = publicDataResults.get(j);
-                                if (resultEntity2.get_id().equals(resultsEntity1.get_id())) {
-                                    //删除
-                                    gankEntityList.remove(i);
-                                }
-                            }
-                        }
-                    }
-                    publicDataResults.addAll(gankEntityList);
-                    initAdapter();
-                    if (publicDataResults == null || publicDataResults.size() == 0 || publicDataResults.size() < pageIndex * pageSize) {
-                        swipeToLoadLayout.setLoadMoreEnabled(false);
-                    } else {
-                        swipeToLoadLayout.setLoadMoreEnabled(true);
-                    }
-                    pageIndex++;
-                    overRefresh();
-                    break;
-                case 0x002: //下拉刷新
-                    pageIndex = 1;
-                    pageIndex++;
-                    publicDataResults = results;
-                    //保存到数据库
-                    saveToDB(publicDataResults);
-                    initAdapter();
-                    overRefresh();
-                    break;
-            }
-        }
-
-        @Override
-        public void onSuccess(int what, Object result) {
-
-        }
-
-        @Override
-        public void onFail(int what, String result) {
-            dissmissProgressDialog();
-            overRefresh();
-            if (!TextUtils.isEmpty(result)) {
-                Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
-            }
-        }
-    };
     private RecyclePublicAdapter recyclePublicAdapter;
 
-    /**
-     * 保存到数据库
-     *
-     * @param results
-     */
-    private void saveToDB(final List<GankEntity> results) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                new PublicDao().insertList(results, flagFragment);
-            }
-        }).start();
-    }
-
-    private List<GankEntity> publicDataResults;
-    private int pageSize = 20;
-    private int pageIndex = 1;
-    //标记来自哪个标签的
     private String flagFragment;
 
     public static PublicFragment newInstance(String flag) {
@@ -157,57 +71,34 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
         return view;
     }
 
+    private PublicPresenterImpl publicPresenter;
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         KLog.i("PublicFragment-----onViewCreated");
 
-        getDBDatas();
+        publicPresenter = new PublicPresenterImpl(getActivity(), this, flagFragment);
 
+        publicPresenter.getDBDatas();
     }
 
-    private void getDBDatas() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //获取数据库的数据
-                publicDataResults = new PublicDao().queryAllCollectByType(flagFragment);
-                MyApplication.getHandler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (publicDataResults != null && publicDataResults.size() > 0) {
-                            initAdapter();
-                        } else {
-                            //自动刷新
-                            swipeToLoadLayout.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    swipeToLoadLayout.setRefreshing(true);
-                                }
-                            });
-                        }
-                    }
-                });
-            }
-        }).start();
-    }
-
-    private void initAdapter() {
+    private void initAdapter(final List<GankEntity> publicList) {
 
         if (recyclePublicAdapter == null) {
-            recyclePublicAdapter = new RecyclePublicAdapter(context, publicDataResults);
+            recyclePublicAdapter = new RecyclePublicAdapter(context, publicList);
             swipeTarget.setAdapter(recyclePublicAdapter);
             //点击事件
             recyclePublicAdapter.setOnItemClickLitener(new RecyclePublicAdapter.OnItemClickLitener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    GankEntity resultsEntity = publicDataResults.get(position);
+                    GankEntity resultsEntity = publicList.get(position);
                     IntentUtils.startToWebActivity(getActivity(), flagFragment, resultsEntity.getDesc(), resultsEntity.getUrl());
                 }
             });
 
         } else {
-            recyclePublicAdapter.updateDatas(publicDataResults);
+            recyclePublicAdapter.updateDatas(publicList);
         }
 
     }
@@ -223,6 +114,7 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
 
     @Override
     public void onDestroyView() {
+        publicPresenter.detachView();
         super.onDestroyView();
         overRefresh();
         ButterKnife.unbind(this);
@@ -230,16 +122,27 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
 
     @Override
     public void onRefresh() {
-        GankApi.getCommonDataNew(flagFragment, pageSize, 1, 0x002, myCallBack);
+        publicPresenter.getNewDatas();
     }
 
     @Override
     public void onLoadMore() {
-        GankApi.getCommonDataNew(flagFragment, pageSize, pageIndex, 0x001, myCallBack);
+        publicPresenter.getMoreDatas();
     }
 
-    private void overRefresh() {
-        if(swipeToLoadLayout==null){
+    @Override
+    public void setPublicList(List<GankEntity> publicList) {
+        initAdapter(publicList);
+    }
+
+    @Override
+    public void showToast(String msg) {
+        MySnackbar.makeSnackBarBlack(swipeTarget, msg);
+    }
+
+    @Override
+    public void overRefresh() {
+        if (swipeToLoadLayout == null) {
             return;
         }
         if (swipeToLoadLayout.isRefreshing()) {
@@ -248,6 +151,22 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
         if (swipeToLoadLayout.isLoadingMore()) {
             swipeToLoadLayout.setLoadingMore(false);
         }
+    }
+
+    @Override
+    public void setLoadMoreEnabled(boolean flag) {
+        swipeToLoadLayout.setLoadMoreEnabled(flag);
+    }
+
+    @Override
+    public void setRefreshing(boolean flag) {
+        //自动刷新
+        swipeToLoadLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeToLoadLayout.setRefreshing(true);
+            }
+        });
     }
 
 }

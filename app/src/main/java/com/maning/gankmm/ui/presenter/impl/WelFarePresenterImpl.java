@@ -20,6 +20,10 @@ public class WelFarePresenterImpl extends BasePresenterImpl<IWelFareView> implem
 
     private Context context;
 
+    private List<GankEntity> welFareLists;
+    private int pageSize = 20;
+    private int pageIndex = 1;
+
     public WelFarePresenterImpl(Context context, IWelFareView iWelFareView) {
         this.context = context;
         attachView(iWelFareView);
@@ -34,15 +38,15 @@ public class WelFarePresenterImpl extends BasePresenterImpl<IWelFareView> implem
             }
             switch (what) {
                 case 0x001:
-                    if (commonDataResults == null) {
-                        commonDataResults = new ArrayList<>();
+                    if (welFareLists == null) {
+                        welFareLists = new ArrayList<>();
                     }
-                    if (pageIndex == 1 && commonDataResults.size() > 0) {
-                        commonDataResults.clear();
+                    if (pageIndex == 1 && welFareLists.size() > 0) {
+                        welFareLists.clear();
                     }
-                    commonDataResults.addAll(results);
-                    mView.setWelFareList(commonDataResults);
-                    if (commonDataResults == null || commonDataResults.size() == 0 || commonDataResults.size() < pageIndex * pageSize) {
+                    welFareLists.addAll(results);
+                    mView.setWelFareList(welFareLists);
+                    if (welFareLists == null || welFareLists.size() == 0 || welFareLists.size() < pageIndex * pageSize) {
                         mView.setLoadMoreEnabled(false);
                     } else {
                         mView.setLoadMoreEnabled(true);
@@ -53,9 +57,9 @@ public class WelFarePresenterImpl extends BasePresenterImpl<IWelFareView> implem
                 case 0x002: //下拉刷新
                     pageIndex = 1;
                     pageIndex++;
-                    commonDataResults = results;
-                    if (commonDataResults.size() > 0) {
-                        mView.setWelFareList(commonDataResults);
+                    welFareLists = results;
+                    if (welFareLists.size() > 0) {
+                        mView.setWelFareList(welFareLists);
                     }
                     mView.overRefresh();
                     break;
@@ -75,10 +79,6 @@ public class WelFarePresenterImpl extends BasePresenterImpl<IWelFareView> implem
             }
         }
     };
-
-    private List<GankEntity> commonDataResults;
-    private int pageSize = 20;
-    private int pageIndex = 1;
 
     @Override
     public void getNewDatas() {

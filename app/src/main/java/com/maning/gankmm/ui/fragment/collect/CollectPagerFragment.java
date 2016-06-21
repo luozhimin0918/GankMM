@@ -11,21 +11,16 @@ import android.view.ViewGroup;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.maning.gankmm.R;
-import com.maning.gankmm.ui.adapter.RecycleCollectAdapter;
-import com.maning.gankmm.ui.base.BaseFragment;
 import com.maning.gankmm.bean.GankEntity;
 import com.maning.gankmm.constant.Constants;
-import com.maning.gankmm.db.CollectDao;
+import com.maning.gankmm.ui.adapter.RecycleCollectAdapter;
+import com.maning.gankmm.ui.base.BaseFragment;
 import com.maning.gankmm.ui.iView.ICollectPagerView;
 import com.maning.gankmm.ui.presenter.impl.CollectPagerPresenterImpl;
 import com.maning.gankmm.utils.IntentUtils;
 import com.socks.library.KLog;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
