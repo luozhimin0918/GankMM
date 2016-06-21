@@ -17,8 +17,6 @@ public interface ISettingView extends IBaseView {
 
     void showBasesProgressSuccess(String msg);
 
-    void showBasesProgressError(String msg);
-
     void showToast(String msg);
 
 }

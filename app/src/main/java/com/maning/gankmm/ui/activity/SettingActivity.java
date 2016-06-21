@@ -157,11 +157,6 @@ public class SettingActivity extends BaseActivity implements ISettingView {
     }
 
     @Override
-    public void showBasesProgressError(String msg) {
-        showProgressError(msg);
-    }
-
-    @Override
     public void showToast(String msg) {
         MySnackbar.makeSnackBarBlue(toolbar, msg);
     }
