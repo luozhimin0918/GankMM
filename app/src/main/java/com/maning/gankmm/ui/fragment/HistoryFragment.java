@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +14,8 @@ import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.maning.gankmm.R;
 import com.maning.gankmm.ui.adapter.RecycleTimeAdapter;
 import com.maning.gankmm.ui.base.BaseFragment;
-import com.maning.gankmm.http.MyCallBack;
-import com.maning.gankmm.http.GankApi;
+import com.maning.gankmm.ui.iView.IHistoryView;
+import com.maning.gankmm.ui.presenter.impl.HistoryPresenterImpl;
 import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.utils.MySnackbar;
 import com.umeng.analytics.MobclickAgent;
@@ -31,36 +30,15 @@ import butterknife.ButterKnife;
 /**
  * 历史时间
  */
-public class HistoryFragment extends BaseFragment implements OnRefreshListener {
+public class HistoryFragment extends BaseFragment implements OnRefreshListener, IHistoryView {
 
     @Bind(R.id.swipe_target)
     RecyclerView swipeTarget;
     @Bind(R.id.swipeToLoadLayout)
     SwipeToLoadLayout swipeToLoadLayout;
 
-    private MyCallBack httpCallBack = new MyCallBack() {
-        @Override
-        public void onSuccessList(int what, List results) {
-            timeList = results;
-            initRecycleView();
-        }
 
-        @Override
-        public void onSuccess(int what, Object result) {
-
-        }
-
-        @Override
-        public void onFail(int what, String result) {
-            dissmissProgressDialog();
-            overRefresh();
-            if (!TextUtils.isEmpty(result)) {
-                MySnackbar.makeSnackBarRed(swipeTarget, result);
-            }
-        }
-    };
-
-    private List<String> timeList;
+    private HistoryPresenterImpl historyPresenter;
 
     public static HistoryFragment newInstance() {
         return new HistoryFragment();
@@ -87,6 +65,7 @@ public class HistoryFragment extends BaseFragment implements OnRefreshListener {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        historyPresenter = new HistoryPresenterImpl(getActivity(), this);
         //自动刷新
         swipeToLoadLayout.post(new Runnable() {
             @Override
@@ -97,14 +76,14 @@ public class HistoryFragment extends BaseFragment implements OnRefreshListener {
     }
 
 
-    private void initRecycleView() {
-        RecycleTimeAdapter recyclePicAdapter = new RecycleTimeAdapter(context, timeList);
+    private void initRecycleView(final List<String> historyList) {
+        RecycleTimeAdapter recyclePicAdapter = new RecycleTimeAdapter(context, historyList);
         swipeTarget.setAdapter(recyclePicAdapter);
         //点击事件
         recyclePicAdapter.setOnItemClickLitener(new RecycleTimeAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
-                IntentUtils.startDayShowActivity(getActivity(), timeList.get(position));
+                IntentUtils.startDayShowActivity(getActivity(), historyList.get(position));
             }
         });
         overRefresh();
@@ -122,22 +101,35 @@ public class HistoryFragment extends BaseFragment implements OnRefreshListener {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        overRefresh();
-        ButterKnife.unbind(this);
+    public void onRefresh() {
+        historyPresenter.getHistoryDatas();
     }
 
     @Override
-    public void onRefresh() {
-
-        GankApi.getHistoryData(0x001, httpCallBack);
-
+    public void setHistoryList(List<String> historyList) {
+        initRecycleView(historyList);
     }
 
-    private void overRefresh() {
+    @Override
+    public void showToast(String msg) {
+        MySnackbar.makeSnackBarRed(swipeTarget, msg);
+    }
+
+    @Override
+    public void overRefresh() {
         swipeToLoadLayout.setRefreshing(false);
     }
+
+    @Override
+    public void showBaseProgressDialog(String msg) {
+        showProgressDialog();
+    }
+
+    @Override
+    public void hideBaseProgressDialog() {
+        dissmissProgressDialog();
+    }
+
 
     public void onResume() {
         super.onResume();
@@ -148,4 +140,13 @@ public class HistoryFragment extends BaseFragment implements OnRefreshListener {
         super.onPause();
         MobclickAgent.onPageEnd("HistoryFragment");
     }
+
+    @Override
+    public void onDestroyView() {
+        overRefresh();
+        historyPresenter.detachView();
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
 }
