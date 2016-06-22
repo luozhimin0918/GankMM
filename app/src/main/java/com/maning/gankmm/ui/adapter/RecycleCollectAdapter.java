@@ -66,7 +66,7 @@ public class RecycleCollectAdapter extends RecyclerView.Adapter<RecycleCollectAd
 
         viewHolder.tvShowWho.setText(resultsEntity.getWho());
         viewHolder.tvShowTitle.setText(resultsEntity.getDesc());
-        viewHolder.tvShowTime.setText(resultsEntity.getCreatedAt().split("T")[0]);
+        viewHolder.tvShowTime.setText(resultsEntity.getPublishedAt().split("T")[0]);
 
         //是福利的话就展示图片
         if (Constants.FlagWelFare.equals(resultsEntity.getType())) {

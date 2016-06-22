@@ -2,6 +2,7 @@ package com.maning.gankmm.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.maning.gankmm.bean.GankEntity;
 import com.maning.gankmm.db.CollectDao;
 import com.maning.gankmm.utils.DensityUtil;
 import com.maning.gankmm.utils.MySnackbar;
+import com.socks.library.KLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +81,9 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclePicAdapter.My
 
         final GankEntity resultsEntity = commonDataResults.get(position);
 
-        viewHolder.tvShowTime.setText(resultsEntity.getCreatedAt().split("T")[0]);
+        String time = resultsEntity.getPublishedAt().split("T")[0];
+        viewHolder.tvShowTime.setText(time);
+
         //图片显示
         String url = resultsEntity.getUrl();
 

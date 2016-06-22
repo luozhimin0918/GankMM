@@ -61,7 +61,7 @@ public class RecyclePublicAdapter extends RecyclerView.Adapter<RecyclePublicAdap
 
         viewHolder.tvShowWho.setText(resultsEntity.getWho());
         viewHolder.tvShowTitle.setText(resultsEntity.getDesc());
-        viewHolder.tvShowTime.setText(resultsEntity.getCreatedAt().split("T")[0]);
+        viewHolder.tvShowTime.setText(resultsEntity.getPublishedAt().split("T")[0]);
 
         //查询是否存在收藏
         boolean isCollect = new CollectDao().queryOneCollectByID(resultsEntity.get_id());
@@ -81,7 +81,6 @@ public class RecyclePublicAdapter extends RecyclerView.Adapter<RecyclePublicAdap
                     likeButton.setLiked(false);
                 }
             }
-
             @Override
             public void unLiked(LikeButton likeButton) {
                 boolean deleteResult = new CollectDao().deleteOneCollect(resultsEntity.get_id());
@@ -91,7 +90,6 @@ public class RecyclePublicAdapter extends RecyclerView.Adapter<RecyclePublicAdap
                     MySnackbar.makeSnackBarRed(viewHolder.tvShowTime, "取消收藏失败");
                     likeButton.setLiked(true);
                 }
-
             }
         });
 
