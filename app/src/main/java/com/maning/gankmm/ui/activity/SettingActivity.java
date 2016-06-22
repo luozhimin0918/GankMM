@@ -12,6 +12,7 @@ import com.maning.gankmm.ui.base.BaseActivity;
 import com.maning.gankmm.ui.iView.ISettingView;
 import com.maning.gankmm.ui.presenter.impl.SettingPresenterImpl;
 import com.maning.gankmm.ui.view.MySettingItemView;
+import com.maning.gankmm.utils.DialogUtils;
 import com.maning.gankmm.utils.MySnackbar;
 import com.umeng.analytics.MobclickAgent;
 
@@ -92,21 +93,14 @@ public class SettingActivity extends BaseActivity implements ISettingView {
 
 
     private void initCacheDialog() {
-        mMaterialDialog = new MaterialDialog(this);
-        mMaterialDialog.setTitle("缓存清理");
-        mMaterialDialog.setMessage("确定要清除图片的缓存吗？");
-        mMaterialDialog.setPositiveButton("确定", new View.OnClickListener() {
+        mMaterialDialog = DialogUtils.initDialog(this, "缓存清理", "确定要清除图片的缓存吗？", "确定", "取消", new DialogUtils.OnDialogClickListener() {
             @Override
-            public void onClick(View v) {
-                mMaterialDialog.dismiss();
+            public void onConfirm() {
                 settingPresenter.cleanCache();
             }
-        });
-        mMaterialDialog.setNegativeButton("取消", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mMaterialDialog.dismiss();
 
+            @Override
+            public void onCancel() {
             }
         });
     }
@@ -176,7 +170,11 @@ public class SettingActivity extends BaseActivity implements ISettingView {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         settingPresenter.detachView();
+        if (mMaterialDialog != null) {
+            mMaterialDialog.dismiss();
+            mMaterialDialog = null;
+        }
+        super.onDestroy();
     }
 }

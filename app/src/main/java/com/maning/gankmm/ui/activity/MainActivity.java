@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.maning.gankmm.R;
 import com.maning.gankmm.constant.Constants;
@@ -22,6 +21,7 @@ import com.maning.gankmm.ui.fragment.WelFareFragment;
 import com.maning.gankmm.ui.fragment.collect.CollectFragment;
 import com.maning.gankmm.ui.iView.IMainView;
 import com.maning.gankmm.ui.presenter.impl.MainPresenterImpl;
+import com.maning.gankmm.utils.DialogUtils;
 import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.utils.MySnackbar;
 import com.umeng.analytics.MobclickAgent;
@@ -76,39 +76,10 @@ public class MainActivity extends BaseActivity implements IMainView {
         Intent intent = getIntent();
         String pushMessage = intent.getStringExtra(IntentUtils.PushMessage);
         if (!TextUtils.isEmpty(pushMessage)) {
-            mMaterialDialogPush = new MaterialDialog(this);
-            mMaterialDialogPush.setTitle(getString(R.string.gank_dialog_title_notify));
-            mMaterialDialogPush.setMessage(pushMessage);
-            mMaterialDialogPush.setPositiveButton(getString(R.string.gank_dialog_confirm), new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mMaterialDialogPush.dismiss();
-                }
-            });
+            mMaterialDialogPush = DialogUtils.initDialog(this, getString(R.string.gank_dialog_title_notify), pushMessage, getString(R.string.gank_dialog_confirm), "", null);
             mMaterialDialogPush.show();
         }
     }
-
-    private void initFeedbackDialog() {
-        mMaterialDialogFeedBack = new MaterialDialog(this);
-        mMaterialDialogFeedBack.setTitle(getString(R.string.gank_dialog_title_notify));
-        mMaterialDialogFeedBack.setMessage(getString(R.string.gank_dialog_msg_feedback));
-        mMaterialDialogFeedBack.setPositiveButton("查看", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mMaterialDialogFeedBack.dismiss();
-                //自定义意见反馈
-                startActivity(new Intent(context, FeedBackActivity.class));
-            }
-        });
-        mMaterialDialogFeedBack.setNegativeButton("等一会去", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mMaterialDialogFeedBack.dismiss();
-            }
-        });
-    }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -272,15 +243,35 @@ public class MainActivity extends BaseActivity implements IMainView {
     @Override
     protected void onDestroy() {
         mainPresenter.detachView();
-        mMaterialDialogFeedBack = null;
-        mMaterialDialogPush = null;
+        if (mMaterialDialogFeedBack != null) {
+            mMaterialDialogFeedBack.dismiss();
+            mMaterialDialogFeedBack = null;
+        }
+        if (mMaterialDialogPush != null) {
+            mMaterialDialogPush.dismiss();
+            mMaterialDialogPush = null;
+        }
         super.onDestroy();
     }
 
     @Override
     public void showFeedBackDialog() {
         if (mMaterialDialogFeedBack == null) {
-            initFeedbackDialog();
+            mMaterialDialogFeedBack = DialogUtils.initDialog(this,
+                    getString(R.string.gank_dialog_title_notify),
+                    getString(R.string.gank_dialog_msg_feedback),
+                    "查看", "等一会去", new DialogUtils.OnDialogClickListener() {
+                        @Override
+                        public void onConfirm() {
+                            //自定义意见反馈
+                            startActivity(new Intent(context, FeedBackActivity.class));
+                        }
+
+                        @Override
+                        public void onCancel() {
+
+                        }
+                    });
         }
         mMaterialDialogFeedBack.show();
     }
