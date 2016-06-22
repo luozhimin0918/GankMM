@@ -8,13 +8,16 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.maning.gankmm.R;
+import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.ui.base.BaseActivity;
 import com.maning.gankmm.ui.iView.ISettingView;
 import com.maning.gankmm.ui.presenter.impl.SettingPresenterImpl;
 import com.maning.gankmm.ui.view.MySettingItemView;
 import com.maning.gankmm.utils.DialogUtils;
 import com.maning.gankmm.utils.MySnackbar;
+import com.maning.gankmm.utils.SharePreUtil;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.fb.FeedbackAgent;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -74,8 +77,14 @@ public class SettingActivity extends BaseActivity implements ISettingView {
 
     @OnClick(R.id.item_feedback)
     void item_feedback() {
+        //保存状态
+        SharePreUtil.saveBooleanData(this, Constants.SPFeedback, false);
+        //Umeng默认反馈界面
+        FeedbackAgent agent = new FeedbackAgent(this);
+        agent.startFeedbackActivity();
+
         //自定义意见反馈
-        startActivity(new Intent(this, FeedBackActivity.class));
+//        startActivity(new Intent(this, FeedBackActivity.class));
     }
 
     @OnClick(R.id.item_app_update)
