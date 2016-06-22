@@ -1,10 +1,8 @@
 package com.maning.gankmm.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.maning.gankmm.R;
@@ -79,11 +77,14 @@ public class SettingActivity extends BaseActivity implements ISettingView {
     void item_feedback() {
         //保存状态
         SharePreUtil.saveBooleanData(this, Constants.SPFeedback, false);
+
+        //方案一：
         //Umeng默认反馈界面
         FeedbackAgent agent = new FeedbackAgent(this);
-//        agent.closeAudioFeedback();   //关闭语言功能
         agent.startFeedbackActivity();
 
+
+        //方案二：
         //自定义意见反馈
 //        startActivity(new Intent(this, FeedBackActivity.class));
     }
