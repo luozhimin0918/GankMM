@@ -81,6 +81,7 @@ public class SettingActivity extends BaseActivity implements ISettingView {
         SharePreUtil.saveBooleanData(this, Constants.SPFeedback, false);
         //Umeng默认反馈界面
         FeedbackAgent agent = new FeedbackAgent(this);
+//        agent.closeAudioFeedback();   //关闭语言功能
         agent.startFeedbackActivity();
 
         //自定义意见反馈

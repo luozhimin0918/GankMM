@@ -77,7 +77,6 @@
                 android:layout_marginRight="10dp"
                 android:layout_toLeftOf="@id/umeng_fb_send_layout"
                 android:layout_toRightOf="@id/umeng_fb_record_tag_btn"
-                android:layout_toStartOf="@id/umeng_fb_send_layout"
                 android:background="@null"
                 android:focusable="true"
                 android:hint="@string/umeng_fb_feedback"
