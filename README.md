@@ -1,6 +1,16 @@
-# GankMM -- 福利MM
-  一个简单的Android项目<br>
-  干货营 是干活集中营（Gank.io）的三方客户端，内容包括美女福利图片，Android，IOS，前端，APP等资源。每周一到周五更新新的内容，随时可以了解技术干货。<br>
+# GankMM -- 干货营
+      一个个人练习的Android项目，还有很多需要改善的地方，希望多多指教。<br>
+      干货营 是干活集中营（Gank.io）的三方客户端，内容包括美女福利图片，Android，IOS，前端，APP等资源。每周一到周五更新新的内容，随时可以了解技术干货。<br>
+
+###知识点：
+      1.Retrofit和OKHttp的使用，实现网络自动缓存；
+      2.MVP模式的基本使用；
+      3.RecycleView控件的使用；
+      4.状态的的颜色的设置（Android 4.4 +）；
+      5.Android Material Design 风格控件的基本使用；
+      6.SQLite的基本使用；
+      7.WebView的使用，自动缓存；
+
   
 ##所有的数据来自：
 ####[干货集中营](http://gank.io/)  
@@ -16,6 +26,12 @@
 ![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_004.png)
 
 ##更新日志：
+###V1.2.3:
+    1.使用MVP模式重构页面
+    2.修复已知和反馈的相关Bug
+    3.SnackBar完全替换Toast（上一版本没有替换完全）
+    4.更改反馈界面，支持反馈图片和语音
+
 ###V1.2.2:
     1.更新网络框架：Retrofit升级到2.2.1，OKHttp升级到3.3.1，实现网络请求自动缓存功能
     2.修复部分页面ToolBar显示问题

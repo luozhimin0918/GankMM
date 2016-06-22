@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.maning.gankmm.R;
@@ -45,6 +47,8 @@ public class WebActivity extends BaseActivity implements IWebView {
     WebView webView;
     @Bind(R.id.progressbar)
     ProgressBar progressbar;
+    @Bind(R.id.rootView)
+    LinearLayout rootView;
 
     //标题
     private String flagTitle;
@@ -107,11 +111,14 @@ public class WebActivity extends BaseActivity implements IWebView {
     @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
         //设置WebView属性，能够执行Javascript脚本
+        webView.setWebChromeClient(new WebChromeClient());
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setAllowFileAccess(true);
-        webView.getSettings().setDefaultTextEncodingName("UTF-8");
+        // 开启DOM storage API 功能
         webView.getSettings().setDomStorageEnabled(true);
-        ////////////////////////////////
+        // 开启database storage API功能
+        webView.getSettings().setDatabaseEnabled(true);
+        webView.getSettings().setDefaultTextEncodingName("UTF-8");
         // 建议缓存策略为，判断是否有网络，有的话，使用LOAD_DEFAULT,无网络时，使用LOAD_CACHE_ELSE_NETWORK
         if (NetUtils.hasNetWorkConection(this)) {
             webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);   // 根据cache-control决定是否从网络上取数据。
@@ -212,7 +219,11 @@ public class WebActivity extends BaseActivity implements IWebView {
     @Override
     protected void onDestroy() {
         webPresenter.detachView();
-        webView.destroy();
+        if (webView != null) {
+            webView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
+            rootView.removeView(webView);
+            webView.destroy();
+        }
         super.onDestroy();
     }
 
