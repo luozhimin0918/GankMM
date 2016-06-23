@@ -2,23 +2,18 @@ package com.maning.gankmm.ui.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.maning.gankmm.R;
-import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.bean.CategoryContentBean;
 import com.maning.gankmm.bean.CategoryTitleBean;
 import com.maning.gankmm.ui.adapter.RecycleCodesContentAdapter;
@@ -29,20 +24,10 @@ import com.maning.gankmm.ui.presenter.impl.CodesPresenterImpl;
 import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.utils.MySnackbar;
 import com.maning.gankmm.utils.NetUtils;
-import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
-import com.wangjie.shadowviewhelper.ShadowProperty;
-import com.wangjie.shadowviewhelper.ShadowViewHelper;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -130,6 +115,7 @@ public class CodesActivity extends BaseActivity implements OnRefreshListener, On
                     if (NetUtils.hasNetWorkConection(CodesActivity.this)) {
                         recycleTitleAdapter.setType(titles.get(position).getTitle());
                         url = titles.get(position).getUrl();
+                        scrollToTop();
                         //加载数据
                         swipeToLoadLayout.setRefreshing(true);
                     } else {
@@ -159,6 +145,10 @@ public class CodesActivity extends BaseActivity implements OnRefreshListener, On
 
     @OnClick(R.id.iv_top_quick)
     void iv_top_quick(){
+        scrollToTop();
+    }
+
+    public void scrollToTop() {
         recycleContent.scrollToPosition(0);
     }
 
