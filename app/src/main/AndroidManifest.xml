@@ -11,10 +11,11 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
-    <!--Jpush-->
+    <!-- Jpush -->
     <permission
         android:name="com.maning.gankmm.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="com.maning.gankmm.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -23,7 +24,7 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
-    <!--壁纸-->
+    <!-- 壁纸 -->
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
 
     <application
@@ -179,7 +180,7 @@
         <activity
             android:name="com.umeng.fb.ConversationActivity"
             android:screenOrientation="portrait" />
-        <!--自定义Umeng反馈界面-->
+        <!-- 自定义Umeng反馈界面 -->
         <activity
             android:name=".ui.activity.FeedBackActivity"
             android:screenOrientation="portrait" />
@@ -191,6 +192,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.SettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.CodesActivity"
             android:screenOrientation="portrait" />
     </application>
 

@@ -1,0 +1,14 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:paddingBottom="12dp"
+    android:paddingLeft="20dp"
+    android:paddingTop="12dp"
+    android:text="全部代码"
+    android:textColor="@color/textBlack"
+    android:textSize="16sp">
+
+
+</TextView>

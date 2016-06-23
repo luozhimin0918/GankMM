@@ -137,7 +137,7 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
 
     @Override
     public void showToast(String msg) {
-        MySnackbar.makeSnackBarBlack(swipeTarget, msg);
+        MySnackbar.makeSnackBarRed(swipeTarget, msg);
     }
 
     @Override

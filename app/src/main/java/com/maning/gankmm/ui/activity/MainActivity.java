@@ -166,7 +166,6 @@ public class MainActivity extends BaseActivity implements IMainView {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-                menuItem.setChecked(true); // 改变item选中状态
                 setTitle(menuItem.getTitle()); // 改变页面标题，标明导航状态
                 drawerLayout.closeDrawers(); // 关闭导航菜单
                 switch (menuItem.getItemId()) {
@@ -182,9 +181,14 @@ public class MainActivity extends BaseActivity implements IMainView {
                         toolbar.setTitle(menuItem.getTitle());
                         setMenuSelection(9);
                         break;
-                    case R.id.nav_time:
+                    case R.id.nav_history:
                         toolbar.setTitle(menuItem.getTitle());
                         setMenuSelection(2);
+                        break;
+                    case R.id.nav_codes:
+                        menuItem.setCheckable(false);
+                        //泡在网上的日子
+                        startActivity(new Intent(MainActivity.this, CodesActivity.class));
                         break;
                     case R.id.about:
                         menuItem.setChecked(false); // 改变item选中状态
