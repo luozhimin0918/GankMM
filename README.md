@@ -87,5 +87,6 @@
     compile 'com.github.jd-alexander:LikeButton:0.1.8'
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'me.drakeet.materialdialog:library:1.3.1'
+    compile 'org.jsoup:jsoup:1.9.2'
 
 
