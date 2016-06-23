@@ -72,4 +72,5 @@ dependencies {
     compile 'org.jsoup:jsoup:1.9.2'
     compile project(':libraryumeng')
     compile files('libs/jpush-android-2.1.5.jar')
+
 }

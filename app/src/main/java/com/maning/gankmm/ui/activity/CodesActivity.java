@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
@@ -30,6 +31,8 @@ import com.maning.gankmm.utils.MySnackbar;
 import com.maning.gankmm.utils.NetUtils;
 import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
+import com.wangjie.shadowviewhelper.ShadowProperty;
+import com.wangjie.shadowviewhelper.ShadowViewHelper;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import org.jsoup.Jsoup;
@@ -43,6 +46,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 泡在网上的日子的数据的抓取
@@ -151,6 +155,11 @@ public class CodesActivity extends BaseActivity implements OnRefreshListener, On
         } else {
             recycleContentAdapter.setDatas(codes);
         }
+    }
+
+    @OnClick(R.id.iv_top_quick)
+    void iv_top_quick(){
+        recycleContent.scrollToPosition(0);
     }
 
     @Override
