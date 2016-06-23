@@ -119,6 +119,16 @@ public class WebActivity extends BaseActivity implements IWebView {
         // 开启database storage API功能
         webView.getSettings().setDatabaseEnabled(true);
         webView.getSettings().setDefaultTextEncodingName("UTF-8");
+        //自适应屏幕
+        webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setLoadWithOverviewMode(true);
+        // 设置可以支持缩放
+        webView.getSettings().setSupportZoom(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        //不显示webview缩放按钮
+        webView.getSettings().setDisplayZoomControls(false);
+        //设置缩放比例：最小25
+        webView.setInitialScale(100);
         // 建议缓存策略为，判断是否有网络，有的话，使用LOAD_DEFAULT,无网络时，使用LOAD_CACHE_ELSE_NETWORK
         if (NetUtils.hasNetWorkConection(this)) {
             webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);   // 根据cache-control决定是否从网络上取数据。

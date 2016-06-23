@@ -13,14 +13,21 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
+import com.aspsine.swipetoloadlayout.OnRefreshListener;
+import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.maning.gankmm.R;
+import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.bean.CategoryContentBean;
 import com.maning.gankmm.bean.CategoryTitleBean;
 import com.maning.gankmm.ui.adapter.RecycleCodesContentAdapter;
 import com.maning.gankmm.ui.adapter.RecycleCodesTitleAdapter;
 import com.maning.gankmm.ui.base.BaseActivity;
+import com.maning.gankmm.ui.iView.ICodesView;
+import com.maning.gankmm.ui.presenter.impl.CodesPresenterImpl;
 import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.utils.MySnackbar;
+import com.maning.gankmm.utils.NetUtils;
 import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
@@ -32,6 +39,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,27 +47,29 @@ import butterknife.ButterKnife;
 /**
  * 泡在网上的日子的数据的抓取
  */
-public class CodesActivity extends BaseActivity {
+public class CodesActivity extends BaseActivity implements OnRefreshListener, OnLoadMoreListener, ICodesView {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.recycle_content)
+    @Bind(R.id.swipe_target)
     RecyclerView recycleContent;
     @Bind(R.id.recycle_menu)
     RecyclerView recycleMenu;
     @Bind(R.id.drawerLayout)
     DrawerLayout drawerLayout;
+    @Bind(R.id.swipeToLoadLayout)
+    SwipeToLoadLayout swipeToLoadLayout;
 
-    private static final String TAG = MainActivity.class.getSimpleName() + "----";
     private static final String baseUrl = "http://www.jcodecraeer.com";
     private String url = baseUrl + "/plus/list.php?tid=31";
-    private String nextPageUrl = "";
 
     private ArrayList<CategoryTitleBean> titles = new ArrayList<>();
     private ArrayList<CategoryContentBean> codes = new ArrayList<>();
 
     private RecycleCodesContentAdapter recycleContentAdapter;
     private RecycleCodesTitleAdapter recycleTitleAdapter;
+
+    private CodesPresenterImpl codesPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,14 +81,22 @@ public class CodesActivity extends BaseActivity {
 
         initViews();
 
-        getDatas(url);
+        codesPresenter = new CodesPresenterImpl(this, this);
+
+        //加载数据
+        swipeToLoadLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                swipeToLoadLayout.setRefreshing(true);
+            }
+        }, 100);
 
     }
 
     private void initViews() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         recycleMenu = (RecyclerView) findViewById(R.id.recycle_menu);
-        recycleContent = (RecyclerView) findViewById(R.id.recycle_content);
+        recycleContent = (RecyclerView) findViewById(R.id.swipe_target);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recycleMenu.setLayoutManager(linearLayoutManager);
@@ -91,6 +109,10 @@ public class CodesActivity extends BaseActivity {
         recycleContent.setItemAnimator(new DefaultItemAnimator());
         //添加分割线
         recycleContent.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).color(Color.LTGRAY).build());
+        swipeToLoadLayout.setOnRefreshListener(this);
+        swipeToLoadLayout.setOnLoadMoreListener(this);
+        swipeToLoadLayout.setRefreshEnabled(true);
+        swipeToLoadLayout.setLoadMoreEnabled(true);
     }
 
     private void initMenuAdapter() {
@@ -101,12 +123,14 @@ public class CodesActivity extends BaseActivity {
                 @Override
                 public void onItemClick(View view, int position) {
                     drawerLayout.closeDrawers();
-                    //清除内容
-                    codes.clear();
-                    initContentAdapter();
-                    nextPageUrl = "";
-                    //获取数据
-                    getDatas(titles.get(position).getUrl());
+                    if (NetUtils.hasNetWorkConection(CodesActivity.this)) {
+                        recycleTitleAdapter.setType(titles.get(position).getTitle());
+                        url = titles.get(position).getUrl();
+                        //加载数据
+                        swipeToLoadLayout.setRefreshing(true);
+                    } else {
+                        showToast(getString(R.string.gank_net_fail));
+                    }
 
                 }
             });
@@ -114,6 +138,7 @@ public class CodesActivity extends BaseActivity {
     }
 
     private void initContentAdapter() {
+        overRefresh();
         if (recycleContentAdapter == null) {
             recycleContentAdapter = new RecycleCodesContentAdapter(this, codes);
             recycleContent.setAdapter(recycleContentAdapter);
@@ -123,106 +148,9 @@ public class CodesActivity extends BaseActivity {
                     IntentUtils.startToWebActivity(CodesActivity.this, "codes", codes.get(position).getTitle(), codes.get(position).getUrl());
                 }
             });
-            recycleContent.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                        if (!ViewCompat.canScrollVertically(recyclerView, 1)) {
-                            if (!TextUtils.isEmpty(nextPageUrl)) {
-                                getDatas(nextPageUrl);
-                            } else {
-                                MySnackbar.makeSnackBarBlack(toolbar, "没有更多数据了");
-                            }
-                        }
-                    }
-                }
-            });
         } else {
             recycleContentAdapter.setDatas(codes);
         }
-
-    }
-
-    private void getDatas(final String loadUrl) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Document doc = Jsoup.connect(loadUrl).get();
-
-                    if (titles.size() <= 0) {
-                        Log.i(TAG, "----------------------categoryTitles-----------------------");
-                        //分类
-                        Elements categorys = doc.select("div.col-md-2").select("ul.slidebar-box").select("li.slidebar-category-one");
-                        CategoryTitleBean categoryTitleBean;
-                        for (Element element : categorys) {
-                            String url = element.select("li.slidebar-category-one").select("a[href]").attr("href");
-                            String title = element.select("li.slidebar-category-one").select("a[href]").text();
-                            if (!TextUtils.isEmpty(url)) {
-                                categoryTitleBean = new CategoryTitleBean();
-                                categoryTitleBean.setUrl(baseUrl + url);
-                                categoryTitleBean.setTitle(title);
-                                titles.add(categoryTitleBean);
-                                Log.e(TAG, "categoryTitleBean----" + categoryTitleBean.toString());
-                            }
-                        }
-                    }
-
-                    //获取页码
-                    Elements elementsPage = doc.select("div.paginate-container").select("a[href]");
-                    KLog.i("elementsPages----" + elementsPage.size());
-                    for (Element element : elementsPage) {
-                        String text = element.text();
-                        if ("下一页".equals(text.trim())) {
-                            String pageUrl = element.select("a[href]").attr("href");
-                            if (!TextUtils.isEmpty(pageUrl)) {
-                                nextPageUrl = baseUrl + pageUrl;
-                                KLog.i("nextPageUrl----" + nextPageUrl);
-                            }
-                        }
-                    }
-
-                    KLog.i("----------------------contents-----------------------");
-
-                    Elements elements = doc.select("li.codeli");
-                    Log.i(TAG, "element----" + elements.size());
-                    CategoryContentBean categoryContentBean;
-                    for (int i = 0; i < elements.size(); i++) {
-                        Element element = elements.get(i);
-                        String url = element.select("div.codeli-photo").select("a[href]").attr("href");
-                        String imageUrl = element.select("div.codeli-photo").select("img[src]").attr("src");
-                        String title = element.select("h2.codeli-name").select("a[href]").text();
-                        String description = element.select("p.codeli-description").text();
-                        String type = element.select("div.otherinfo").select("a[href]").text();
-                        String otherInfo = element.select("div.otherinfo").select("span").text();
-
-                        if (!TextUtils.isEmpty(url)) {
-                            categoryContentBean = new CategoryContentBean();
-                            categoryContentBean.setUrl(baseUrl + url);
-                            categoryContentBean.setTitle(title);
-                            categoryContentBean.setImageUrl(baseUrl + imageUrl);
-                            categoryContentBean.setDescription(description);
-                            categoryContentBean.setType(type);
-                            categoryContentBean.setOtherInfo(otherInfo);
-                            codes.add(categoryContentBean);
-                            KLog.i("categoryContentBean----" + categoryContentBean.toString());
-                        }
-                    }
-
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            initMenuAdapter();
-                            initContentAdapter();
-                        }
-                    });
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    KLog.i("catch----" + e.toString());
-                }
-            }
-        }).start();
     }
 
     @Override
@@ -243,5 +171,56 @@ public class CodesActivity extends BaseActivity {
     public void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
+    }
+
+    @Override
+    public void onRefresh() {
+        //获取数据
+        codesPresenter.getNewDatas(url);
+    }
+
+    @Override
+    public void onLoadMore() {
+        codesPresenter.getMoreDatas();
+    }
+
+    @Override
+    public void setCodesTitleList(ArrayList<CategoryTitleBean> codesTitleList) {
+        titles = codesTitleList;
+        initMenuAdapter();
+    }
+
+    @Override
+    public void setCodesContentList(ArrayList<CategoryContentBean> codesContentList) {
+        codes = codesContentList;
+        initContentAdapter();
+    }
+
+    @Override
+    public void setRefreshEnabled(boolean flag) {
+        swipeToLoadLayout.setRefreshEnabled(flag);
+    }
+
+    @Override
+    public void setLoadMoreEnabled(boolean flag) {
+        swipeToLoadLayout.setLoadMoreEnabled(flag);
+    }
+
+    @Override
+    public void showToast(String msg) {
+        MySnackbar.makeSnackBarRed(toolbar, msg);
+    }
+
+    @Override
+    public void overRefresh() {
+        if (swipeToLoadLayout == null) {
+            return;
+        }
+        if (swipeToLoadLayout.isRefreshing()) {
+            swipeToLoadLayout.setRefreshing(false);
+        }
+        if (swipeToLoadLayout.isLoadingMore()) {
+            swipeToLoadLayout.setLoadingMore(false);
+        }
     }
 }

@@ -53,11 +53,14 @@ public class RecycleCodesTitleAdapter extends RecyclerView.Adapter<RecycleCodesT
                 @Override
                 public void onClick(View v) {
                     mOnItemClickLitener.onItemClick(holder.itemView, position);
-                    type = mDatas.get(position).getTitle();
-                    notifyDataSetChanged();
                 }
             });
         }
+    }
+
+    public void setType(String type){
+        this.type = type;
+        notifyDataSetChanged();
     }
 
     @Override
