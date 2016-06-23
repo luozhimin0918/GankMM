@@ -7,13 +7,19 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.AbsListView;
+import android.widget.ImageView;
 
 import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.maning.gankmm.R;
+import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.bean.CategoryContentBean;
 import com.maning.gankmm.bean.CategoryTitleBean;
 import com.maning.gankmm.ui.adapter.RecycleCodesContentAdapter;
@@ -21,6 +27,7 @@ import com.maning.gankmm.ui.adapter.RecycleCodesTitleAdapter;
 import com.maning.gankmm.ui.base.BaseActivity;
 import com.maning.gankmm.ui.iView.ICodesView;
 import com.maning.gankmm.ui.presenter.impl.CodesPresenterImpl;
+import com.maning.gankmm.utils.DensityUtil;
 import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.utils.MySnackbar;
 import com.maning.gankmm.utils.NetUtils;
@@ -48,6 +55,8 @@ public class CodesActivity extends BaseActivity implements OnRefreshListener, On
     DrawerLayout drawerLayout;
     @Bind(R.id.swipeToLoadLayout)
     SwipeToLoadLayout swipeToLoadLayout;
+    @Bind(R.id.iv_top_quick)
+    ImageView ivTopQuick;
 
     private static final String baseUrl = "http://www.jcodecraeer.com";
     private String url = baseUrl + "/plus/list.php?tid=31";
@@ -57,6 +66,9 @@ public class CodesActivity extends BaseActivity implements OnRefreshListener, On
 
     private RecycleCodesContentAdapter recycleContentAdapter;
     private RecycleCodesTitleAdapter recycleTitleAdapter;
+
+    private Animation animation_up;
+    private Animation animation_down;
 
     private CodesPresenterImpl codesPresenter;
 
@@ -70,6 +82,8 @@ public class CodesActivity extends BaseActivity implements OnRefreshListener, On
 
         initViews();
 
+        initAnimation();
+
         codesPresenter = new CodesPresenterImpl(this, this);
 
         //加载数据
@@ -80,6 +94,11 @@ public class CodesActivity extends BaseActivity implements OnRefreshListener, On
             }
         }, 100);
 
+    }
+
+    private void initAnimation() {
+        animation_up = AnimationUtils.loadAnimation(this, R.anim.translate_up);
+        animation_down = AnimationUtils.loadAnimation(this, R.anim.translate_down);
     }
 
     private void initViews() {
@@ -138,13 +157,71 @@ public class CodesActivity extends BaseActivity implements OnRefreshListener, On
                     IntentUtils.startToWebActivity(CodesActivity.this, "codes", codes.get(position).getTitle(), codes.get(position).getUrl());
                 }
             });
+            recycleContent.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    boolean isSignificantDelta = Math.abs(dy) > DensityUtil.dip2px(CodesActivity.this, 4);
+                    if (isSignificantDelta) {
+                        if (dy > 0) {
+                            onScrollUp();
+                        } else {
+                            onScrollDown();
+                        }
+                    }
+                }
+            });
         } else {
             recycleContentAdapter.setDatas(codes);
         }
     }
 
+    private boolean dismissFlag = true;
+
+    private void onScrollUp() {
+        if (ivTopQuick.getVisibility() == View.VISIBLE) {
+            if (!dismissFlag) {
+                return;
+            }
+            dismissFlag = false;
+            if (animation_down != null) {
+                animation_down.cancel();
+            }
+            ivTopQuick.setVisibility(View.GONE);
+            ivTopQuick.startAnimation(animation_down);
+            MyApplication.getHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    dismissFlag = true;
+                }
+            }, 500);
+        }
+    }
+
+    private boolean flag = true;
+
+    private void onScrollDown() {
+        if (!(ivTopQuick.getVisibility() == View.VISIBLE)) {
+            if (!flag) {
+                return;
+            }
+            flag = false;
+            if (animation_up != null) {
+                animation_up.cancel();
+            }
+            ivTopQuick.setVisibility(View.VISIBLE);
+            ivTopQuick.startAnimation(animation_up);
+            MyApplication.getHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    flag = true;
+                }
+            }, 500);
+        }
+    }
+
     @OnClick(R.id.iv_top_quick)
-    void iv_top_quick(){
+    void iv_top_quick() {
         scrollToTop();
     }
 
@@ -173,9 +250,24 @@ public class CodesActivity extends BaseActivity implements OnRefreshListener, On
     }
 
     @Override
+    protected void onDestroy() {
+        codesPresenter.detachView();
+        animation_up.cancel();
+        animation_up = null;
+        animation_down.cancel();
+        animation_down = null;
+        super.onDestroy();
+    }
+
+    @Override
     public void onRefresh() {
         //获取数据
-        codesPresenter.getNewDatas(url);
+        if (NetUtils.hasNetWorkConection(CodesActivity.this)) {
+            codesPresenter.getNewDatas(url);
+        } else {
+            showToast(getString(R.string.gank_net_fail));
+            overRefresh();
+        }
     }
 
     @Override
