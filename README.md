@@ -10,6 +10,7 @@
       5.Android Material Design 风格控件的基本使用；
       6.SQLite的基本使用；
       7.WebView的使用，自动缓存；
+      8.Jsoup抓取网页数据；
 
   
 ##所有的数据来自：
@@ -20,10 +21,14 @@
 ####[点击下载](http://fir.im/gankmm)
 
 ##项目截图：
-![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_001.png)
-![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_002.png)
-![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_003.png)
-![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_004.png)
+![](https://github.com/maning0303/GankMM/raw/master/screenshots/001.jpg)
+![](https://github.com/maning0303/GankMM/raw/master/screenshots/002.jpg)
+![](https://github.com/maning0303/GankMM/raw/master/screenshots/003.jpg)
+![](https://github.com/maning0303/GankMM/raw/master/screenshots/004.jpg)
+![](https://github.com/maning0303/GankMM/raw/master/screenshots/005.jpg)
+![](https://github.com/maning0303/GankMM/raw/master/screenshots/006.jpg)
+![](https://github.com/maning0303/GankMM/raw/master/screenshots/007.jpg)
+![](https://github.com/maning0303/GankMM/raw/master/screenshots/008.jpg)
 
 ##更新日志：
 ###V1.2.3:
@@ -31,6 +36,7 @@
     2.修复已知和反馈的相关Bug
     3.SnackBar完全替换Toast（上一版本没有替换完全）
     4.更改反馈界面，支持反馈图片和语音
+    5.添加泡在网上的日子的数据（利用Jsoup抓取网页数据）
 
 ###V1.2.2:
     1.更新网络框架：Retrofit升级到2.2.1，OKHttp升级到3.3.1，实现网络请求自动缓存功能
