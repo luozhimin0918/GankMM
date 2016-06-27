@@ -1,18 +1,18 @@
 # GankMM -- 干货营
 
-###干货营 是干货集中营（Gank.io）的三方客户端，每天一张美女图片，一个视频短片，若干程序干货，周一到周五每天更新。<br>
-###（Material Design & MVP & Retrofit + OKHttp & Recyclerview ...）
+#####干货营 是干货集中营（Gank.io）的三方客户端，每天一张美女图片，一个视频短片，若干程序干货，周一到周五每天更新。<br>
+#####（Material Design & MVP & Retrofit + OKHttp & Recyclerview ...）<br><br>
 
 
 ##知识点：
-####        1.Retrofit和OKHttp的使用，实现网络自动缓存；
-####        2.MVP模式的基本使用；
-####        3.RecycleView控件的使用；
-####        4.状态的的颜色的设置（Android 4.4 +）；
-####        5.Android Material Design 风格控件的基本使用；
-####        6.SQLite的基本使用；
-####        7.WebView的使用，自动缓存；
-####        8.Jsoup抓取网页数据；
+    1.Retrofit和OKHttp的使用，实现网络自动缓存；
+    2.MVP模式的基本使用；
+    3.RecycleView控件的使用；
+    4.状态的的颜色的设置（Android 4.4 +）；
+    5.Android Material Design 风格控件的基本使用；
+    6.SQLite的基本使用；
+    7.WebView的使用，自动缓存；
+    8.Jsoup抓取网页数据；
 
   
 ##所有的数据来自：
