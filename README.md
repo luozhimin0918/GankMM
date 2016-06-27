@@ -1,16 +1,18 @@
 # GankMM -- 干货营
-      个人练习的Android项目，还有很多需要改善的地方，希望多多指教。<br>
-      干货营 是干货集中营（Gank.io）的三方客户端，内容包括美女福利图片，Android，IOS，前端，APP等资源。每周一到周五更新新的内容，随时可以了解技术干货。<br>
 
-###知识点：
-      1.Retrofit和OKHttp的使用，实现网络自动缓存；
-      2.MVP模式的基本使用；
-      3.RecycleView控件的使用；
-      4.状态的的颜色的设置（Android 4.4 +）；
-      5.Android Material Design 风格控件的基本使用；
-      6.SQLite的基本使用；
-      7.WebView的使用，自动缓存；
-      8.Jsoup抓取网页数据；
+###干货营 是干货集中营（Gank.io）的三方客户端，每天一张美女图片，一个视频短片，若干程序干货，周一到周五每天更新。<br>
+###（Material Design & MVP & Retrofit + OKHttp & Recyclerview ...）
+
+
+##知识点：
+####        1.Retrofit和OKHttp的使用，实现网络自动缓存；
+####        2.MVP模式的基本使用；
+####        3.RecycleView控件的使用；
+####        4.状态的的颜色的设置（Android 4.4 +）；
+####        5.Android Material Design 风格控件的基本使用；
+####        6.SQLite的基本使用；
+####        7.WebView的使用，自动缓存；
+####        8.Jsoup抓取网页数据；
 
   
 ##所有的数据来自：
@@ -68,25 +70,16 @@
 ######[所有的开源的人](https://github.com)
 
 ##依赖库：
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:support-v4:23.1.1'
-    compile 'com.android.support:design:23.1.1'
-    compile 'com.android.support:cardview-v7:23.1.1'
-    compile 'com.android.support:recyclerview-v7:23.1.1'
-    compile 'com.yqritc:recyclerview-flexibledivider:1.2.9'
-    compile 'com.nineoldandroids:library:2.4.0'
-    compile 'com.google.code.gson:gson:2.7'
-    compile 'com.squareup.okhttp3:okhttp:3.3.1'
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.github.zhaokaiqiang.klog:library:1.3.0'
-    compile 'com.bigkoo:svprogresshud:1.0.2'
-    compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.github.Aspsine:SwipeToLoadLayout:v1.0.2'
-    compile 'com.github.jd-alexander:LikeButton:0.1.8'
-    compile 'com.umeng.analytics:analytics:latest.integration'
-    compile 'me.drakeet.materialdialog:library:1.3.1'
-    compile 'org.jsoup:jsoup:1.9.2'
-
-
+######[butterknife](https://github.com/JakeWharton/butterknife)
+######[Gson](https://github.com/google/gson)
+######[retrofit](https://github.com/square/retrofit)
+######[okhttp](https://github.com/square/okhttp)
+######[okhttp](https://github.com/square/okhttp)
+######[glide](https://github.com/bumptech/glide)
+######[SwipeToLoadLayout](https://github.com/Aspsine/SwipeToLoadLayout)
+######[Android-SVProgressHUD](https://github.com/saiwu-bigkoo/Android-SVProgressHUD)
+######[MaterialDialog](https://github.com/drakeet/MaterialDialog)
+######[RecyclerView-FlexibleDivider](https://github.com/yqritc/RecyclerView-FlexibleDivider)
+######[LikeButton](https://github.com/jd-alexander/LikeButton)
+######[jsoup](https://github.com/jhy/jsoup)
+######[klog](https://github.com/ZhaoKaiQiang/KLog)
