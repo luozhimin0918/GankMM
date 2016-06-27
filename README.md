@@ -1,7 +1,7 @@
 # GankMM -- 干货营
 ![](https://github.com/maning0303/GankMM/raw/master/screenshots/icon.png)<br>
 #####干货营 是干货集中营（Gank.io）的三方客户端，每天一张美女图片，一个视频短片，若干程序干货，周一到周五每天更新。<br>
-#####（Material Design & MVP & Retrofit + OKHttp & Recyclerview ...）<br>
+#####（Material Design & MVP & Retrofit + OKHttp & RecyclerView ...）<br>
 
 ##知识点：
     1.Retrofit和OKHttp的使用，实现网络自动缓存；
@@ -70,7 +70,6 @@
 ######[butterknife](https://github.com/JakeWharton/butterknife)
 ######[Gson](https://github.com/google/gson)
 ######[retrofit](https://github.com/square/retrofit)
-######[okhttp](https://github.com/square/okhttp)
 ######[okhttp](https://github.com/square/okhttp)
 ######[glide](https://github.com/bumptech/glide)
 ######[SwipeToLoadLayout](https://github.com/Aspsine/SwipeToLoadLayout)
