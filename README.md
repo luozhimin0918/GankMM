@@ -1,8 +1,7 @@
 # GankMM -- 干货营
-
+![](https://github.com/maning0303/GankMM/raw/master/screenshots/icon.png)<br>
 #####干货营 是干货集中营（Gank.io）的三方客户端，每天一张美女图片，一个视频短片，若干程序干货，周一到周五每天更新。<br>
-#####（Material Design & MVP & Retrofit + OKHttp & Recyclerview ...）<br><br>
-
+#####（Material Design & MVP & Retrofit + OKHttp & Recyclerview ...）<br>
 
 ##知识点：
     1.Retrofit和OKHttp的使用，实现网络自动缓存；
@@ -14,13 +13,11 @@
     7.WebView的使用，自动缓存；
     8.Jsoup抓取网页数据；
 
-  
 ##所有的数据来自：
-####[干货集中营](http://gank.io/)  
+####[干货集中营(http://gank.io/)](http://gank.io/)<br>
 
 ##APK下载地址：
-![](https://github.com/maning0303/GankMM/raw/master/screenshots/icon.png)
-####[点击下载](http://fir.im/gankmm)
+####[点击下载(http://fir.im/gankmm)](http://fir.im/gankmm)<br>
 
 ##项目截图：
 ![](https://github.com/maning0303/GankMM/raw/master/screenshots/001.jpg)
