@@ -10,6 +10,7 @@ android {
         targetSdkVersion 23
         versionCode 6
         versionName "1.2.3"
+        resConfigs "zh"
     }
 
     signingConfigs {//签名信息
@@ -37,8 +38,8 @@ android {
     buildTypes {
         release {
             minifyEnabled true
+            shrinkResources true
             proguardFiles customerproguardFile.path
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "boolean", "LOG_DEBUG", "false"
         }
         debug {
