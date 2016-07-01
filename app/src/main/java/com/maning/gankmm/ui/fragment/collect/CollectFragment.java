@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.maning.gankmm.R;
 import com.maning.gankmm.ui.adapter.CollectPagerAdapter;
 import com.maning.gankmm.ui.base.BaseFragment;
+import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
@@ -21,11 +22,10 @@ import butterknife.ButterKnife;
  */
 public class CollectFragment extends BaseFragment {
 
-
-    @Bind(R.id.tabLayout)
-    TabLayout tabLayout;
     @Bind(R.id.viewPager)
     ViewPager viewPager;
+    @Bind(R.id.viewpagertab)
+    SmartTabLayout viewpagerTab;
 
     public static CollectFragment newInstance() {
         return new CollectFragment();
@@ -54,9 +54,8 @@ public class CollectFragment extends BaseFragment {
         //关闭预加载，默认一次只加载一个Fragment
         viewPager.setAdapter(collectPagerAdapter);
         viewPager.setPageMargin(20);
-        //设置tablayout为滑动模式
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tabLayout.setupWithViewPager(viewPager);
+
+        viewpagerTab.setViewPager(viewPager);
     }
 
 

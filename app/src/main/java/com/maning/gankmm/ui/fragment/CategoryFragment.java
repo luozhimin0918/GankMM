@@ -11,8 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.maning.gankmm.R;
-import com.maning.gankmm.ui.base.BaseFragment;
 import com.maning.gankmm.constant.Constants;
+import com.maning.gankmm.ui.base.BaseFragment;
+import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
@@ -24,11 +25,10 @@ import butterknife.ButterKnife;
  */
 public class CategoryFragment extends BaseFragment {
 
-
-    @Bind(R.id.tabLayout)
-    TabLayout tabLayout;
     @Bind(R.id.viewPager)
     ViewPager viewPager;
+    @Bind(R.id.viewpagertab)
+    SmartTabLayout viewpagertab;
 
     public final String[] TITLES = {
             Constants.FlagAndroid,
@@ -66,10 +66,10 @@ public class CategoryFragment extends BaseFragment {
         MyAdapter myAdapter = new MyAdapter(getChildFragmentManager());
         viewPager.setAdapter(myAdapter);
         viewPager.setPageMargin(20);
-        //设置tablayout为滑动模式
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tabLayout.setupWithViewPager(viewPager);
+
+        viewpagertab.setViewPager(viewPager);
     }
+
 
 
     private class MyAdapter extends FragmentStatePagerAdapter {
