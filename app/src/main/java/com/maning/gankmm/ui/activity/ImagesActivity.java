@@ -1,13 +1,17 @@
 package com.maning.gankmm.ui.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.maning.gankmm.R;
 import com.maning.gankmm.ui.adapter.ImagesAdapter;
@@ -15,15 +19,18 @@ import com.maning.gankmm.ui.base.BaseActivity;
 import com.maning.gankmm.ui.iView.IImageView;
 import com.maning.gankmm.ui.presenter.impl.ImagePresenterImpl;
 import com.maning.gankmm.utils.IntentUtils;
+import com.maning.gankmm.utils.MySnackbar;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import pub.devrel.easypermissions.EasyPermissions;
 
-public class ImagesActivity extends BaseActivity implements IImageView {
+public class ImagesActivity extends BaseActivity implements IImageView, EasyPermissions.PermissionCallbacks{
 
     private static final String TAG = ImagesActivity.class.getSimpleName();
     @Bind(R.id.viewPager)
@@ -40,6 +47,8 @@ public class ImagesActivity extends BaseActivity implements IImageView {
     private ImagesAdapter imageAdapter;
 
     private ImagePresenterImpl imagePresenter;
+
+    private static final int REQUECT_CODE_STORAGE = 2;  //保存图片申请权限Code
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +113,13 @@ public class ImagesActivity extends BaseActivity implements IImageView {
 
     @OnClick(R.id.btn_save)
     void btn_save() {
-        imagePresenter.saveImage();
+        if (EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            imagePresenter.saveImage();
+        } else {
+            // Ask for one permission
+            EasyPermissions.requestPermissions(this, "请求存储文件权限，用来保存图片到本地",
+                    REQUECT_CODE_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
     }
 
     @OnClick(R.id.btn_wallpaper)
@@ -160,5 +175,25 @@ public class ImagesActivity extends BaseActivity implements IImageView {
         }
         imagePresenter.detachView();
         super.onDestroy();
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+        Log.d(TAG, "onPermissionsGranted:" + requestCode + ":" + perms.size());
+        MySnackbar.makeSnackBarBlack(toolbar,"权限申请成功");
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+        Log.d(TAG, "onPermissionsDenied:" + requestCode + ":" + perms.size());
+        //当用户点击拒绝权限，并且再也不提示的时候，再次请求
+        EasyPermissions.checkDeniedPermissionsNeverAskAgain(this, "请求存储文件权限，用来保存图片到本地", R.string.setting, R.string.cancel, perms);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // EasyPermissions handles the request result.
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 }

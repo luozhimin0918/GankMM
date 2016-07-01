@@ -44,4 +44,7 @@
     <string name="gank_dialog_msg_feedback">您的反馈有回复了，是否去查看？</string>
     <string name="gank_hint_copy_success">复制成功</string>
 
+    <string name="setting">设置</string>
+    <string name="cancel">取消</string>
+
 </resources>
