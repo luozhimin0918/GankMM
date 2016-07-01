@@ -15,7 +15,23 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include layout="@layout/toolbar" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <include layout="@layout/toolbar" />
+
+                <ImageView
+                    android:id="@+id/iv_right_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/icon_menu2" />
+
+            </RelativeLayout>
+
 
             <com.aspsine.swipetoloadlayout.SwipeToLoadLayout xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/swipeToLoadLayout"

@@ -2,6 +2,7 @@ package com.maning.gankmm.ui.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -221,6 +222,11 @@ public class CodesActivity extends BaseActivity implements OnRefreshListener, On
     @OnClick(R.id.iv_top_quick)
     void iv_top_quick() {
         scrollToTop();
+    }
+
+    @OnClick(R.id.iv_right_menu)
+    void iv_right_menu() {
+        drawerLayout.openDrawer(GravityCompat.END);
     }
 
     public void scrollToTop() {
