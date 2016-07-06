@@ -140,4 +140,18 @@ public class CodesPresenterImpl extends BasePresenterImpl<ICodesView> implements
             mView.setLoadMoreEnabled(false);
         }
     }
+
+    @Override
+    public void detachView() {
+        if (titles != null) {
+            titles.clear();
+            titles = null;
+        }
+        if (codes != null) {
+            codes.clear();
+            codes = null;
+        }
+        super.detachView();
+    }
+
 }

@@ -144,4 +144,14 @@ public class PublicPresenterImpl extends BasePresenterImpl<IPublicView> implemen
             }
         }).start();
     }
+
+    @Override
+    public void detachView() {
+        if (publicList != null) {
+            publicList.clear();
+            publicList = null;
+        }
+        super.detachView();
+    }
+
 }
