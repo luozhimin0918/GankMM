@@ -21,6 +21,7 @@ import com.maning.gankmm.R;
 import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.bean.CategoryContentBean;
 import com.maning.gankmm.bean.CategoryTitleBean;
+import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.ui.adapter.RecycleCodesContentAdapter;
 import com.maning.gankmm.ui.adapter.RecycleCodesTitleAdapter;
 import com.maning.gankmm.ui.base.BaseActivity;
@@ -30,6 +31,7 @@ import com.maning.gankmm.utils.DensityUtil;
 import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.utils.MySnackbar;
 import com.maning.gankmm.utils.NetUtils;
+import com.maning.gankmm.utils.SharePreUtil;
 import com.umeng.analytics.MobclickAgent;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
@@ -142,6 +144,13 @@ public class CodesActivity extends BaseActivity implements OnRefreshListener, On
 
                 }
             });
+            //默认第一次展开菜单
+            boolean booleanData = SharePreUtil.getBooleanData(MyApplication.getIntstance(), Constants.SPCodesMenu, false);
+            if (!booleanData) {
+                SharePreUtil.saveBooleanData(MyApplication.getIntstance(), Constants.SPCodesMenu, true);
+                drawerLayout.openDrawer(GravityCompat.END);
+            }
+
         }
     }
 

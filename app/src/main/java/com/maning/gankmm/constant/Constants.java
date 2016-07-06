@@ -33,6 +33,7 @@ public class Constants {
     public static final String SPFeedback = "feedback";
     public static final String SPJpush = "jpush";
     public static final String SPAppUpdate = "update";
+    public static final String SPCodesMenu = "codeMenu";
 
 
 }
