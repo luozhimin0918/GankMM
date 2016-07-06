@@ -9,8 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.maning.gankmm.R;
 import com.maning.gankmm.ui.view.PinchImageView;
+import com.maning.gankmm.ui.view.ProgressWheel;
 import com.socks.library.KLog;
 
 import java.util.ArrayList;
@@ -52,10 +56,23 @@ public class ImagesAdapter extends PagerAdapter {
         final String imageUrl = mDatas.get(position);
         View inflate = layoutInflater.inflate(R.layout.item_show_image, container, false);
         final ImageView imageView = (ImageView) inflate.findViewById(R.id.imageView);
+        final ProgressWheel progressbar = (ProgressWheel) inflate.findViewById(R.id.progressbar);
         Glide
                 .with(mContext)
                 .load(imageUrl)
                 .thumbnail(0.2f)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        progressbar.setVisibility(View.GONE);
+                        return false;
+                    }
+                })
                 .into(imageView);
         container.addView(inflate);
 
@@ -75,12 +92,10 @@ public class ImagesAdapter extends PagerAdapter {
     public Bitmap getCurrentImageViewBitmap() {
         View currentItem = getPrimaryItem();
         if (currentItem == null) {
-            KLog.i("btn_save----currentItem是空");
             return null;
         }
         PinchImageView imageView = (PinchImageView) currentItem.findViewById(R.id.imageView);
         if (imageView == null) {
-            KLog.i("btn_save----imageView是空");
             return null;
         }
         imageView.setDrawingCacheEnabled(true);
