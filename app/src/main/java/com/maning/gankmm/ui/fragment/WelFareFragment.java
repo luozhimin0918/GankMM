@@ -42,6 +42,8 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
 
     private WelFarePresenterImpl welFarePresenter;
 
+    private ArrayList<String> imagesList;
+
     public static WelFareFragment newInstance() {
         return new WelFareFragment();
     }
@@ -77,7 +79,7 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
         }, 100);
     }
 
-    private void initRecycleView(final List<GankEntity> welFareList) {
+    private void initRecycleView(List<GankEntity> welFareList) {
         if (recyclePicAdapter == null) {
             recyclePicAdapter = new RecyclePicAdapter(context, welFareList);
             swipeTarget.setAdapter(recyclePicAdapter);
@@ -85,14 +87,14 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
             recyclePicAdapter.setOnItemClickLitener(new RecyclePicAdapter.OnItemClickLitener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    ArrayList<String> arrayList = new ArrayList<>();
-                    for (int i = 0; i < welFareList.size(); i++) {
-                        arrayList.add(welFareList.get(i).getUrl());
+                    List<GankEntity> allDatas = recyclePicAdapter.getAllDatas();
+                    imagesList = new ArrayList<>();
+                    for (int i = 0; i < allDatas.size(); i++) {
+                        imagesList.add(allDatas.get(i).getUrl());
                     }
-                    IntentUtils.startToImageShow(context, arrayList, position);
+                    IntentUtils.startToImageShow(context, imagesList, position);
                 }
             });
-
         } else {
             recyclePicAdapter.updateDatas(welFareList);
         }
@@ -105,17 +107,6 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         swipeTarget.setLayoutManager(staggeredGridLayoutManager);
         swipeTarget.setItemAnimator(new DefaultItemAnimator());
-        //到底自动刷新
-//        swipeTarget.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-//                    if (!ViewCompat.canScrollVertically(recyclerView, 1)) {
-//                        swipeToLoadLayout.setLoadingMore(true);
-//                    }
-//                }
-//            }
-//        });
     }
 
     @Override

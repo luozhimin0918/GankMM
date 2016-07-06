@@ -89,4 +89,12 @@ public class WelFarePresenterImpl extends BasePresenterImpl<IWelFareView> implem
     public void getMoreDatas() {
         GankApi.getCommonDataNew(Constants.FlagWelFare, pageSize, pageIndex, 0x001, httpCallBack);
     }
+
+    @Override
+    public void detachView() {
+        if (welFareLists != null) {
+            welFareLists.clear();
+        }
+        super.detachView();
+    }
 }

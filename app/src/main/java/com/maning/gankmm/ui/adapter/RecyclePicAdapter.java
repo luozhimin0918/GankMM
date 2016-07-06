@@ -62,6 +62,10 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclePicAdapter.My
         notifyDataSetChanged();
     }
 
+    public List<GankEntity> getAllDatas(){
+        return this.commonDataResults;
+    }
+
     private void addHeights() {
         for (int i = 0; i < commonDataResults.size(); i++) {
             mHeights.add((int) (ScreenHeight * 0.25 + Math.random() * ScreenHeight * 0.25));
