@@ -62,7 +62,18 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclePicAdapter.My
         notifyDataSetChanged();
     }
 
-    public List<GankEntity> getAllDatas(){
+    public void destroyList() {
+        if (mHeights != null) {
+            mHeights.clear();
+            mHeights = null;
+        }
+        if (commonDataResults != null) {
+            commonDataResults.clear();
+            commonDataResults = null;
+        }
+    }
+
+    public List<GankEntity> getAllDatas() {
         return this.commonDataResults;
     }
 

@@ -153,6 +153,9 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
     @Override
     public void onDestroyView() {
         welFarePresenter.detachView();
+        if (recyclePicAdapter != null) {
+            recyclePicAdapter.destroyList();
+        }
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
