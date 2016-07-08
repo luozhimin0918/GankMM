@@ -20,6 +20,7 @@
 ##APK下载地址：
 ####[点击下载(http://fir.im/gankmm)](http://fir.im/gankmm)<br>
 
+
 ##项目截图：
 ![](https://github.com/maning0303/GankMM/raw/master/screenshots/001.jpg)
 ![](https://github.com/maning0303/GankMM/raw/master/screenshots/002.jpg)
@@ -66,6 +67,10 @@
     1.所有ListView替换为RecycleView
     2.修复Bug
     3.更换图标，APP名字
+    
+##关于
+#####亲，喜欢就start一下吧
+#####您可以在App意见反馈反馈您的意见和想法，也可以在这里提出您宝贵的反馈[Issues](https://github.com/maning0303/GankMM/issues)
 
 ##感谢：
 ######[代码家-干货集中营](https://github.com/daimajia)
