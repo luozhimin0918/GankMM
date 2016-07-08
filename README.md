@@ -12,6 +12,7 @@
     6.SQLite的基本使用；
     7.WebView的使用，自动缓存；
     8.Jsoup抓取网页数据；
+    9.Android 6.0权限适配
 
 ##所有的数据来自：
 ####[干货集中营(http://gank.io/)](http://gank.io/)<br>
@@ -29,7 +30,14 @@
 ![](https://github.com/maning0303/GankMM/raw/master/screenshots/007.jpg)
 ![](https://github.com/maning0303/GankMM/raw/master/screenshots/008.jpg)
 
+##下版本想法：夜间模式
+
 ##更新日志：
+###V1.2.4:
+    1.修复上一版本重构MVP造成的Bug
+    2.适配6.0权限
+    3.页面小调整
+
 ###V1.2.3:
     1.使用MVP模式重构页面
     2.修复已知和反馈的相关Bug
@@ -79,3 +87,5 @@
 ######[LikeButton](https://github.com/jd-alexander/LikeButton)
 ######[jsoup](https://github.com/jhy/jsoup)
 ######[klog](https://github.com/ZhaoKaiQiang/KLog)
+######[easypermissions](https://github.com/googlesamples/easypermissions)
+######[smarttablayout](https://github.com/ogaclejapan/SmartTabLayout)
