@@ -30,7 +30,9 @@
 ![](https://github.com/maning0303/GankMM/raw/master/screenshots/007.jpg)
 ![](https://github.com/maning0303/GankMM/raw/master/screenshots/008.jpg)
 
-##下版本想法：夜间模式
+##下版本想法：
+### 1.夜间模式
+### 2....
 
 ##更新日志：
 ###V1.2.4:
