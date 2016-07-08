@@ -32,8 +32,9 @@
 ![](https://github.com/maning0303/GankMM/raw/master/screenshots/008.jpg)
 
 ##下版本想法：
-### 1.夜间模式
-### 2....
+##### 1.夜间模式
+##### 2....
+<br>
 
 ##更新日志：
 ###V1.2.4:
@@ -70,7 +71,7 @@
     
 ##关于
 #####亲，喜欢就start一下吧
-#####您可以在App意见反馈反馈您的意见和想法，也可以在这里提出您宝贵的反馈[Issues](https://github.com/maning0303/GankMM/issues)
+#####您可以在App意见反馈反馈您的意见和想法，也可以在这里提出您宝贵的[意见和想法](https://github.com/maning0303/GankMM/issues)
 
 ##感谢：
 ######[代码家-干货集中营](https://github.com/daimajia)
