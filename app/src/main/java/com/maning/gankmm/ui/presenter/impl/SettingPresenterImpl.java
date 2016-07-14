@@ -98,6 +98,9 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
 
     @Override
     public void initUmeng() {
+        //修复点击设置--意见反馈闪退的问题(packageName与applicationId不一致导致的问题)
+        //具体可以参考：http://bbs.umeng.com/thread-8071-1-1.html
+        com.umeng.fb.util.Res.setPackageName(R.class.getPackage().getName());
         initUmengFeedBack();
         //Umeng 反馈
         FeedbackAgent umengAgent = new FeedbackAgent(context);
