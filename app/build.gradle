@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         applicationId "com.maning.gankmm"
-        minSdkVersion 14
-        targetSdkVersion 23
-        versionCode 7
-        versionName "1.2.4"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
         resConfigs "zh"
     }
 
@@ -37,16 +37,35 @@ android {
     def File customerproguardFile = file('src/proguard.cfg')
     buildTypes {
         release {
+            //混淆
             minifyEnabled true
+            //设置压缩对齐
+            zipAlignEnabled true
+            //移除无用的资源文件
             shrinkResources true
             proguardFiles customerproguardFile.path
             buildConfigField "boolean", "LOG_DEBUG", "false"
+            // 自定义输出配置
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        // 输出apk名称为xxx_release_v1.0_wandoujia.apk
+                        def fileName = "gankmm_${variant.buildType.name}_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
+                        output.outputFile = new File(outputFile.parent + "/${variant.buildType.name}", fileName)
+                    }
+                }
+            }
         }
         debug {
+            //混淆
+            minifyEnabled false
+            proguardFiles customerproguardFile.path
             buildConfigField "boolean", "LOG_DEBUG", "true"
         }
 
     }
+
 }
 
 dependencies {

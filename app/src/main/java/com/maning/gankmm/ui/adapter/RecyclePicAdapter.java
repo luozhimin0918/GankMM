@@ -110,8 +110,10 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclePicAdapter.My
                 .into(viewHolder.image);
 
         //高度
-        ViewGroup.LayoutParams layoutParams = viewHolder.rlRoot.getLayoutParams();
-        layoutParams.height = mHeights.get(position);
+        if (mHeights != null) {
+            ViewGroup.LayoutParams layoutParams = viewHolder.rlRoot.getLayoutParams();
+            layoutParams.height = mHeights.get(position);
+        }
 
         //查询是否存在收藏
         boolean isCollect = new CollectDao().queryOneCollectByID(resultsEntity.get_id());
@@ -159,7 +161,12 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclePicAdapter.My
 
     @Override
     public int getItemCount() {
-        return commonDataResults.size();
+        if (commonDataResults != null) {
+            return commonDataResults.size();
+        } else {
+            return 0;
+        }
+
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
