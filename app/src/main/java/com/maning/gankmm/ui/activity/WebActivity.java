@@ -111,7 +111,6 @@ public class WebActivity extends BaseActivity implements IWebView {
     @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
         //设置WebView属性，能够执行Javascript脚本
-        webView.setWebChromeClient(new WebChromeClient());
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setAllowFileAccess(true);
         // 开启DOM storage API 功能
