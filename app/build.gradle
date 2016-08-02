@@ -94,5 +94,4 @@ dependencies {
     compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
     compile project(':libraryumeng')
     compile files('libs/jpush-android-2.1.5.jar')
-    compile project(':nightmodel')
 }

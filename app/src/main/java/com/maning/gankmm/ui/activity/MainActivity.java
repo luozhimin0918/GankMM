@@ -26,12 +26,10 @@ import com.maning.gankmm.ui.presenter.impl.MainPresenterImpl;
 import com.maning.gankmm.utils.DialogUtils;
 import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.utils.MySnackbar;
-import com.maning.gankmm.utils.StatusBarUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import cn.like.nightmodel.NightModelManager;
 import me.drakeet.materialdialog.MaterialDialog;
 
 public class MainActivity extends BaseActivity implements IMainView {
@@ -58,7 +56,6 @@ public class MainActivity extends BaseActivity implements IMainView {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        NightModelManager.getInstance().attach(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -229,14 +226,6 @@ public class MainActivity extends BaseActivity implements IMainView {
     }
 
     public void changeMode(){
-        if (NightModelManager.getInstance().isCurrentNightModel(MainActivity.this)) {
-            NightModelManager.getInstance().applyDayModel(MainActivity.this);
-            StatusBarUtil.setColor(this, getResources().getColor(R.color.mainColoe), 0);
-        } else {
-            NightModelManager.getInstance().applyNightModel(MainActivity.this);
-            StatusBarUtil.setColor(this, getResources().getColor(R.color.mainColor_night), 0);
-        }
-
         initnavigationItemView();
     }
 
@@ -275,7 +264,6 @@ public class MainActivity extends BaseActivity implements IMainView {
 
     @Override
     protected void onDestroy() {
-        NightModelManager.getInstance().detach(this);
         mainPresenter.detachView();
         if (mMaterialDialogFeedBack != null) {
             mMaterialDialogFeedBack.dismiss();
