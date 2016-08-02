@@ -8,6 +8,7 @@
     <color name="translate">#00000000</color>
     <color name="translate_black">#38000000</color>
     <color name="mainColoe">#54aee6</color>
+    <color name="mainColor_night">#232736</color>
     <color name="backgroundGray">#efefef</color>
 
     <color name="refreshBgBlack">#404040</color>

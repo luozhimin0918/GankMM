@@ -3,6 +3,7 @@ package com.maning.gankmm.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -25,7 +26,7 @@ import com.maning.gankmm.ui.presenter.impl.MainPresenterImpl;
 import com.maning.gankmm.utils.DialogUtils;
 import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.utils.MySnackbar;
-import com.maning.gankmm.utils.StatusBarCompat;
+import com.maning.gankmm.utils.StatusBarUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
@@ -168,6 +169,7 @@ public class MainActivity extends BaseActivity implements IMainView {
      * -----------------------------------------
      */
     private void initNavigationView() {
+        initnavigationItemView();
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -211,24 +213,31 @@ public class MainActivity extends BaseActivity implements IMainView {
                         IntentUtils.startAppShareText(context, "干货营", "干货营Android客户端：" + getString(R.string.download_url));
                         break;
                     case R.id.night_mode:
-                        if (NightModelManager.getInstance().isCurrentNightModel(MainActivity.this)) {
-                            NightModelManager.getInstance().applyDayModel(MainActivity.this);
-                            navigationView.setItemTextColor(ColorStateList.valueOf(MainActivity.this.getResources().getColor(R.color.google_yellow)));
-                            navigationView.setItemIconTintList(ColorStateList.valueOf(MainActivity.this.getResources().getColor(R.color.google_yellow)));
-                            //设置状态栏的颜色
-                            StatusBarCompat.translucentStatusBar(MainActivity.this);
-                        } else {
-                            NightModelManager.getInstance().applyNightModel(MainActivity.this);
-                            navigationView.setItemTextColor(ColorStateList.valueOf(MainActivity.this.getResources().getColor(R.color.google_blue)));
-                            navigationView.setItemIconTintList(ColorStateList.valueOf(MainActivity.this.getResources().getColor(R.color.google_blue)));
-                            //设置状态栏的颜色
-                            StatusBarCompat.translucentStatusBar(MainActivity.this);
-                        }
+                        changeMode();
                         break;
                 }
                 return true;
             }
         });
+    }
+
+    public void initnavigationItemView(){
+        Resources resource= getBaseContext().getResources();
+        ColorStateList csl=resource.getColorStateList(R.color.navigation_menu_item_color);
+        navigationView.setItemTextColor(csl);
+        navigationView.setItemIconTintList(csl);
+    }
+
+    public void changeMode(){
+        if (NightModelManager.getInstance().isCurrentNightModel(MainActivity.this)) {
+            NightModelManager.getInstance().applyDayModel(MainActivity.this);
+            StatusBarUtil.setColor(this, getResources().getColor(R.color.mainColoe), 0);
+        } else {
+            NightModelManager.getInstance().applyNightModel(MainActivity.this);
+            StatusBarUtil.setColor(this, getResources().getColor(R.color.mainColor_night), 0);
+        }
+
+        initnavigationItemView();
     }
 
     @Override

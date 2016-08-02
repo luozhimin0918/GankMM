@@ -25,7 +25,7 @@ import com.maning.gankmm.ui.view.ProgressWheel;
 import com.maning.gankmm.utils.DensityUtil;
 import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.utils.MySnackbar;
-import com.maning.gankmm.utils.StatusBarCompat;
+import com.maning.gankmm.utils.StatusBarUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -59,7 +59,7 @@ public class GankActivity extends BaseActivity implements IGankView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_day_show);
         //设置状态栏的颜色
-        StatusBarCompat.setStatusBarColor(GankActivity.this, StatusBarCompat.COLOR_DEFAULT_TRANSLATE);
+        StatusBarUtil.setColor(this,R.color.translate);
         ButterKnife.bind(this);
 
         gankPresenter = new GankPresenterImpl(this, this);

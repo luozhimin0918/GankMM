@@ -9,7 +9,8 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 
 import com.bigkoo.svprogresshud.SVProgressHUD;
-import com.maning.gankmm.utils.StatusBarCompat;
+import com.maning.gankmm.R;
+import com.maning.gankmm.utils.StatusBarUtil;
 
 /**
  * Created by maning on 16/3/2.
@@ -32,7 +33,7 @@ public class BaseActivity extends AppCompatActivity {
 
     private void initStatus() {
         //设置状态栏的颜色
-        StatusBarCompat.setStatusBarColor(this);
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary), 0);
     }
 
     private void initDialog() {

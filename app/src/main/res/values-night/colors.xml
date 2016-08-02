@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#003c61</color>
-    <color name="colorPrimaryDark">#072436</color>
-    <color name="colorPrimaryDark2">#5554aee6</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#232736</color>
+    <color name="colorPrimaryDark">#232736</color>
+    <color name="colorPrimaryDark2">#232736</color>
+    <color name="colorAccent">#232736</color>
 
     <color name="translate">#00000000</color>
     <color name="translate_black">#38000000</color>
-    <color name="mainColoe">#54aee6</color>
     <color name="backgroundGray">#efefef</color>
 
     <color name="refreshBgBlack">#404040</color>
