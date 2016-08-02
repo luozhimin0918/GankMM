@@ -2,6 +2,7 @@ package com.maning.gankmm.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -24,10 +25,12 @@ import com.maning.gankmm.ui.presenter.impl.MainPresenterImpl;
 import com.maning.gankmm.utils.DialogUtils;
 import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.utils.MySnackbar;
+import com.maning.gankmm.utils.StatusBarCompat;
 import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.like.nightmodel.NightModelManager;
 import me.drakeet.materialdialog.MaterialDialog;
 
 public class MainActivity extends BaseActivity implements IMainView {
@@ -38,6 +41,7 @@ public class MainActivity extends BaseActivity implements IMainView {
     DrawerLayout drawerLayout;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
+
 
     private Context context;
     private WelFareFragment welFareFragment;
@@ -53,6 +57,7 @@ public class MainActivity extends BaseActivity implements IMainView {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        NightModelManager.getInstance().attach(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -205,6 +210,21 @@ public class MainActivity extends BaseActivity implements IMainView {
                         //分享
                         IntentUtils.startAppShareText(context, "干货营", "干货营Android客户端：" + getString(R.string.download_url));
                         break;
+                    case R.id.night_mode:
+                        if (NightModelManager.getInstance().isCurrentNightModel(MainActivity.this)) {
+                            NightModelManager.getInstance().applyDayModel(MainActivity.this);
+                            navigationView.setItemTextColor(ColorStateList.valueOf(MainActivity.this.getResources().getColor(R.color.google_yellow)));
+                            navigationView.setItemIconTintList(ColorStateList.valueOf(MainActivity.this.getResources().getColor(R.color.google_yellow)));
+                            //设置状态栏的颜色
+                            StatusBarCompat.translucentStatusBar(MainActivity.this);
+                        } else {
+                            NightModelManager.getInstance().applyNightModel(MainActivity.this);
+                            navigationView.setItemTextColor(ColorStateList.valueOf(MainActivity.this.getResources().getColor(R.color.google_blue)));
+                            navigationView.setItemIconTintList(ColorStateList.valueOf(MainActivity.this.getResources().getColor(R.color.google_blue)));
+                            //设置状态栏的颜色
+                            StatusBarCompat.translucentStatusBar(MainActivity.this);
+                        }
+                        break;
                 }
                 return true;
             }
@@ -246,6 +266,7 @@ public class MainActivity extends BaseActivity implements IMainView {
 
     @Override
     protected void onDestroy() {
+        NightModelManager.getInstance().detach(this);
         mainPresenter.detachView();
         if (mMaterialDialogFeedBack != null) {
             mMaterialDialogFeedBack.dismiss();

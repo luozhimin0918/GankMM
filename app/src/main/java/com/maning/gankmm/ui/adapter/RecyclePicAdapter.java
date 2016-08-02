@@ -1,6 +1,7 @@
 package com.maning.gankmm.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.maning.gankmm.R;
@@ -36,17 +40,13 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclePicAdapter.My
     private Context context;
     private List<GankEntity> commonDataResults;
     private LayoutInflater layoutInflater;
-    private List<Integer> mHeights;
-    private int ScreenHeight;
+    private int screenWidth;
 
     public RecyclePicAdapter(Context context, List<GankEntity> commonDataResults) {
         this.context = context;
         this.commonDataResults = commonDataResults;
         layoutInflater = LayoutInflater.from(this.context);
-        ScreenHeight = DensityUtil.getHeight(context);
-        //高度
-        mHeights = new ArrayList<>();
-        addHeights();
+        screenWidth = DensityUtil.getWidth(context);
     }
 
     private OnItemClickLitener mOnItemClickLitener;
@@ -57,16 +57,10 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclePicAdapter.My
 
     public void updateDatas(List<GankEntity> commonDataResults) {
         this.commonDataResults = commonDataResults;
-        //这里多计算了高度，因为滑动太快的话，这么可能出现计算不及时崩溃现象
-        addHeights();
         notifyDataSetChanged();
     }
 
     public void destroyList() {
-        if (mHeights != null) {
-            mHeights.clear();
-            mHeights = null;
-        }
         if (commonDataResults != null) {
             commonDataResults.clear();
             commonDataResults = null;
@@ -75,12 +69,6 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclePicAdapter.My
 
     public List<GankEntity> getAllDatas() {
         return this.commonDataResults;
-    }
-
-    private void addHeights() {
-        for (int i = 0; i < commonDataResults.size(); i++) {
-            mHeights.add((int) (ScreenHeight * 0.25 + Math.random() * ScreenHeight * 0.25));
-        }
     }
 
     @Override
@@ -102,18 +90,25 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclePicAdapter.My
         //图片显示
         String url = resultsEntity.getUrl();
 
-        Glide
-                .with(context)
+        Glide.with(context)
                 .load(url)
+                .asBitmap()
                 .placeholder(R.drawable.pic_gray_bg)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(viewHolder.image);
+                .into(new SimpleTarget<Bitmap>(screenWidth / 2,screenWidth / 2) {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        int width = resource.getWidth();
+                        int height = resource.getHeight();
+                        KLog.i("position:" + position + "----width:" + width + ",height:" + height);
+                        //计算高宽比
+                        int finalHeight = (screenWidth / 2) * height / width;
+                        ViewGroup.LayoutParams layoutParams = viewHolder.rlRoot.getLayoutParams();
+                        layoutParams.height = finalHeight;
 
-        //高度
-        if (mHeights != null) {
-            ViewGroup.LayoutParams layoutParams = viewHolder.rlRoot.getLayoutParams();
-            layoutParams.height = mHeights.get(position);
-        }
+                        viewHolder.image.setImageBitmap(resource);
+                    }
+                });
 
         //查询是否存在收藏
         boolean isCollect = new CollectDao().queryOneCollectByID(resultsEntity.get_id());

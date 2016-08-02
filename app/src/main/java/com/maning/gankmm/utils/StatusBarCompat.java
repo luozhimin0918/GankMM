@@ -11,6 +11,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
+import com.maning.gankmm.R;
+
 /**
  * Utils for status bar
  * Created by qiu on 3/29/16.
@@ -109,7 +111,7 @@ public class StatusBarCompat {
 
 
     public static void setStatusBarColor(Activity activity) {
-        setStatusBarColor(activity, COLOR_DEFAULT_PINK);
+        setStatusBarColor(activity, activity.getResources().getColor(R.color.colorPrimary));
     }
 
     //Get status bar height

@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/first_group"
+        android:checkableBehavior="single">
         <item
-            android:checked="true"
             android:id="@+id/nav_fuli"
+            android:checked="true"
             android:icon="@drawable/icon_fuli"
             android:title="福利" />
 
         <item
-            android:checked="true"
             android:id="@+id/nav_history"
+            android:checked="true"
             android:icon="@drawable/icon_time"
             android:title="时间浏览" />
 
@@ -29,20 +31,22 @@
             android:title="收藏" />
 
     </group>
-    <item android:title="其他">
-        <menu>
-            <item
-                android:id="@+id/setting"
-                android:icon="@drawable/icon_setup"
-                android:title="设置" />
-            <item
-                android:id="@+id/share_app"
-                android:icon="@drawable/icon_share"
-                android:title="分享" />
-            <item
-                android:id="@+id/about"
-                android:icon="@drawable/icon_about"
-                android:title="关于" />
-        </menu>
-    </item>
+    <group android:id="@+id/second_group">
+        <item
+            android:id="@+id/setting"
+            android:icon="@drawable/icon_setup"
+            android:title="设置" />
+        <item
+            android:id="@+id/night_mode"
+            android:icon="@drawable/icon_share"
+            android:title="夜间模式" />
+        <item
+            android:id="@+id/share_app"
+            android:icon="@drawable/icon_share"
+            android:title="分享" />
+        <item
+            android:id="@+id/about"
+            android:icon="@drawable/icon_about"
+            android:title="关于" />
+    </group>
 </menu>

@@ -8,11 +8,11 @@
     android:paddingTop="6dp">
 
     <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/pic_gray_bg" />
+        android:src="@color/itemGrayBg" />
 
     <RelativeLayout
         android:layout_width="match_parent"
