@@ -28,6 +28,8 @@ public class SettingActivity extends BaseActivity implements ISettingView {
     Toolbar toolbar;
     @Bind(R.id.iv_push)
     ImageView ivPush;
+    @Bind(R.id.iv_night_mode)
+    ImageView ivNightMode;
 
     @Bind(R.id.item_clean_cache)
     MySettingItemView itemCleanCache;
@@ -119,6 +121,11 @@ public class SettingActivity extends BaseActivity implements ISettingView {
     @OnClick(R.id.iv_push)
     void iv_push() {
         settingPresenter.changePushState();
+    }
+
+    @OnClick(R.id.iv_night_mode)
+    void iv_night_mode() {
+
     }
 
     @Override

@@ -209,9 +209,6 @@ public class MainActivity extends BaseActivity implements IMainView {
                         //分享
                         IntentUtils.startAppShareText(context, "干货营", "干货营Android客户端：" + getString(R.string.download_url));
                         break;
-                    case R.id.night_mode:
-                        changeMode();
-                        break;
                 }
                 return true;
             }
@@ -223,10 +220,6 @@ public class MainActivity extends BaseActivity implements IMainView {
         ColorStateList csl=resource.getColorStateList(R.color.navigation_menu_item_color);
         navigationView.setItemTextColor(csl);
         navigationView.setItemIconTintList(csl);
-    }
-
-    public void changeMode(){
-        initnavigationItemView();
     }
 
     @Override
