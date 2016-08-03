@@ -5,6 +5,7 @@ import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.bean.DayEntity;
 import com.maning.gankmm.bean.GankEntity;
 import com.maning.gankmm.bean.HttpResult;
+import com.maning.gankmm.bean.RandomEntity;
 import com.socks.library.KLog;
 
 import java.util.List;
@@ -140,6 +141,42 @@ public class GankApi {
         });
 
         return oneDayData;
+    }
+
+
+    public static Call<RandomEntity> getRandomDatas(int count, final int what, final MyCallBack myCallBack) {
+
+        Call<RandomEntity> randomDatasCall = BuildApi.getAPIService().getRandomDatas("Android",count);
+
+        randomDatasCall.enqueue(new Callback<RandomEntity>() {
+            @Override
+            public void onResponse(Call<RandomEntity> call, Response<RandomEntity> response) {
+                if (response.isSuccessful()) {
+                    RandomEntity body = response.body();
+                    if (body != null) {
+                        if (!body.isError()) {
+                            KLog.i("getRandomDatas---success：" + body.toString());
+                            myCallBack.onSuccessList(what, body.getResults());
+                        } else {
+                            myCallBack.onFail(what, GET_DATA_FAIL);
+                        }
+                    } else {
+                        myCallBack.onFail(what, GET_DATA_FAIL);
+                    }
+                } else {
+                    myCallBack.onFail(what, GET_DATA_FAIL);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RandomEntity> call, Throwable t) {
+                KLog.i("getRandomDatas-----onFailure：" + t.toString());
+                //数据错误
+                myCallBack.onFail(what, NET_FAIL);
+            }
+        });
+
+        return randomDatasCall;
     }
 
 }

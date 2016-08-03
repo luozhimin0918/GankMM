@@ -24,6 +24,7 @@ import com.maning.gankmm.R;
 import com.maning.gankmm.bean.GankEntity;
 import com.maning.gankmm.db.CollectDao;
 import com.maning.gankmm.utils.DensityUtil;
+import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.utils.MySnackbar;
 import com.maning.library.SwitcherView;
 import com.socks.library.KLog;
@@ -42,14 +43,14 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private Context context;
     private List<GankEntity> commonDataResults;
-    private ArrayList<String> headLines;
+    private List<GankEntity> headLines;
+    private ArrayList<String> headLinesStrs;
     private LayoutInflater layoutInflater;
     private int screenWidth;
 
-    public RecyclePicAdapter(Context context, List<GankEntity> commonDataResults, ArrayList<String> headLines) {
+    public RecyclePicAdapter(Context context, List<GankEntity> commonDataResults) {
         this.context = context;
         this.commonDataResults = commonDataResults;
-        this.headLines = headLines;
         layoutInflater = LayoutInflater.from(this.context);
         screenWidth = DensityUtil.getWidth(context);
     }
@@ -60,13 +61,23 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.mOnItemClickLitener = mOnItemClickLitener;
     }
 
+    private void updateHeadLinesStrs() {
+        if (headLines != null && headLines.size() > 0) {
+            headLinesStrs = new ArrayList<>();
+            for (int i = 0; i < headLines.size(); i++) {
+                headLinesStrs.add(headLines.get(i).getDesc());
+            }
+        }
+    }
+
     public void updateDatas(List<GankEntity> commonDataResults) {
         this.commonDataResults = commonDataResults;
         notifyDataSetChanged();
     }
 
-    public void updateHeadLines(ArrayList<String> headLines) {
+    public void updateHeadLines(List<GankEntity> headLines) {
         this.headLines = headLines;
+        updateHeadLinesStrs();
         notifyItemChanged(0);
     }
 
@@ -118,7 +129,8 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     viewHolder.tvLoadingHeadLine.setVisibility(View.GONE);
                     viewHolder.switcherView.setVisibility(View.VISIBLE);
                     //设置数据源
-                    viewHolder.switcherView.setResource(headLines);
+                    viewHolder.switcherView.setResource(headLinesStrs);
+                    KLog.i(headLinesStrs.toString() + "--------------");
                     //开始滚动
                     viewHolder.switcherView.startRolling();
 
@@ -126,7 +138,9 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         @Override
                         public void onClick(View v) {
                             int index = viewHolder.switcherView.getCurrentIndex();
-                            KLog.i(index + "--------------");
+                            GankEntity randomGankEntity = headLines.get(index);
+                            KLog.i(randomGankEntity.getDesc() + "--------------");
+                            IntentUtils.startToWebActivity(context,randomGankEntity.getType(),randomGankEntity.getDesc(),randomGankEntity.getUrl());
                         }
                     });
                 }
@@ -160,9 +174,7 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                             int width = resource.getWidth();
                             int height = resource.getHeight();
-                            KLog.i("position:" + newPosition + "----width:" + width + ",height:" + height);
                             //计算高宽比
-
                             int finalHeight = (screenWidth / 2) * height / width;
                             if (resultsEntity.getItemHeight() <= 0) {
                                 resultsEntity.setItemHeight(finalHeight);

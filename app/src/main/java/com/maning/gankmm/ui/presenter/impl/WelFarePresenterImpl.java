@@ -9,6 +9,7 @@ import com.maning.gankmm.http.GankApi;
 import com.maning.gankmm.http.MyCallBack;
 import com.maning.gankmm.ui.iView.IWelFareView;
 import com.maning.gankmm.ui.presenter.IWelFarePresenter;
+import com.socks.library.KLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class WelFarePresenterImpl extends BasePresenterImpl<IWelFareView> implem
     private Context context;
 
     private List<GankEntity> welFareLists;
+    private List<GankEntity> randomLists;
     private int pageSize = 20;
     private int pageIndex = 1;
 
@@ -32,12 +34,12 @@ public class WelFarePresenterImpl extends BasePresenterImpl<IWelFareView> implem
     private MyCallBack httpCallBack = new MyCallBack() {
         @Override
         public void onSuccessList(int what, List results) {
-            if (results == null) {
-                mView.overRefresh();
-                return;
-            }
             switch (what) {
                 case 0x001:
+                    if (results == null) {
+                        mView.overRefresh();
+                        return;
+                    }
                     if (welFareLists == null) {
                         welFareLists = new ArrayList<>();
                     }
@@ -55,6 +57,10 @@ public class WelFarePresenterImpl extends BasePresenterImpl<IWelFareView> implem
                     mView.overRefresh();
                     break;
                 case 0x002: //下拉刷新
+                    if (results == null) {
+                        mView.overRefresh();
+                        return;
+                    }
                     pageIndex = 1;
                     pageIndex++;
                     welFareLists = results;
@@ -62,6 +68,10 @@ public class WelFarePresenterImpl extends BasePresenterImpl<IWelFareView> implem
                         mView.setWelFareList(welFareLists);
                     }
                     mView.overRefresh();
+                    break;
+                case 0x003: //头条，5条随机数
+                    randomLists = results;
+                    mView.setRandomList(randomLists);
                     break;
             }
         }
@@ -91,10 +101,19 @@ public class WelFarePresenterImpl extends BasePresenterImpl<IWelFareView> implem
     }
 
     @Override
+    public void getRandomDatas() {
+        GankApi.getRandomDatas(5, 0x003, httpCallBack);
+    }
+
+    @Override
     public void detachView() {
         if (welFareLists != null) {
             welFareLists.clear();
             welFareLists = null;
+        }
+        if (randomLists != null) {
+            randomLists.clear();
+            randomLists = null;
         }
         super.detachView();
     }

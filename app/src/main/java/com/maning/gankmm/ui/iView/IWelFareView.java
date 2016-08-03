@@ -11,6 +11,8 @@ public interface IWelFareView {
 
     void setWelFareList(List<GankEntity> welFareList);
 
+    void setRandomList(List<GankEntity> randomList);
+
     void showToast(String msg);
 
     void overRefresh();

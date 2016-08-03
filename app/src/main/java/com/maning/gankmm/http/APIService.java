@@ -3,6 +3,7 @@ package com.maning.gankmm.http;
 import com.maning.gankmm.bean.DayEntity;
 import com.maning.gankmm.bean.GankEntity;
 import com.maning.gankmm.bean.HttpResult;
+import com.maning.gankmm.bean.RandomEntity;
 import com.maning.gankmm.constant.Constants;
 
 import java.util.List;
@@ -39,5 +40,11 @@ public interface APIService {
                                   @Path("day") String day
     );
 
+    //http://gank.io/api/random/data/Android/5 --- 随机数据
+    @Headers("Cache-Control: public, max-age=300")
+    @GET("random/data/{type}/{count}")
+    Call<RandomEntity> getRandomDatas(@Path("type") String type,
+                                      @Path("count") int count
+    );
 
 }

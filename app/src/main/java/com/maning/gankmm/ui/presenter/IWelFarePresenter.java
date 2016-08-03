@@ -9,4 +9,6 @@ public interface IWelFarePresenter {
 
     void getMoreDatas();
 
+    void getRandomDatas();
+
 }

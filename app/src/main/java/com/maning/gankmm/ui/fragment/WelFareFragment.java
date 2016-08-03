@@ -85,9 +85,7 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
 
     private void initRecycleView(List<GankEntity> welFareList) {
         if (recyclePicAdapter == null) {
-            headLines = new ArrayList<>();
-
-            recyclePicAdapter = new RecyclePicAdapter(context, welFareList, headLines);
+            recyclePicAdapter = new RecyclePicAdapter(context, welFareList);
             swipeTarget.setAdapter(recyclePicAdapter);
             //点击事件
             recyclePicAdapter.setOnItemClickLitener(new RecyclePicAdapter.OnItemClickLitener() {
@@ -101,7 +99,8 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
                     IntentUtils.startToImageShow(context, imagesList, position);
                 }
             });
-
+            //获取头条随机
+            welFarePresenter.getRandomDatas();
         } else {
             recyclePicAdapter.updateDatas(welFareList);
         }
@@ -124,6 +123,13 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
     @Override
     public void setWelFareList(List<GankEntity> welFareList) {
         initRecycleView(welFareList);
+    }
+
+    @Override
+    public void setRandomList(List<GankEntity> randomList) {
+        if (recyclePicAdapter != null) {
+            recyclePicAdapter.updateHeadLines(randomList);
+        }
     }
 
     @Override
