@@ -32,4 +32,8 @@
 
     <!-- jd -->
     <dimen name="refresh_header_height_jd">100dp</dimen>
+
+    <!--SwitchView-->
+    <dimen name="switch_view_text_size">14sp</dimen>
+
 </resources>

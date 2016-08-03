@@ -2,6 +2,7 @@ package com.maning.gankmm.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.maning.gankmm.R;
+import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.bean.GankEntity;
 import com.maning.gankmm.ui.adapter.RecyclePicAdapter;
 import com.maning.gankmm.ui.base.BaseFragment;
@@ -43,6 +45,8 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
     private WelFarePresenterImpl welFarePresenter;
 
     private ArrayList<String> imagesList;
+
+    private ArrayList<String> headLines;
 
     public static WelFareFragment newInstance() {
         return new WelFareFragment();
@@ -81,7 +85,20 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
 
     private void initRecycleView(List<GankEntity> welFareList) {
         if (recyclePicAdapter == null) {
-            recyclePicAdapter = new RecyclePicAdapter(context, welFareList);
+            headLines = new ArrayList<>();
+
+            MyApplication.getHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    headLines.add("11111111111111");
+                    headLines.add("22222222222222");
+                    headLines.add("33333333333333333333");
+                    headLines.add("44444444");
+                    recyclePicAdapter.updateHeadLines(headLines);
+                }
+            },5000);
+
+            recyclePicAdapter = new RecyclePicAdapter(context, welFareList,headLines);
             swipeTarget.setAdapter(recyclePicAdapter);
             //点击事件
             recyclePicAdapter.setOnItemClickLitener(new RecyclePicAdapter.OnItemClickLitener() {

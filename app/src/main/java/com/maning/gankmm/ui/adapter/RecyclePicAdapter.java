@@ -3,6 +3,7 @@ package com.maning.gankmm.ui.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.maning.gankmm.bean.GankEntity;
 import com.maning.gankmm.db.CollectDao;
 import com.maning.gankmm.utils.DensityUtil;
 import com.maning.gankmm.utils.MySnackbar;
+import com.maning.library.SwitcherView;
 import com.socks.library.KLog;
 
 import java.util.ArrayList;
@@ -34,17 +36,20 @@ import butterknife.ButterKnife;
 
 /**
  * Created by maning on 16/5/17.
+ * 首页瀑布流图片展示
  */
-public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclePicAdapter.MyViewHolder> {
+public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
     private List<GankEntity> commonDataResults;
+    private ArrayList<String> headLines;
     private LayoutInflater layoutInflater;
     private int screenWidth;
 
-    public RecyclePicAdapter(Context context, List<GankEntity> commonDataResults) {
+    public RecyclePicAdapter(Context context, List<GankEntity> commonDataResults, ArrayList<String> headLines) {
         this.context = context;
         this.commonDataResults = commonDataResults;
+        this.headLines = headLines;
         layoutInflater = LayoutInflater.from(this.context);
         screenWidth = DensityUtil.getWidth(context);
     }
@@ -60,7 +65,25 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclePicAdapter.My
         notifyDataSetChanged();
     }
 
+    public void updateHeadLines(ArrayList<String> headLines) {
+        this.headLines = headLines;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
     public void destroyList() {
+        if (headLines != null) {
+            headLines.clear();
+            headLines = null;
+        }
         if (commonDataResults != null) {
             commonDataResults.clear();
             commonDataResults = null;
@@ -72,84 +95,117 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclePicAdapter.My
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View inflate = layoutInflater.inflate(R.layout.item_welfare_staggered, parent, false);
+        if (0 == viewType) {
+            View inflate = layoutInflater.inflate(R.layout.item_welfare_header, parent, false);
+            return new MyViewHolderHeader(inflate);
+        } else {
+            View inflate = layoutInflater.inflate(R.layout.item_welfare_staggered, parent, false);
+            return new MyViewHolder(inflate);
+        }
 
-        return new MyViewHolder(inflate);
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof MyViewHolderHeader) {
+            final MyViewHolderHeader viewHolder = (MyViewHolderHeader) holder;
+            StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
+            layoutParams.setFullSpan(true);
+            if (headLines != null && headLines.size() > 0) {
+                if(viewHolder.tvLoadingHeadLine.getVisibility() == View.VISIBLE){
+                    viewHolder.tvLoadingHeadLine.setVisibility(View.GONE);
+                    viewHolder.switcherView.setVisibility(View.VISIBLE);
+                    //设置数据源
+                    viewHolder.switcherView.setResource(headLines);
+                    //开始滚动
+                    viewHolder.switcherView.startRolling();
 
-        final GankEntity resultsEntity = commonDataResults.get(position);
-
-        String time = resultsEntity.getPublishedAt().split("T")[0];
-        viewHolder.tvShowTime.setText(time);
-
-        //图片显示
-        String url = resultsEntity.getUrl();
-
-        Glide.with(context)
-                .load(url)
-                .asBitmap()
-                .placeholder(R.drawable.pic_gray_bg)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(new SimpleTarget<Bitmap>(screenWidth / 2,screenWidth / 2) {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        int width = resource.getWidth();
-                        int height = resource.getHeight();
-                        KLog.i("position:" + position + "----width:" + width + ",height:" + height);
-                        //计算高宽比
-                        int finalHeight = (screenWidth / 2) * height / width;
-                        ViewGroup.LayoutParams layoutParams = viewHolder.rlRoot.getLayoutParams();
-                        layoutParams.height = finalHeight;
-
-                        viewHolder.image.setImageBitmap(resource);
-                    }
-                });
-
-        //查询是否存在收藏
-        boolean isCollect = new CollectDao().queryOneCollectByID(resultsEntity.get_id());
-        if (isCollect) {
-            viewHolder.btnCollect.setLiked(true);
-        } else {
-            viewHolder.btnCollect.setLiked(false);
-        }
-        viewHolder.btnCollect.setOnLikeListener(new OnLikeListener() {
-            @Override
-            public void liked(LikeButton likeButton) {
-                boolean insertResult = new CollectDao().insertOneCollect(resultsEntity);
-                if (insertResult) {
-                    MySnackbar.makeSnackBarBlack(viewHolder.tvShowTime, "收藏成功");
-                } else {
-                    MySnackbar.makeSnackBarRed(viewHolder.tvShowTime, "收藏失败");
-                    likeButton.setLiked(false);
+                    viewHolder.switcherView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            int index = viewHolder.switcherView.getCurrentIndex();
+                            KLog.i(index + "--------------");
+                        }
+                    });
                 }
+            } else {
+                viewHolder.tvLoadingHeadLine.setVisibility(View.VISIBLE);
+                viewHolder.switcherView.setVisibility(View.GONE);
             }
+        } else if (holder instanceof MyViewHolder) {
+            final MyViewHolder viewHolder = (MyViewHolder) holder;
+            final int newPosition = position - 1;
+            final GankEntity resultsEntity = commonDataResults.get(newPosition);
 
-            @Override
-            public void unLiked(LikeButton likeButton) {
-                boolean deleteResult = new CollectDao().deleteOneCollect(resultsEntity.get_id());
-                if (deleteResult) {
-                    MySnackbar.makeSnackBarBlack(viewHolder.tvShowTime, "取消收藏成功");
-                } else {
-                    MySnackbar.makeSnackBarRed(viewHolder.tvShowTime, "取消收藏失败");
-                    likeButton.setLiked(true);
-                }
+            String time = resultsEntity.getPublishedAt().split("T")[0];
+            viewHolder.tvShowTime.setText(time);
 
+            //图片显示
+            String url = resultsEntity.getUrl();
+
+            Glide.with(context)
+                    .load(url)
+                    .asBitmap()
+                    .placeholder(R.drawable.pic_gray_bg)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(new SimpleTarget<Bitmap>(screenWidth / 2, screenWidth / 2) {
+                        @Override
+                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            int width = resource.getWidth();
+                            int height = resource.getHeight();
+                            KLog.i("position:" + newPosition + "----width:" + width + ",height:" + height);
+                            //计算高宽比
+                            int finalHeight = (screenWidth / 2) * height / width;
+                            ViewGroup.LayoutParams layoutParams = viewHolder.rlRoot.getLayoutParams();
+                            layoutParams.height = finalHeight;
+
+                            viewHolder.image.setImageBitmap(resource);
+                        }
+                    });
+
+            //查询是否存在收藏
+            boolean isCollect = new CollectDao().queryOneCollectByID(resultsEntity.get_id());
+            if (isCollect) {
+                viewHolder.btnCollect.setLiked(true);
+            } else {
+                viewHolder.btnCollect.setLiked(false);
             }
-        });
-
-        //如果设置了回调，则设置点击事件
-        if (mOnItemClickLitener != null) {
-            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            viewHolder.btnCollect.setOnLikeListener(new OnLikeListener() {
                 @Override
-                public void onClick(View v) {
-                    mOnItemClickLitener.onItemClick(viewHolder.itemView, position);
+                public void liked(LikeButton likeButton) {
+                    boolean insertResult = new CollectDao().insertOneCollect(resultsEntity);
+                    if (insertResult) {
+                        MySnackbar.makeSnackBarBlack(viewHolder.tvShowTime, "收藏成功");
+                    } else {
+                        MySnackbar.makeSnackBarRed(viewHolder.tvShowTime, "收藏失败");
+                        likeButton.setLiked(false);
+                    }
+                }
+
+                @Override
+                public void unLiked(LikeButton likeButton) {
+                    boolean deleteResult = new CollectDao().deleteOneCollect(resultsEntity.get_id());
+                    if (deleteResult) {
+                        MySnackbar.makeSnackBarBlack(viewHolder.tvShowTime, "取消收藏成功");
+                    } else {
+                        MySnackbar.makeSnackBarRed(viewHolder.tvShowTime, "取消收藏失败");
+                        likeButton.setLiked(true);
+                    }
+
                 }
             });
+
+            //如果设置了回调，则设置点击事件
+            if (mOnItemClickLitener != null) {
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mOnItemClickLitener.onItemClick(viewHolder.itemView, newPosition);
+                    }
+                });
+            }
         }
 
     }
@@ -157,7 +213,7 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclePicAdapter.My
     @Override
     public int getItemCount() {
         if (commonDataResults != null) {
-            return commonDataResults.size();
+            return commonDataResults.size() + 1;
         } else {
             return 0;
         }
@@ -176,6 +232,19 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclePicAdapter.My
         RelativeLayout rlRoot;
 
         public MyViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
+
+    class MyViewHolderHeader extends RecyclerView.ViewHolder {
+        @Bind(R.id.switcherView)
+        SwitcherView switcherView;
+
+        @Bind(R.id.tv_loading_headline)
+        TextView tvLoadingHeadLine;
+
+        public MyViewHolderHeader(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

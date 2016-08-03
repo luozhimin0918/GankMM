@@ -92,6 +92,7 @@ dependencies {
     compile 'org.jsoup:jsoup:1.9.2'
     compile 'pub.devrel:easypermissions:0.1.7'
     compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
+    compile 'com.github.maning0303:SwitcherView:v1.0.4'
     compile project(':libraryumeng')
     compile files('libs/jpush-android-2.1.5.jar')
 }
