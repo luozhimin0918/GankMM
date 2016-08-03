@@ -67,7 +67,7 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public void updateHeadLines(ArrayList<String> headLines) {
         this.headLines = headLines;
-        notifyDataSetChanged();
+        notifyItemChanged(0);
     }
 
     @Override
@@ -114,7 +114,7 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
             layoutParams.setFullSpan(true);
             if (headLines != null && headLines.size() > 0) {
-                if(viewHolder.tvLoadingHeadLine.getVisibility() == View.VISIBLE){
+                if (viewHolder.tvLoadingHeadLine.getVisibility() == View.VISIBLE) {
                     viewHolder.tvLoadingHeadLine.setVisibility(View.GONE);
                     viewHolder.switcherView.setVisibility(View.VISIBLE);
                     //设置数据源
@@ -145,6 +145,11 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             //图片显示
             String url = resultsEntity.getUrl();
 
+            if (resultsEntity.getItemHeight() > 0) {
+                ViewGroup.LayoutParams layoutParams = viewHolder.rlRoot.getLayoutParams();
+                layoutParams.height = resultsEntity.getItemHeight();
+            }
+
             Glide.with(context)
                     .load(url)
                     .asBitmap()
@@ -157,9 +162,13 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                             int height = resource.getHeight();
                             KLog.i("position:" + newPosition + "----width:" + width + ",height:" + height);
                             //计算高宽比
+
                             int finalHeight = (screenWidth / 2) * height / width;
-                            ViewGroup.LayoutParams layoutParams = viewHolder.rlRoot.getLayoutParams();
-                            layoutParams.height = finalHeight;
+                            if (resultsEntity.getItemHeight() <= 0) {
+                                resultsEntity.setItemHeight(finalHeight);
+                                ViewGroup.LayoutParams layoutParams = viewHolder.rlRoot.getLayoutParams();
+                                layoutParams.height = resultsEntity.getItemHeight();
+                            }
 
                             viewHolder.image.setImageBitmap(resource);
                         }
@@ -249,7 +258,7 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             ButterKnife.bind(this, itemView);
         }
 
-        public void destroyHeadLines(){
+        public void destroyHeadLines() {
             KLog.i("---------------destroyHeadLines");
             switcherView.destroySwitcher();
         }

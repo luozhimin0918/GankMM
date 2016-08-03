@@ -19,6 +19,15 @@ public class GankEntity implements Serializable{
     private String url;
     private boolean used;
     private String who;
+    private int itemHeight;
+
+    public int getItemHeight() {
+        return itemHeight;
+    }
+
+    public void setItemHeight(int itemHeight) {
+        this.itemHeight = itemHeight;
+    }
 
     public void set_id(String _id) {
         this._id = _id;
