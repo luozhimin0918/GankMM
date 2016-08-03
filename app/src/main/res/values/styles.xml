@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <!-- Base application theme. -->
     <style name="BaseAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -9,11 +9,7 @@
         <item name="android:windowAnimationStyle">@style/AnimationActivity</item>
     </style>
 
-    <style name="AppTheme" parent="@style/BaseAppTheme">
-
-    </style>
-
-    <style name="SplashTheme" parent="@style/AppTheme">
+    <style name="SplashTheme" parent="@style/BaseAppTheme">
         <item name="android:windowBackground">@color/mainColoe</item>
     </style>
 
@@ -28,5 +24,34 @@
         <item name="android:activityCloseEnterAnimation">@anim/slide_left_in</item>
         <item name="android:activityCloseExitAnimation">@anim/slide_right_out</item>
     </style>
+
+    <!--白天-->
+    <style name="DayTheme" parent="@style/BaseAppTheme">
+        <item name="app_background">@color/backgroundColor</item>
+        <item name="lineColor">@color/lineColor</item>
+        <item name="item_bg">@color/item_bg</item>
+        <item name="item_bg_pressed">@color/item_selecter_pressed_color</item>
+        <item name="setting_text_color">@color/gank_text2_color</item>
+        <item name="setting_small_text_color">@color/gank_text3_color</item>
+        <item name="app_toolbar_bg">@color/main_color</item>
+        <item name="toolbar_line_color">@color/setting_toobar_line_color</item>
+        <item name="text1_color">@color/gank_text1_color</item>
+        <item name="setting_arrow_right">@drawable/gank_arrow_right</item>
+    </style>
+
+    <!--黑夜-->
+    <style name="NightTheme" parent="@style/BaseAppTheme">
+        <item name="app_background">@color/backgroundColor_night</item>
+        <item name="lineColor">@color/lineColor_night</item>
+        <item name="item_bg">@color/item_bg_night</item>
+        <item name="item_bg_pressed">@color/item_selecter_pressed_color_night</item>
+        <item name="setting_text_color">@color/gank_text2_color_night</item>
+        <item name="setting_small_text_color">@color/gank_text3_color_night</item>
+        <item name="app_toolbar_bg">@color/main_color_night</item>
+        <item name="toolbar_line_color">@color/setting_toobar_line_color_night</item>
+        <item name="text1_color">@color/gank_text1_color_night</item>
+        <item name="setting_arrow_right">@drawable/gank_arrow_right_night</item>
+    </style>
+
 
 </resources>

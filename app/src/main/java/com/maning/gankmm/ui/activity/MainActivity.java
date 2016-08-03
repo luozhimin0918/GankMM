@@ -11,11 +11,14 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.maning.gankmm.R;
 import com.maning.gankmm.constant.Constants;
+import com.maning.gankmm.skin.SkinBroadcastReceiver;
+import com.maning.gankmm.skin.SkinManager;
 import com.maning.gankmm.ui.base.BaseActivity;
 import com.maning.gankmm.ui.fragment.CategoryFragment;
 import com.maning.gankmm.ui.fragment.HistoryFragment;
@@ -203,6 +206,8 @@ public class MainActivity extends BaseActivity implements IMainView {
                         menuItem.setChecked(false); // 改变item选中状态
                         //跳转
                         IntentUtils.startSettingActivity(context);
+                        //注册夜间模式广播
+                        registerSkinReceiver();
                         break;
                     case R.id.share_app:
                         menuItem.setChecked(false); // 改变item选中状态
@@ -220,6 +225,22 @@ public class MainActivity extends BaseActivity implements IMainView {
         ColorStateList csl=resource.getColorStateList(R.color.navigation_menu_item_color);
         navigationView.setItemTextColor(csl);
         navigationView.setItemIconTintList(csl);
+    }
+
+    private SkinBroadcastReceiver skinBroadcastReceiver;
+
+    private void registerSkinReceiver() {
+        if (skinBroadcastReceiver == null) {
+            skinBroadcastReceiver = new SkinBroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    int currentTheme = intent.getIntExtra(SkinManager.IntentExtra_SkinTheme, 0);
+                    Log.i("onReceive", "MainActivity广播来了" + currentTheme);
+                    recreate();
+                }
+            };
+            SkinManager.registerSkinReceiver(MainActivity.this, skinBroadcastReceiver);
+        }
     }
 
     @Override
@@ -266,6 +287,7 @@ public class MainActivity extends BaseActivity implements IMainView {
             mMaterialDialogPush.dismiss();
             mMaterialDialogPush = null;
         }
+        SkinManager.unregisterSkinReceiver(this, skinBroadcastReceiver);
         super.onDestroy();
     }
 

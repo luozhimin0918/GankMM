@@ -9,6 +9,12 @@ public interface ISettingView extends IBaseView {
 
     void closePush();
 
+    void openNightMode();
+
+    void closeNightMode();
+
+    void recreateActivity();
+
     void setCacheSize(String cacheSize);
 
     void setUmengFeedbackState(boolean flag);

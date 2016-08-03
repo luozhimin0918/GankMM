@@ -10,6 +10,8 @@ import com.bumptech.glide.load.engine.cache.DiskCache;
 import com.maning.gankmm.R;
 import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.constant.Constants;
+import com.maning.gankmm.skin.SkinManager;
+import com.maning.gankmm.ui.activity.SettingActivity;
 import com.maning.gankmm.ui.iView.ISettingView;
 import com.maning.gankmm.ui.presenter.ISettingPresenter;
 import com.maning.gankmm.utils.FileUtils;
@@ -53,6 +55,29 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
             JPushInterface.stopPush(context.getApplicationContext());
             mView.closePush();
         }
+    }
+
+    @Override
+    public void initNightModeState() {
+        int currentSkinType = SkinManager.getCurrentSkinType(context);
+        if (SkinManager.THEME_DAY == currentSkinType) {
+            mView.closeNightMode();
+        } else {
+            mView.openNightMode();
+        }
+    }
+
+    @Override
+    public void clickNightMode() {
+        int currentSkinType = SkinManager.getCurrentSkinType(context);
+        if (SkinManager.THEME_DAY == currentSkinType) {
+            SkinManager.changeSkin((SettingActivity)context, SkinManager.THEME_NIGHT);
+            mView.openNightMode();
+        } else {
+            SkinManager.changeSkin((SettingActivity)context, SkinManager.THEME_DAY);
+            mView.closeNightMode();
+        }
+        mView.recreateActivity();
     }
 
     @Override

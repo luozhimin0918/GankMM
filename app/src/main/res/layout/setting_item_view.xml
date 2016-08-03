@@ -11,7 +11,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="16dp"
         android:text="图片缓存"
-        android:textColor="@color/textBlack"
+        android:textColor="?setting_text_color"
         android:textSize="16sp" />
 
     <ImageView
@@ -21,7 +21,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="2dp"
-        android:background="@drawable/ic_chevron_right" />
+        android:background="?setting_arrow_right" />
 
     <TextView
         android:id="@+id/setting_tv_right"
@@ -31,7 +31,7 @@
         android:layout_toLeftOf="@id/setting_right_arrows"
         android:text="文本"
         android:layout_marginLeft="8dp"
-        android:textColor="@color/textGray"
+        android:textColor="?setting_small_text_color"
         android:textSize="12sp" />
 
     <ImageView

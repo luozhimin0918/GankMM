@@ -27,11 +27,37 @@
     <color name="red">#ff0000</color>
     <color name="itemGrayBg">#eaeaea</color>
 
-    <color name="lineColor">#dfdfdf</color>
-
     <color name="google_blue">#4285F4</color>
     <color name="google_red">#EA4335</color>
     <color name="google_green">#34A853</color>
     <color name="google_yellow">#FBBC05</color>
+
+    <!--华丽的分界线-->
+    <color name="gank_text1_color">#FFFFFF</color><!--一级字体颜色-->
+    <color name="gank_text1_color_night">#9AACEC</color><!--一级字体颜色夜间-->
+    <color name="gank_text2_color">#3b3b3b</color>     <!--二级字体颜色日间-->
+    <color name="gank_text2_color_night">#626f9b</color>     <!--二级字体颜色夜间-->
+    <color name="gank_text3_color">#999999</color>     <!--三级字体颜色日间-->
+    <color name="gank_text3_color_night">#464c61</color>     <!--三级字体颜色夜间-->
+    <color name="gank_text4_color">#696969</color>     <!--四级字体颜色夜间-->
+    <color name="gank_text4_color_night">#323746</color>     <!--四级字体颜色夜间-->
+    <!--白天-->
+    <color name="backgroundColor">#fafafa</color>
+    <color name="textColor">#3b3b3b</color>
+    <color name="lineColor">#cccccc</color>
+    <color name="item_bg">#ffffff</color>
+    <color name="item_selecter_pressed_color">#e6e6e6</color>
+    <color name="main_color">#54aee6</color>
+    <color name="setting_toobar_line_color">#54aee6</color>
+
+
+    <!--夜间-->
+    <color name="backgroundColor_night">#232736</color>
+    <color name="textColor_night">#626f9b</color>
+    <color name="lineColor_night">#5a6285</color>
+    <color name="item_bg_night">#2A2F41</color>
+    <color name="item_selecter_pressed_color_night">#f6202431</color>
+    <color name="main_color_night">#2A2F41</color>
+    <color name="setting_toobar_line_color_night">#5a6285</color>
 
 </resources>

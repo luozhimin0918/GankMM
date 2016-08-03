@@ -10,6 +10,8 @@ import android.view.KeyEvent;
 
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.maning.gankmm.R;
+import com.maning.gankmm.skin.SkinManager;
+import com.maning.gankmm.ui.activity.SettingActivity;
 import com.maning.gankmm.utils.StatusBarUtil;
 
 /**
@@ -23,6 +25,8 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //设置主题
+        SkinManager.onActivityCreateSetSkin(this);
         super.onCreate(savedInstanceState);
 
         initStatus();
@@ -33,7 +37,12 @@ public class BaseActivity extends AppCompatActivity {
 
     private void initStatus() {
         //设置状态栏的颜色
-        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary), 0);
+        int currentSkinType = SkinManager.getCurrentSkinType(this);
+        if (SkinManager.THEME_DAY == currentSkinType) {
+            StatusBarUtil.setColor(this, getResources().getColor(R.color.main_color), 0);
+        } else {
+            StatusBarUtil.setColor(this, getResources().getColor(R.color.main_color_night), 0);
+        }
     }
 
     private void initDialog() {
@@ -72,8 +81,13 @@ public class BaseActivity extends AppCompatActivity {
 
     public void initToolBar(Toolbar toolbar, String title, int icon) {
         toolbar.setTitle(title);// 标题的文字需在setSupportActionBar之前，不然会无效
-        toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
+        int currentSkinType = SkinManager.getCurrentSkinType(this);
+        if (SkinManager.THEME_DAY == currentSkinType) {
+            toolbar.setTitleTextColor(getResources().getColor(R.color.gank_text1_color));
+        } else {
+            toolbar.setTitleTextColor(getResources().getColor(R.color.gank_text1_color_night));
+        }
         ActionBar ab = getSupportActionBar();
         assert ab != null;
         ab.setDisplayHomeAsUpEnabled(true);

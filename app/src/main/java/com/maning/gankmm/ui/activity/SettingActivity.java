@@ -1,5 +1,6 @@
 package com.maning.gankmm.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -7,6 +8,7 @@ import android.widget.ImageView;
 
 import com.maning.gankmm.R;
 import com.maning.gankmm.constant.Constants;
+import com.maning.gankmm.skin.SkinManager;
 import com.maning.gankmm.ui.base.BaseActivity;
 import com.maning.gankmm.ui.iView.ISettingView;
 import com.maning.gankmm.ui.presenter.impl.SettingPresenterImpl;
@@ -52,8 +54,9 @@ public class SettingActivity extends BaseActivity implements ISettingView {
 
         initPresenter();
 
-        //初始化Push状态
         settingPresenter.initPushState();
+
+        settingPresenter.initNightModeState();
 
         settingPresenter.initCache();
 
@@ -84,7 +87,6 @@ public class SettingActivity extends BaseActivity implements ISettingView {
         //Umeng默认反馈界面
         FeedbackAgent agent = new FeedbackAgent(this);
         agent.startFeedbackActivity();
-
 
         //方案二：
         //自定义意见反馈
@@ -125,7 +127,7 @@ public class SettingActivity extends BaseActivity implements ISettingView {
 
     @OnClick(R.id.iv_night_mode)
     void iv_night_mode() {
-
+        settingPresenter.clickNightMode();
     }
 
     @Override
@@ -136,6 +138,23 @@ public class SettingActivity extends BaseActivity implements ISettingView {
     @Override
     public void closePush() {
         ivPush.setImageResource(R.drawable.icon_setting_off);
+    }
+
+    @Override
+    public void openNightMode() {
+        ivNightMode.setImageResource(R.drawable.icon_setting_on);
+    }
+
+    @Override
+    public void closeNightMode() {
+        ivNightMode.setImageResource(R.drawable.icon_setting_off);
+    }
+
+    @Override
+    public void recreateActivity() {
+        startActivity(new Intent(this.getApplicationContext(),SettingActivity.class));
+        this.finish();
+        overridePendingTransition(R.anim.activity_enter,R.anim.activity_exit);
     }
 
     @Override

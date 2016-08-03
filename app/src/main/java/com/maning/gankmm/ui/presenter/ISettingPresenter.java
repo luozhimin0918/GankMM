@@ -22,4 +22,10 @@ public interface ISettingPresenter {
     //检查更新
     void checkAppUpdate();
 
+    //初始化夜间模式状态
+    void initNightModeState();
+
+    //初始化夜间模式状态
+    void clickNightMode();
+
 }
