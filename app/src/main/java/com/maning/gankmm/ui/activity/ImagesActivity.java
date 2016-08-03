@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.maning.gankmm.R;
+import com.maning.gankmm.skin.SkinManager;
 import com.maning.gankmm.ui.adapter.ImagesAdapter;
 import com.maning.gankmm.ui.base.BaseActivity;
 import com.maning.gankmm.ui.iView.IImageView;
@@ -57,7 +58,12 @@ public class ImagesActivity extends BaseActivity implements IImageView, EasyPerm
         ButterKnife.bind(this);
         mContext = this;
 
-        initToolBar(toolbar, getString(R.string.gank_page_title_girls), R.drawable.ic_back);
+        int currentSkinType = SkinManager.getCurrentSkinType(this);
+        if (SkinManager.THEME_DAY == currentSkinType) {
+            initToolBar(toolbar, getString(R.string.gank_page_title_girls), R.drawable.icon_arrow_back);
+        } else {
+            initToolBar(toolbar, getString(R.string.gank_page_title_girls), R.drawable.icon_arrow_back_night);
+        }
 
         imagePresenter = new ImagePresenterImpl(this, this);
 

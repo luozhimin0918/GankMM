@@ -95,4 +95,5 @@ dependencies {
     compile 'com.github.maning0303:SwitcherView:v1.0.4'
     compile project(':libraryumeng')
     compile files('libs/jpush-android-2.1.5.jar')
+    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
 }

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.maning.gankmm.R;
 import com.maning.gankmm.app.MyApplication;
+import com.maning.gankmm.skin.SkinManager;
 import com.maning.gankmm.ui.base.BaseActivity;
 import com.maning.gankmm.utils.IntentUtils;
 import com.umeng.analytics.MobclickAgent;
@@ -47,7 +48,12 @@ public class AboutActivity extends BaseActivity {
     }
 
     private void initBar() {
-        initToolBar(toolbar, getString(R.string.about), R.drawable.ic_back);
+        int currentSkinType = SkinManager.getCurrentSkinType(this);
+        if (SkinManager.THEME_DAY == currentSkinType) {
+            initToolBar(toolbar, getString(R.string.about), R.drawable.icon_arrow_back);
+        } else {
+            initToolBar(toolbar, getString(R.string.about), R.drawable.icon_arrow_back_night);
+        }
         collapsingToolbar.setTitle(getString(R.string.about));
     }
 

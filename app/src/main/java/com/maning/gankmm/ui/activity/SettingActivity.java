@@ -50,7 +50,12 @@ public class SettingActivity extends BaseActivity implements ISettingView {
         setContentView(R.layout.activity_setting);
         ButterKnife.bind(this);
 
-        initToolBar(toolbar, "设置", R.drawable.ic_back);
+        int currentSkinType = SkinManager.getCurrentSkinType(this);
+        if (SkinManager.THEME_DAY == currentSkinType) {
+            initToolBar(toolbar, "设置", R.drawable.icon_arrow_back);
+        } else {
+            initToolBar(toolbar, "设置", R.drawable.icon_arrow_back_night);
+        }
 
         initPresenter();
 

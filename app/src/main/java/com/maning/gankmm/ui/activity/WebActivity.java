@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.maning.gankmm.R;
+import com.maning.gankmm.skin.SkinManager;
 import com.maning.gankmm.ui.base.BaseActivity;
 import com.maning.gankmm.ui.iView.IWebView;
 import com.maning.gankmm.ui.presenter.impl.WebPresenterImpl;
@@ -73,7 +74,13 @@ public class WebActivity extends BaseActivity implements IWebView {
         } else {
             title = flagTitle + "+" + titleContent;
         }
-        initToolBar(toolbar, title, R.drawable.ic_back);
+        int currentSkinType = SkinManager.getCurrentSkinType(this);
+        if (SkinManager.THEME_DAY == currentSkinType) {
+            initToolBar(toolbar, title, R.drawable.icon_arrow_back);
+        } else {
+            initToolBar(toolbar, title, R.drawable.icon_arrow_back_night);
+        }
+
 
         initWebView();
 

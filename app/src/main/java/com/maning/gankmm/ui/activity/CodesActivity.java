@@ -22,6 +22,7 @@ import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.bean.CategoryContentBean;
 import com.maning.gankmm.bean.CategoryTitleBean;
 import com.maning.gankmm.constant.Constants;
+import com.maning.gankmm.skin.SkinManager;
 import com.maning.gankmm.ui.adapter.RecycleCodesContentAdapter;
 import com.maning.gankmm.ui.adapter.RecycleCodesTitleAdapter;
 import com.maning.gankmm.ui.base.BaseActivity;
@@ -79,7 +80,12 @@ public class CodesActivity extends BaseActivity implements OnRefreshListener, On
         setContentView(R.layout.activity_codes);
         ButterKnife.bind(this);
 
-        initToolBar(toolbar, "泡在网上的日子", R.drawable.ic_back);
+        int currentSkinType = SkinManager.getCurrentSkinType(this);
+        if (SkinManager.THEME_DAY == currentSkinType) {
+            initToolBar(toolbar, "泡在网上的日子", R.drawable.icon_arrow_back);
+        } else {
+            initToolBar(toolbar, "泡在网上的日子", R.drawable.icon_arrow_back_night);
+        }
 
         initViews();
 

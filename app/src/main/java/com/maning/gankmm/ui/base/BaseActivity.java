@@ -1,6 +1,7 @@
 package com.maning.gankmm.ui.base;
 
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,9 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 
 import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.maning.gankmm.R;
 import com.maning.gankmm.skin.SkinManager;
 import com.maning.gankmm.ui.activity.SettingActivity;
@@ -81,6 +85,7 @@ public class BaseActivity extends AppCompatActivity {
 
     public void initToolBar(Toolbar toolbar, String title, int icon) {
         toolbar.setTitle(title);// 标题的文字需在setSupportActionBar之前，不然会无效
+        toolbar.setNavigationIcon(icon);
         setSupportActionBar(toolbar);
         int currentSkinType = SkinManager.getCurrentSkinType(this);
         if (SkinManager.THEME_DAY == currentSkinType) {
@@ -88,10 +93,6 @@ public class BaseActivity extends AppCompatActivity {
         } else {
             toolbar.setTitleTextColor(getResources().getColor(R.color.gank_text1_color_night));
         }
-        ActionBar ab = getSupportActionBar();
-        assert ab != null;
-        ab.setDisplayHomeAsUpEnabled(true);
-        ab.setHomeAsUpIndicator(icon);
     }
 
     @Override
@@ -111,4 +112,6 @@ public class BaseActivity extends AppCompatActivity {
         super.onDestroy();
         dissmissProgressDialog();
     }
+
+
 }

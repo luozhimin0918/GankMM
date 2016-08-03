@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.maning.gankmm.R;
 import com.maning.gankmm.bean.GankEntity;
+import com.maning.gankmm.skin.SkinManager;
 import com.maning.gankmm.ui.adapter.RecycleGankAdapter;
 import com.maning.gankmm.ui.base.BaseActivity;
 import com.maning.gankmm.ui.iView.IGankView;
@@ -121,7 +122,12 @@ public class GankActivity extends BaseActivity implements IGankView {
 
 
     private void initBar() {
-        initToolBar(toolbar, dayDate, R.drawable.ic_back);
+        int currentSkinType = SkinManager.getCurrentSkinType(this);
+        if (SkinManager.THEME_DAY == currentSkinType) {
+            initToolBar(toolbar, dayDate, R.drawable.icon_arrow_back);
+        } else {
+            initToolBar(toolbar, dayDate, R.drawable.icon_arrow_back_night);
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             final Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
