@@ -96,9 +96,9 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
                     headLines.add("44444444");
                     recyclePicAdapter.updateHeadLines(headLines);
                 }
-            },5000);
+            }, 5000);
 
-            recyclePicAdapter = new RecyclePicAdapter(context, welFareList,headLines);
+            recyclePicAdapter = new RecyclePicAdapter(context, welFareList, headLines);
             swipeTarget.setAdapter(recyclePicAdapter);
             //点击事件
             recyclePicAdapter.setOnItemClickLitener(new RecyclePicAdapter.OnItemClickLitener() {
@@ -112,6 +112,7 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
                     IntentUtils.startToImageShow(context, imagesList, position);
                 }
             });
+
         } else {
             recyclePicAdapter.updateDatas(welFareList);
         }
@@ -172,6 +173,9 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
         welFarePresenter.detachView();
         if (recyclePicAdapter != null) {
             recyclePicAdapter.destroyList();
+            RecyclerView.ViewHolder childViewHolder = swipeTarget.getChildViewHolder(swipeTarget.getChildAt(0));
+            RecyclePicAdapter.MyViewHolderHeader viewHolder = (RecyclePicAdapter.MyViewHolderHeader) childViewHolder;
+            viewHolder.destroyHeadLines();
         }
         super.onDestroyView();
         ButterKnife.unbind(this);

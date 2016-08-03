@@ -220,7 +220,7 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.image)
         ImageView image;
@@ -237,7 +237,7 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
-    class MyViewHolderHeader extends RecyclerView.ViewHolder {
+    public static class MyViewHolderHeader extends RecyclerView.ViewHolder {
         @Bind(R.id.switcherView)
         SwitcherView switcherView;
 
@@ -247,6 +247,11 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public MyViewHolderHeader(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        public void destroyHeadLines(){
+            KLog.i("---------------destroyHeadLines");
+            switcherView.destroySwitcher();
         }
     }
 
