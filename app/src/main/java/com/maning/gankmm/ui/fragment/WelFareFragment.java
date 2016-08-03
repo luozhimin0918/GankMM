@@ -46,8 +46,6 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
 
     private ArrayList<String> imagesList;
 
-    private ArrayList<String> headLines;
-
     public static WelFareFragment newInstance() {
         return new WelFareFragment();
     }
