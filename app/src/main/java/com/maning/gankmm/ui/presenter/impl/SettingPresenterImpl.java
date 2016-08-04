@@ -71,10 +71,10 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
     public void clickNightMode() {
         int currentSkinType = SkinManager.getCurrentSkinType(context);
         if (SkinManager.THEME_DAY == currentSkinType) {
-            SkinManager.changeSkin((SettingActivity)context, SkinManager.THEME_NIGHT);
+            SkinManager.changeSkin((SettingActivity) context, SkinManager.THEME_NIGHT);
             mView.openNightMode();
         } else {
-            SkinManager.changeSkin((SettingActivity)context, SkinManager.THEME_DAY);
+            SkinManager.changeSkin((SettingActivity) context, SkinManager.THEME_DAY);
             mView.closeNightMode();
         }
         mView.recreateActivity();
@@ -155,7 +155,9 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
                     case UpdateStatus.Yes:
                         break;
                     case UpdateStatus.No:
-                        mView.showToast("当前版本为最新版本");
+                        if (mView != null) {
+                            mView.showToast("当前版本为最新版本");
+                        }
                         break;
                     case UpdateStatus.Timeout:
                         KLog.i("Umeng更新-----超时");

@@ -39,6 +39,15 @@
         <item name="setting_arrow_right">@drawable/gank_arrow_right</item>
         <item name="navigation_menu_item_color">@color/navigation_menu_item_color</item>
         <item name="navigation_bg">@color/navigation_bg_color</item>
+        <item name="head_lines_bg">@color/head_lines_bg_color</item>
+        <item name="head_lines_text1_color">@color/head_lines_text1_color</item>
+        <item name="head_lines_text2_color">@color/head_lines_text2_color</item>
+        <item name="girl_pic_trans_item">@color/girl_pic_trans_item</item>
+        <item name="girl_pic_trans_item_text_color">@color/girl_pic_trans_item_text_color</item>
+        <item name="icon_like_yes">@drawable/icon_collect_yes</item>
+        <item name="icon_like_no">@drawable/icon_collect_no</item>
+        <item name="icon_like_color">@color/icon_like_color</item>
+        <item name="girl_pic_trans_shade">@color/girl_pic_trans_shade</item>
     </style>
 
     <!--黑夜-->
@@ -55,6 +64,15 @@
         <item name="setting_arrow_right">@drawable/gank_arrow_right_night</item>
         <item name="navigation_menu_item_color">@color/navigation_menu_item_color_night</item>
         <item name="navigation_bg">@color/navigation_bg_color_night</item>
+        <item name="head_lines_bg">@color/head_lines_bg_color_night</item>
+        <item name="head_lines_text1_color">@color/head_lines_text1_color_night</item>
+        <item name="head_lines_text2_color">@color/head_lines_text2_color_night</item>
+        <item name="girl_pic_trans_item">@color/girl_pic_trans_item_night</item>
+        <item name="girl_pic_trans_item_text_color">@color/girl_pic_trans_item_text_color_night</item>
+        <item name="icon_like_yes">@drawable/icon_collect_yes_night</item>
+        <item name="icon_like_no">@drawable/icon_collect_no_night</item>
+        <item name="icon_like_color">@color/icon_like_color_night</item>
+        <item name="girl_pic_trans_shade">@color/girl_pic_trans_shade_night</item>
     </style>
 
 

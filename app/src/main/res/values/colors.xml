@@ -52,8 +52,13 @@
     <color name="navigation_bg_color">#f7f7f7</color>
     <color name="navigation_menu_checked_color">#54aee6</color>
     <color name="navigation_menu_default_color">#4d4d4d</color>
-
-
+    <color name="head_lines_bg_color">#ffffff</color>
+    <color name="head_lines_text1_color">#54aee6</color>
+    <color name="head_lines_text2_color">#3b3b3b</color>
+    <color name="girl_pic_trans_item">#a3181818</color>
+    <color name="girl_pic_trans_item_text_color">#FFFFFF</color>
+    <color name="icon_like_color">#fa4242</color>
+    <color name="girl_pic_trans_shade">#00000000</color>
     <!--夜间-->
     <color name="backgroundColor_night">#232736</color>
     <color name="textColor_night">#626f9b</color>
@@ -65,5 +70,12 @@
     <color name="navigation_bg_color_night">#232736</color>
     <color name="navigation_menu_checked_color_night">#9AACEC</color>
     <color name="navigation_menu_default_color_night">#475171</color>
+    <color name="head_lines_bg_color_night">#3d445e</color>
+    <color name="head_lines_text1_color_night">#9AACEC</color>
+    <color name="head_lines_text2_color_night">#626f9b</color>
+    <color name="girl_pic_trans_item_night">#d8232736</color>
+    <color name="girl_pic_trans_item_text_color_night">#626f9b</color>
+    <color name="icon_like_color_night">#AABCF0</color>
+    <color name="girl_pic_trans_shade_night">#52252831</color>
 
 </resources>

@@ -34,6 +34,15 @@
     <attr name="setting_arrow_right" format="reference" />
     <attr name="navigation_bg" format="reference|color" />
     <attr name="navigation_menu_item_color" format="reference|color" />
+    <attr name="head_lines_bg" format="reference|color" />
+    <attr name="head_lines_text1_color" format="reference|color" />
+    <attr name="head_lines_text2_color" format="reference|color" />
+    <attr name="girl_pic_trans_item" format="reference|color" />
+    <attr name="girl_pic_trans_item_text_color" format="reference|color" />
+    <attr name="icon_like_yes" format="reference|color" />
+    <attr name="icon_like_no" format="reference|color" />
+    <attr name="icon_like_color" format="reference|color" />
+    <attr name="girl_pic_trans_shade" format="reference|color" />   <!--福利页面图片夜间模式遮罩层-->
 
 
 </resources>

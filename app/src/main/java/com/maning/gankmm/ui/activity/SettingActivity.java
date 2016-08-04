@@ -16,8 +16,13 @@ import com.maning.gankmm.ui.view.MySettingItemView;
 import com.maning.gankmm.utils.DialogUtils;
 import com.maning.gankmm.utils.MySnackbar;
 import com.maning.gankmm.utils.SharePreUtil;
+import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
+import com.umeng.update.UmengUpdateAgent;
+import com.umeng.update.UmengUpdateListener;
+import com.umeng.update.UpdateResponse;
+import com.umeng.update.UpdateStatus;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -92,10 +97,6 @@ public class SettingActivity extends BaseActivity implements ISettingView {
         //Umeng默认反馈界面
         FeedbackAgent agent = new FeedbackAgent(this);
         agent.startFeedbackActivity();
-
-        //方案二：
-        //自定义意见反馈
-//        startActivity(new Intent(this, FeedBackActivity.class));
     }
 
     @OnClick(R.id.item_app_update)
@@ -212,6 +213,7 @@ public class SettingActivity extends BaseActivity implements ISettingView {
 
     @Override
     protected void onDestroy() {
+        UmengUpdateAgent.setUpdateListener(null);
         settingPresenter.detachView();
         if (mMaterialDialog != null) {
             mMaterialDialog.dismiss();

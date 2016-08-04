@@ -126,6 +126,7 @@ public class MainActivity extends BaseActivity implements IMainView {
         switch (flag) {
             case R.id.nav_fuli:
                 if (welFareFragment == null) {
+                    KLog.i("-------------------------welFareFragment---新建");
                     welFareFragment = WelFareFragment.newInstance();
                     fragmentTransaction.add(R.id.frame_content, welFareFragment);
                 } else {
@@ -134,7 +135,8 @@ public class MainActivity extends BaseActivity implements IMainView {
                 break;
             case R.id.nav_history:
                 if (timeFragment == null) {
-                    timeFragment = timeFragment.newInstance();
+                    KLog.i("-------------------------timeFragment---新建");
+                    timeFragment = HistoryFragment.newInstance();
                     fragmentTransaction.add(R.id.frame_content, timeFragment);
                 } else {
                     fragmentTransaction.show(timeFragment);
@@ -142,6 +144,7 @@ public class MainActivity extends BaseActivity implements IMainView {
                 break;
             case R.id.nav_category:
                 if (categoryFragment == null) {
+                    KLog.i("-------------------------categoryFragment---新建");
                     categoryFragment = CategoryFragment.newInstance();
                     fragmentTransaction.add(R.id.frame_content, categoryFragment);
                 } else {
@@ -150,6 +153,7 @@ public class MainActivity extends BaseActivity implements IMainView {
                 break;
             case R.id.nav_collect:
                 if (collectFragment == null) {
+                    KLog.i("-------------------------collectFragment---新建");
                     collectFragment = CollectFragment.newInstance();
                     fragmentTransaction.add(R.id.frame_content, collectFragment);
                 } else {
@@ -232,6 +236,10 @@ public class MainActivity extends BaseActivity implements IMainView {
             skinBroadcastReceiver = new SkinBroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
+                    welFareFragment = null;
+                    collectFragment = null;
+                    categoryFragment = null;
+                    timeFragment = null;
                     recreate();
                 }
             };
@@ -252,9 +260,9 @@ public class MainActivity extends BaseActivity implements IMainView {
             return;
         }
         //福利作为首页
-        if (welFareFragment.isHidden()) {
+        if (welFareFragment != null && welFareFragment.isHidden()) {
             toolbar.setTitle("福利");
-            setMenuSelection(0);
+            setMenuSelection(R.id.nav_fuli);
             navigationView.setCheckedItem(R.id.nav_fuli);
             return;
         }

@@ -165,10 +165,12 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
     public void onDestroyView() {
         welFarePresenter.detachView();
         if (recyclePicAdapter != null) {
-            recyclePicAdapter.destroyList();
             RecyclerView.ViewHolder childViewHolder = swipeTarget.getChildViewHolder(swipeTarget.getChildAt(0));
-            RecyclePicAdapter.MyViewHolderHeader viewHolder = (RecyclePicAdapter.MyViewHolderHeader) childViewHolder;
-            viewHolder.destroyHeadLines();
+            if(childViewHolder instanceof RecyclePicAdapter.MyViewHolderHeader){
+                RecyclePicAdapter.MyViewHolderHeader viewHolder = (RecyclePicAdapter.MyViewHolderHeader) childViewHolder;
+                viewHolder.destroyHeadLines();
+            }
+            recyclePicAdapter.destroyList();
         }
         super.onDestroyView();
         ButterKnife.unbind(this);

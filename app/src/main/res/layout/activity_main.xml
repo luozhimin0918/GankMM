@@ -18,11 +18,16 @@
 
             <include layout="@layout/toolbar" />
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?toolbar_line_color" />
+
             <FrameLayout
                 android:id="@+id/frame_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#efefef" />
+                android:background="?app_background" />
         </LinearLayout>
 
     </FrameLayout>
