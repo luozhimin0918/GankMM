@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -29,6 +30,7 @@ import com.maning.gankmm.ui.presenter.impl.MainPresenterImpl;
 import com.maning.gankmm.utils.DialogUtils;
 import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.utils.MySnackbar;
+import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
@@ -51,6 +53,8 @@ public class MainActivity extends BaseActivity implements IMainView {
     private CategoryFragment categoryFragment;
     private HistoryFragment timeFragment;
 
+    private int navigationCheckedItemId = R.id.nav_fuli;
+
     private long exitTime = 0;
     private MaterialDialog mMaterialDialogFeedBack;
     private MaterialDialog mMaterialDialogPush;
@@ -65,16 +69,26 @@ public class MainActivity extends BaseActivity implements IMainView {
 
         context = this;
 
-        initToolBar(toolbar, Constants.FlagWelFare, R.drawable.icon_menu2);
+        int currentSkinType = SkinManager.getCurrentSkinType(this);
+        if (SkinManager.THEME_DAY == currentSkinType) {
+            initToolBar(toolbar, Constants.FlagWelFare, R.drawable.icon_menu2);
+        } else {
+            initToolBar(toolbar, Constants.FlagWelFare, R.drawable.icon_menu2_night);
+        }
 
         initNavigationView();
-
-        setDefaultFragment();
 
         mainPresenter = new MainPresenterImpl(this, this);
         mainPresenter.initUmeng();
 
         initIntent();
+
+        if (savedInstanceState != null && savedInstanceState.getInt("navigationCheckedItemId") != 0) {
+            navigationCheckedItemId = savedInstanceState.getInt("navigationCheckedItemId");
+            KLog.i("onCreate-------navigationCheckedItemId---------------:" + navigationCheckedItemId);
+        }
+
+        setDefaultFragment();
 
     }
 
@@ -101,7 +115,7 @@ public class MainActivity extends BaseActivity implements IMainView {
      * 设置默认的Fragment显示：如果savedInstanceState不是空，证明activity被后台销毁重建了，之前有fragment，就不再创建了
      */
     private void setDefaultFragment() {
-        setMenuSelection(0);
+        setMenuSelection(navigationCheckedItemId);
     }
 
     private void setMenuSelection(int flag) {
@@ -110,7 +124,7 @@ public class MainActivity extends BaseActivity implements IMainView {
         // 先隐藏掉所有的Fragment，以防止有多个Fragment显示在界面上的情况
         hideFragments(fragmentTransaction);
         switch (flag) {
-            case 0:
+            case R.id.nav_fuli:
                 if (welFareFragment == null) {
                     welFareFragment = WelFareFragment.newInstance();
                     fragmentTransaction.add(R.id.frame_content, welFareFragment);
@@ -118,15 +132,15 @@ public class MainActivity extends BaseActivity implements IMainView {
                     fragmentTransaction.show(welFareFragment);
                 }
                 break;
-            case 1:
-                if (collectFragment == null) {
-                    collectFragment = CollectFragment.newInstance();
-                    fragmentTransaction.add(R.id.frame_content, collectFragment);
+            case R.id.nav_history:
+                if (timeFragment == null) {
+                    timeFragment = timeFragment.newInstance();
+                    fragmentTransaction.add(R.id.frame_content, timeFragment);
                 } else {
-                    fragmentTransaction.show(collectFragment);
+                    fragmentTransaction.show(timeFragment);
                 }
                 break;
-            case 9:
+            case R.id.nav_category:
                 if (categoryFragment == null) {
                     categoryFragment = CategoryFragment.newInstance();
                     fragmentTransaction.add(R.id.frame_content, categoryFragment);
@@ -134,12 +148,12 @@ public class MainActivity extends BaseActivity implements IMainView {
                     fragmentTransaction.show(categoryFragment);
                 }
                 break;
-            case 2:
-                if (timeFragment == null) {
-                    timeFragment = timeFragment.newInstance();
-                    fragmentTransaction.add(R.id.frame_content, timeFragment);
+            case R.id.nav_collect:
+                if (collectFragment == null) {
+                    collectFragment = CollectFragment.newInstance();
+                    fragmentTransaction.add(R.id.frame_content, collectFragment);
                 } else {
-                    fragmentTransaction.show(timeFragment);
+                    fragmentTransaction.show(collectFragment);
                 }
                 break;
 
@@ -175,21 +189,14 @@ public class MainActivity extends BaseActivity implements IMainView {
                 setTitle(menuItem.getTitle()); // 改变页面标题，标明导航状态
                 drawerLayout.closeDrawers(); // 关闭导航菜单
                 switch (menuItem.getItemId()) {
-                    case R.id.nav_collect:
-                        toolbar.setTitle(menuItem.getTitle());
-                        setMenuSelection(1);
-                        break;
                     case R.id.nav_fuli:
-                        toolbar.setTitle(menuItem.getTitle());
-                        setMenuSelection(0);
-                        break;
-                    case R.id.nav_category:
-                        toolbar.setTitle(menuItem.getTitle());
-                        setMenuSelection(9);
-                        break;
                     case R.id.nav_history:
+                    case R.id.nav_category:
+                    case R.id.nav_collect:
+                        navigationCheckedItemId = menuItem.getItemId();
                         toolbar.setTitle(menuItem.getTitle());
-                        setMenuSelection(2);
+                        setMenuSelection(menuItem.getItemId());
+                        KLog.i("navigationCheckedItemId------------:" + navigationCheckedItemId);
                         break;
                     case R.id.nav_codes:
                         menuItem.setCheckable(false);
@@ -236,6 +243,19 @@ public class MainActivity extends BaseActivity implements IMainView {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        KLog.i("onSaveInstanceState----navigationCheckedItemId------------:" + navigationCheckedItemId);
+        outState.putInt("navigationCheckedItemId", navigationCheckedItemId);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        KLog.i("onRestoreInstanceState----navigationCheckedItemId------------:" + navigationCheckedItemId);
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(navigationView)) {
             drawerLayout.closeDrawers();
@@ -245,8 +265,7 @@ public class MainActivity extends BaseActivity implements IMainView {
         if (welFareFragment.isHidden()) {
             toolbar.setTitle("福利");
             setMenuSelection(0);
-            Menu menu = navigationView.getMenu();
-            menu.findItem(R.id.nav_fuli).setChecked(true);
+            navigationView.setCheckedItem(R.id.nav_fuli);
             return;
         }
         long currtTime = System.currentTimeMillis();

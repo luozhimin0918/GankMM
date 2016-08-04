@@ -130,7 +130,6 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     viewHolder.switcherView.setVisibility(View.VISIBLE);
                     //设置数据源
                     viewHolder.switcherView.setResource(headLinesStrs);
-                    KLog.i(headLinesStrs.toString() + "--------------");
                     //开始滚动
                     viewHolder.switcherView.startRolling();
 
@@ -139,7 +138,6 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         public void onClick(View v) {
                             int index = viewHolder.switcherView.getCurrentIndex();
                             GankEntity randomGankEntity = headLines.get(index);
-                            KLog.i(randomGankEntity.getDesc() + "--------------");
                             IntentUtils.startToWebActivity(context,randomGankEntity.getType(),randomGankEntity.getDesc(),randomGankEntity.getUrl());
                         }
                     });
@@ -271,7 +269,6 @@ public class RecyclePicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         public void destroyHeadLines() {
-            KLog.i("---------------destroyHeadLines");
             switcherView.destroySwitcher();
         }
     }

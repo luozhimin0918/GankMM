@@ -21,14 +21,14 @@
             android:title="分类浏览" />
 
         <item
-            android:id="@+id/nav_codes"
-            android:icon="@drawable/icon_expand"
-            android:title="泡在网上的日子" />
-
-        <item
             android:id="@+id/nav_collect"
             android:icon="@drawable/icon_collect_no"
             android:title="收藏" />
+
+        <item
+            android:id="@+id/nav_codes"
+            android:icon="@drawable/icon_expand"
+            android:title="泡在网上的日子" />
 
     </group>
     <group android:id="@+id/second_group">
