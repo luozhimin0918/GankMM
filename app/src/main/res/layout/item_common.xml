@@ -14,7 +14,7 @@
         android:layout_marginRight="16dp"
         android:ellipsize="end"
         android:text="一种新的 Header View + RecyclerView 实现方式asdasdasdasdasdasdasdasdasdasdasda"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="?main_text_color"
         android:textSize="16sp" />
 
     <RelativeLayout
@@ -31,7 +31,7 @@
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:text="daimajia"
-            android:textColor="#787878"
+            android:textColor="?item_small_text_color"
             android:textSize="14sp" />
 
         <LinearLayout
@@ -46,13 +46,13 @@
                 android:layout_width="36dp"
                 android:layout_height="match_parent"
                 app:anim_scale_factor="1"
-                app:circle_end_color="#de5050"
-                app:circle_start_color="#fa4242"
-                app:dots_primary_color="#fa4242"
-                app:dots_secondary_color="#ef5353"
+                app:circle_end_color="?icon_like_color"
+                app:circle_start_color="?icon_like_color"
+                app:dots_primary_color="?icon_like_color"
+                app:dots_secondary_color="?icon_like_color"
                 app:icon_size="28dp"
-                app:like_drawable="@drawable/icon_collect_yes"
-                app:unlike_drawable="@drawable/icon_collect_no" />
+                app:like_drawable="?icon_like_yes"
+                app:unlike_drawable="?icon_like_no" />
 
             <TextView
                 android:id="@+id/tvShowTime"
@@ -61,7 +61,7 @@
                 android:layout_marginLeft="12dp"
                 android:gravity="center"
                 android:text="2016-3-4"
-                android:textColor="#787878"
+                android:textColor="?item_small_text_color"
                 android:textSize="14sp" />
 
         </LinearLayout>
@@ -71,8 +71,8 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="6dp"
+        android:layout_height="1.5px"
         android:layout_marginTop="6dp"
-        android:background="#efefef" />
+        android:background="?lineColor" />
 
 </LinearLayout>

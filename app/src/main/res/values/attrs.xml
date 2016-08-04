@@ -49,6 +49,15 @@
     <attr name="refresh_text_color" format="reference|color" />
     <attr name="refresh_arrow_icon" format="reference|color" />
     <attr name="refresh_success_icon" format="reference|color" />
+    <attr name="tablayout_bg" format="reference|color" />
+    <attr name="tablayout_text_color" format="reference|color" />
+    <attr name="tablayout_indicator_color" format="reference|color" />
+    <attr name="main_text_color" format="reference|color" />
+    <attr name="item_small_text_color" format="reference|color" />
+    <attr name="progressbar_color" format="reference|color" />
+    <attr name="toolbar_title_color" format="reference|color" />
+    <attr name="black_text1_color" format="reference|color" />
+    <attr name="black_text2_color" format="reference|color" />
 
 
 </resources>

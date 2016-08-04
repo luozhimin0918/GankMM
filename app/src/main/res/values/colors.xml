@@ -63,6 +63,15 @@
     <color name="history_text_color">#3b3b3b</color>
     <color name="refresh_bg_color">#404040</color>
     <color name="refresh_text_color">#FFFFFF</color>
+    <color name="tablayout_bg_color">#54aee6</color>
+    <color name="tablayout_text_color">#FFFFFF</color>
+    <color name="tablayout_indicator_color">#e53580ae</color>
+    <color name="main_text_color">#3c87b7</color>
+    <color name="item_small_text_color">#969696</color>
+    <color name="progressbar_color">#FFFFFF</color>
+    <color name="toolbar_title_color">#FFFFFF</color>
+    <color name="black_text1_color">#000000</color>
+    <color name="black_text2_color">#454545</color>
     <!--夜间-->
     <color name="backgroundColor_night">#232736</color>
     <color name="textColor_night">#626f9b</color>
@@ -85,5 +94,14 @@
     <color name="history_text_color_night">#626f9b</color>
     <color name="refresh_bg_color_night">#232736</color>
     <color name="refresh_text_color_night">#626f9b</color>
+    <color name="tablayout_bg_color_night">#232736</color>
+    <color name="tablayout_text_color_night">#AABCF0</color>
+    <color name="tablayout_indicator_color_night">#c34d577e</color>
+    <color name="main_text_color_night">#626f9b</color>
+    <color name="item_small_text_color_night">#464c61</color>
+    <color name="progressbar_color_night">#aec0ff</color>
+    <color name="toolbar_title_color_night">#9AACEC</color>
+    <color name="black_text1_color_night">#9AACEC</color>
+    <color name="black_text2_color_night">#626f9b</color>
 
 </resources>

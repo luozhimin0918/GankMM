@@ -60,7 +60,7 @@ public class GankActivity extends BaseActivity implements IGankView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_day_show);
         //设置状态栏的颜色
-        StatusBarUtil.setColor(this,R.color.translate);
+        StatusBarUtil.setColor(this, R.color.translate);
         ButterKnife.bind(this);
 
         gankPresenter = new GankPresenterImpl(this, this);

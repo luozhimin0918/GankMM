@@ -21,7 +21,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:text="内容"
-        android:textColor="#454545"
+        android:textColor="?black_text2_color"
         android:textSize="14sp" />
 
 </LinearLayout>
