@@ -54,6 +54,7 @@ public class MainActivity extends BaseActivity implements IMainView {
     private HistoryFragment timeFragment;
 
     private int navigationCheckedItemId = R.id.nav_fuli;
+    private static final String savedInstanceStateStr = "navigationCheckedItemId";
 
     private long exitTime = 0;
     private MaterialDialog mMaterialDialogFeedBack;
@@ -83,9 +84,8 @@ public class MainActivity extends BaseActivity implements IMainView {
 
         initIntent();
 
-        if (savedInstanceState != null && savedInstanceState.getInt("navigationCheckedItemId") != 0) {
-            navigationCheckedItemId = savedInstanceState.getInt("navigationCheckedItemId");
-            KLog.i("onCreate-------navigationCheckedItemId---------------:" + navigationCheckedItemId);
+        if (savedInstanceState != null && savedInstanceState.getInt(savedInstanceStateStr) != 0) {
+            navigationCheckedItemId = savedInstanceState.getInt(savedInstanceStateStr);
         }
 
         setDefaultFragment();
@@ -196,7 +196,6 @@ public class MainActivity extends BaseActivity implements IMainView {
                         navigationCheckedItemId = menuItem.getItemId();
                         toolbar.setTitle(menuItem.getTitle());
                         setMenuSelection(menuItem.getItemId());
-                        KLog.i("navigationCheckedItemId------------:" + navigationCheckedItemId);
                         break;
                     case R.id.nav_codes:
                         menuItem.setCheckable(false);
@@ -233,8 +232,6 @@ public class MainActivity extends BaseActivity implements IMainView {
             skinBroadcastReceiver = new SkinBroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    int currentTheme = intent.getIntExtra(SkinManager.IntentExtra_SkinTheme, 0);
-                    Log.i("onReceive", "MainActivity广播来了" + currentTheme);
                     recreate();
                 }
             };
@@ -244,15 +241,8 @@ public class MainActivity extends BaseActivity implements IMainView {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        KLog.i("onSaveInstanceState----navigationCheckedItemId------------:" + navigationCheckedItemId);
-        outState.putInt("navigationCheckedItemId", navigationCheckedItemId);
+        outState.putInt(savedInstanceStateStr, navigationCheckedItemId);
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        KLog.i("onRestoreInstanceState----navigationCheckedItemId------------:" + navigationCheckedItemId);
-        super.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
