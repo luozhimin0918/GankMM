@@ -15,6 +15,7 @@ import com.maning.gankmm.ui.activity.SettingActivity;
 import com.maning.gankmm.ui.iView.ISettingView;
 import com.maning.gankmm.ui.presenter.ISettingPresenter;
 import com.maning.gankmm.utils.FileUtils;
+import com.maning.gankmm.utils.MySnackbar;
 import com.maning.gankmm.utils.NetUtils;
 import com.maning.gankmm.utils.SharePreUtil;
 import com.socks.library.KLog;
@@ -39,6 +40,8 @@ import cn.jpush.android.api.JPushInterface;
 public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implements ISettingPresenter {
 
     private Context context;
+    private boolean flag = true;
+    private long lastTime = System.currentTimeMillis();
 
     public SettingPresenterImpl(Context context, ISettingView iSettingView) {
         this.context = context;
@@ -69,6 +72,13 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
 
     @Override
     public void clickNightMode() {
+        //不可快速点击，设定2秒内不能连续点击
+        long currtTime = System.currentTimeMillis();
+        if (currtTime - lastTime < 2000) {
+            mView.showToast("你的手速太快了...");
+            lastTime = currtTime;
+            return;
+        }
         int currentSkinType = SkinManager.getCurrentSkinType(context);
         if (SkinManager.THEME_DAY == currentSkinType) {
             SkinManager.changeSkin((SettingActivity) context, SkinManager.THEME_NIGHT);
@@ -155,25 +165,23 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
     public void checkAppUpdate() {
         //版本更新检查
         if (NetUtils.hasNetWorkConection(context)) {
-            UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
-                @Override
-                public void onUpdateReturned(int updateStatus, UpdateResponse updateResponse) {
-                    switch (updateStatus) {
-                        case UpdateStatus.Yes:
-                            break;
-                        case UpdateStatus.No:
-                            if (mView != null) {
-                                mView.showToast("当前版本为最新版本");
-                            }
-                            break;
-                        case UpdateStatus.Timeout:
-                            KLog.i("Umeng更新-----超时");
-                            break;
+            if (flag) {
+                UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
+                    @Override
+                    public void onUpdateReturned(int updateStatus, UpdateResponse updateResponse) {
+                        switch (updateStatus) {
+                            case UpdateStatus.No:
+                                if (mView != null) {
+                                    mView.showToast("当前版本为最新版本");
+                                }
+                                break;
+                        }
                     }
-                }
-            });
+                });
+            }
             //检测更新
             UmengUpdateAgent.update(context);
+            flag = false;
         } else {
             mView.showToast(context.getString(R.string.mm_no_net));
         }

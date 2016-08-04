@@ -265,7 +265,6 @@ public class MainActivity extends BaseActivity implements IMainView {
             drawerLayout.closeDrawers();
             return;
         }
-
         long currtTime = System.currentTimeMillis();
         if (currtTime - exitTime > 2000) {
             MySnackbar.makeSnackBarBlack(toolbar, getString(R.string.gank_hint_exit_app));

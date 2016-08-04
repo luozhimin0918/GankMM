@@ -3,6 +3,10 @@ package com.maning.gankmm.utils;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
+import com.maning.gankmm.R;
+import com.maning.gankmm.app.MyApplication;
+import com.maning.gankmm.skin.SkinManager;
+
 /**
  * Created by maning on 16/1/18.
  * <p/>
@@ -12,7 +16,12 @@ public class MySnackbar {
 
     public static void makeSnackBarBlack(View view, String message) {
         Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT);
-        ColoredSnackbar.defaultInfo(snackbar).show();
+        int currentSkinType = SkinManager.getCurrentSkinType(MyApplication.getIntstance().getApplicationContext());
+        if (SkinManager.THEME_DAY == currentSkinType) {
+            ColoredSnackbar.defaultInfo(snackbar).show();
+        } else {
+            ColoredSnackbar.defaultInfoNight(snackbar).show();
+        }
     }
 
     public static void makeSnackBarRed(View view, String message) {
