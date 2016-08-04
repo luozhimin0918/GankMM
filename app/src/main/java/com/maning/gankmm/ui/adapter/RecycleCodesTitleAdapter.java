@@ -49,7 +49,7 @@ public class RecycleCodesTitleAdapter extends RecyclerView.Adapter<RecycleCodesT
                 holder.tvTitle.setTextColor(context.getResources().getColor(R.color.white));
                 holder.tvTitle.setBackgroundColor(context.getResources().getColor(R.color.main_color));
             } else {
-                holder.tvTitle.setTextColor(context.getResources().getColor(R.color.textBlack));
+                holder.tvTitle.setTextColor(context.getResources().getColor(R.color.black_text2_color));
                 holder.tvTitle.setBackgroundColor(context.getResources().getColor(R.color.white));
             }
         } else {

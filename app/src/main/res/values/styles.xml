@@ -10,7 +10,8 @@
     </style>
 
     <style name="SplashTheme" parent="@style/BaseAppTheme">
-        <item name="android:windowBackground">@color/mainColoe</item>
+        <item name="android:windowBackground">@color/main_color</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 
     <style name="CollapsingToolbarTitleStyle" parent="@android:style/TextAppearance">
@@ -27,6 +28,7 @@
 
     <!--白天-->
     <style name="DayTheme" parent="@style/BaseAppTheme">
+        <item name="android:windowBackground">@color/main_color</item>
         <item name="app_background">@color/backgroundColor</item>
         <item name="lineColor">@color/lineColor</item>
         <item name="item_bg">@color/item_bg</item>
@@ -67,6 +69,7 @@
 
     <!--黑夜-->
     <style name="NightTheme" parent="@style/BaseAppTheme">
+        <item name="android:windowBackground">@color/main_color_night</item>
         <item name="app_background">@color/backgroundColor_night</item>
         <item name="lineColor">@color/lineColor_night</item>
         <item name="item_bg">@color/item_bg_night</item>
