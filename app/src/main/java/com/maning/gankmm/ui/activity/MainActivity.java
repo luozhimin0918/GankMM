@@ -54,7 +54,9 @@ public class MainActivity extends BaseActivity implements IMainView {
     private HistoryFragment timeFragment;
 
     private int navigationCheckedItemId = R.id.nav_fuli;
-    private static final String savedInstanceStateStr = "navigationCheckedItemId";
+    private String navigationCheckedTitle = "福利";
+    private static final String savedInstanceStateItemId = "navigationCheckedItemId";
+    private static final String savedInstanceStateTitle = "navigationCheckedTitle";
 
     private long exitTime = 0;
     private MaterialDialog mMaterialDialogFeedBack;
@@ -84,8 +86,9 @@ public class MainActivity extends BaseActivity implements IMainView {
 
         initIntent();
 
-        if (savedInstanceState != null && savedInstanceState.getInt(savedInstanceStateStr) != 0) {
-            navigationCheckedItemId = savedInstanceState.getInt(savedInstanceStateStr);
+        if (savedInstanceState != null && savedInstanceState.getInt(savedInstanceStateItemId) != 0) {
+            navigationCheckedItemId = savedInstanceState.getInt(savedInstanceStateItemId);
+            navigationCheckedTitle = savedInstanceState.getString(savedInstanceStateTitle);
         }
 
         setDefaultFragment();
@@ -119,6 +122,8 @@ public class MainActivity extends BaseActivity implements IMainView {
     }
 
     private void setMenuSelection(int flag) {
+        toolbar.setTitle(navigationCheckedTitle);
+
         // 开启一个Fragment事务
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         // 先隐藏掉所有的Fragment，以防止有多个Fragment显示在界面上的情况
@@ -198,7 +203,7 @@ public class MainActivity extends BaseActivity implements IMainView {
                     case R.id.nav_category:
                     case R.id.nav_collect:
                         navigationCheckedItemId = menuItem.getItemId();
-                        toolbar.setTitle(menuItem.getTitle());
+                        navigationCheckedTitle = menuItem.getTitle().toString();
                         setMenuSelection(menuItem.getItemId());
                         break;
                     case R.id.nav_codes:
@@ -249,7 +254,8 @@ public class MainActivity extends BaseActivity implements IMainView {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(savedInstanceStateStr, navigationCheckedItemId);
+        outState.putInt(savedInstanceStateItemId, navigationCheckedItemId);
+        outState.putString(savedInstanceStateTitle, navigationCheckedTitle);
         super.onSaveInstanceState(outState);
     }
 
