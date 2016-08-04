@@ -1,8 +1,10 @@
 package com.maning.gankmm.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,6 +50,8 @@ public class GankActivity extends BaseActivity implements IGankView {
     RecyclerView myRecycleView;
     @Bind(R.id.progressbar)
     ProgressWheel progressbar;
+    @Bind(R.id.collapsingToolbar)
+    CollapsingToolbarLayout collapsingToolbar;
 
     private String dayDate;
 
@@ -124,9 +128,17 @@ public class GankActivity extends BaseActivity implements IGankView {
     private void initBar() {
         int currentSkinType = SkinManager.getCurrentSkinType(this);
         if (SkinManager.THEME_DAY == currentSkinType) {
-            initToolBar(toolbar, dayDate, R.drawable.icon_arrow_back);
+            initToolBar(toolbar, getString(R.string.about), R.drawable.icon_arrow_back);
+            //设置CollapsingToolbarLayout扩张时的标题颜色
+            collapsingToolbar.setExpandedTitleColor(getResources().getColor(R.color.translate));
+            //设置CollapsingToolbarLayout收缩时的标题颜色
+            collapsingToolbar.setCollapsedTitleTextColor(Color.WHITE);
         } else {
-            initToolBar(toolbar, dayDate, R.drawable.icon_arrow_back_night);
+            initToolBar(toolbar, getString(R.string.about), R.drawable.icon_arrow_back_night);
+            //设置CollapsingToolbarLayout扩张时的标题颜色
+            collapsingToolbar.setExpandedTitleColor(getResources().getColor(R.color.translate));
+            //设置CollapsingToolbarLayout收缩时的标题颜色
+            collapsingToolbar.setCollapsedTitleTextColor(getResources().getColor(R.color.gank_text1_color_night));
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             final Window window = getWindow();

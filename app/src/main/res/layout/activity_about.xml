@@ -149,64 +149,169 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/tvThanks01"
+                android:id="@+id/tv_github01"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:layout_marginTop="10dp"
                 android:background="?item_setting_bg"
                 android:gravity="center"
-                android:text="代码家 - 干活集中营"
+                android:text="RecyclerView-FlexibleDivider"
                 android:textColor="?main_text_color"
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/tvThanks02"
+                android:id="@+id/tv_github02"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
+                android:layout_marginTop="10dp"
                 android:background="?item_setting_bg"
                 android:gravity="center"
-                android:text="drakeet - 妹纸.gank.io"
+                android:text="gson"
                 android:textColor="?main_text_color"
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/tvThanks03"
+                android:id="@+id/tv_github03"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
+                android:layout_marginTop="10dp"
                 android:background="?item_setting_bg"
                 android:gravity="center"
-                android:text="xingrz - 干妹纸"
+                android:text="okhttp"
                 android:textColor="?main_text_color"
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/tvThanks04"
+                android:id="@+id/tv_github04"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
+                android:layout_marginTop="10dp"
                 android:background="?item_setting_bg"
                 android:gravity="center"
-                android:text="xiongwei-git - GankApp"
+                android:text="retrofit"
                 android:textColor="?main_text_color"
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/tvThanks05"
+                android:id="@+id/tv_github05"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
+                android:layout_marginTop="10dp"
                 android:background="?item_setting_bg"
                 android:gravity="center"
-                android:text="dongjunkun - GanK"
+                android:text="glide"
                 android:textColor="?main_text_color"
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/tvThanks06"
+                android:id="@+id/tv_github06"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:background="?item_setting_bg"
                 android:gravity="center"
-                android:text="zzhoujay - Gank4Android"
+                android:text="KLog"
+                android:textColor="?main_text_color"
+                android:textSize="14sp" />
+
+
+            <TextView
+                android:id="@+id/tv_github07"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="10dp"
+                android:background="?item_setting_bg"
+                android:gravity="center"
+                android:text="Android-SVProgressHUD"
+                android:textColor="?main_text_color"
+                android:textSize="14sp" />
+
+
+            <TextView
+                android:id="@+id/tv_github08"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="10dp"
+                android:background="?item_setting_bg"
+                android:gravity="center"
+                android:text="butterknife"
+                android:textColor="?main_text_color"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_github09"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="10dp"
+                android:background="?item_setting_bg"
+                android:gravity="center"
+                android:text="SwipeToLoadLayout"
+                android:textColor="?main_text_color"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_github10"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="10dp"
+                android:background="?item_setting_bg"
+                android:gravity="center"
+                android:text="LikeButton"
+                android:textColor="?main_text_color"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_github11"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="10dp"
+                android:background="?item_setting_bg"
+                android:gravity="center"
+                android:text="MaterialDialog"
+                android:textColor="?main_text_color"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_github12"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="10dp"
+                android:background="?item_setting_bg"
+                android:gravity="center"
+                android:text="jsoup"
+                android:textColor="?main_text_color"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_github13"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="10dp"
+                android:background="?item_setting_bg"
+                android:gravity="center"
+                android:text="easypermissions"
+                android:textColor="?main_text_color"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_github14"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="10dp"
+                android:background="?item_setting_bg"
+                android:gravity="center"
+                android:text="SmartTabLayout"
+                android:textColor="?main_text_color"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_github15"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="10dp"
+                android:background="?item_setting_bg"
+                android:gravity="center"
+                android:text="SwitcherView"
                 android:textColor="?main_text_color"
                 android:textSize="14sp" />
 

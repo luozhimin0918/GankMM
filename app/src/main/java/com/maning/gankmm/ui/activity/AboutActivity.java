@@ -1,6 +1,7 @@
 package com.maning.gankmm.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -51,10 +52,19 @@ public class AboutActivity extends BaseActivity {
         int currentSkinType = SkinManager.getCurrentSkinType(this);
         if (SkinManager.THEME_DAY == currentSkinType) {
             initToolBar(toolbar, getString(R.string.about), R.drawable.icon_arrow_back);
+            //设置CollapsingToolbarLayout扩张时的标题颜色
+            collapsingToolbar.setExpandedTitleColor(getResources().getColor(R.color.translate));
+            //设置CollapsingToolbarLayout收缩时的标题颜色
+            collapsingToolbar.setCollapsedTitleTextColor(Color.WHITE);
         } else {
             initToolBar(toolbar, getString(R.string.about), R.drawable.icon_arrow_back_night);
+            //设置CollapsingToolbarLayout扩张时的标题颜色
+            collapsingToolbar.setExpandedTitleColor(getResources().getColor(R.color.translate));
+            //设置CollapsingToolbarLayout收缩时的标题颜色
+            collapsingToolbar.setCollapsedTitleTextColor(getResources().getColor(R.color.gank_text1_color_night));
         }
         collapsingToolbar.setTitle(getString(R.string.about));
+
     }
 
 
@@ -86,35 +96,69 @@ public class AboutActivity extends BaseActivity {
         IntentUtils.startToWebActivity(this, null,getString(R.string.gankio), getString(R.string.gankio));
     }
 
-    @OnClick(R.id.tvThanks01)
-    void tvThanks01() {
-        IntentUtils.startToWebActivity(this, null,getString(R.string.github), getString(R.string.github_daimajia));
+    /*------------------感谢-------------------*/
+    @OnClick(R.id.tv_github01)
+    void tv_github01() {
+        IntentUtils.startToWebActivity(this, null,getString(R.string.github), getString(R.string.github_01));
+    }
+    @OnClick(R.id.tv_github02)
+    void tv_github02() {
+        IntentUtils.startToWebActivity(this, null,getString(R.string.github), getString(R.string.github_02));
+    }
+    @OnClick(R.id.tv_github03)
+    void tv_github03() {
+        IntentUtils.startToWebActivity(this, null,getString(R.string.github), getString(R.string.github_03));
+    }
+    @OnClick(R.id.tv_github04)
+    void tv_github04() {
+        IntentUtils.startToWebActivity(this, null,getString(R.string.github), getString(R.string.github_04));
+    }
+    @OnClick(R.id.tv_github05)
+    void tv_github05() {
+        IntentUtils.startToWebActivity(this, null,getString(R.string.github), getString(R.string.github_05));
+    }
+    @OnClick(R.id.tv_github06)
+    void tv_github06() {
+        IntentUtils.startToWebActivity(this, null,getString(R.string.github), getString(R.string.github_06));
+    }
+    @OnClick(R.id.tv_github07)
+    void tv_github07() {
+        IntentUtils.startToWebActivity(this, null,getString(R.string.github), getString(R.string.github_07));
+    }
+    @OnClick(R.id.tv_github08)
+    void tv_github08() {
+        IntentUtils.startToWebActivity(this, null,getString(R.string.github), getString(R.string.github_08));
+    }
+    @OnClick(R.id.tv_github09)
+    void tv_github09() {
+        IntentUtils.startToWebActivity(this, null,getString(R.string.github), getString(R.string.github_09));
+    }
+    @OnClick(R.id.tv_github10)
+    void tv_github10() {
+        IntentUtils.startToWebActivity(this, null,getString(R.string.github), getString(R.string.github_10));
+    }
+    @OnClick(R.id.tv_github11)
+    void tv_github11() {
+        IntentUtils.startToWebActivity(this, null,getString(R.string.github), getString(R.string.github_11));
+    }
+    @OnClick(R.id.tv_github12)
+    void tv_github12() {
+        IntentUtils.startToWebActivity(this, null,getString(R.string.github), getString(R.string.github_12));
+    }
+    @OnClick(R.id.tv_github13)
+    void tv_github13() {
+        IntentUtils.startToWebActivity(this, null,getString(R.string.github), getString(R.string.github_13));
+    }
+    @OnClick(R.id.tv_github14)
+    void tv_github14() {
+        IntentUtils.startToWebActivity(this, null,getString(R.string.github), getString(R.string.github_14));
+    }
+    @OnClick(R.id.tv_github15)
+    void tv_github15() {
+        IntentUtils.startToWebActivity(this, null,getString(R.string.github), getString(R.string.github_15));
     }
 
-    @OnClick(R.id.tvThanks02)
-    void tvThanks02() {
-        IntentUtils.startToWebActivity(this,null, getString(R.string.github), getString(R.string.github_other_app_01));
-    }
 
-    @OnClick(R.id.tvThanks03)
-    void tvThanks03() {
-        IntentUtils.startToWebActivity(this, null,getString(R.string.github), getString(R.string.github_other_app_02));
-    }
-
-    @OnClick(R.id.tvThanks04)
-    void tvThanks04() {
-        IntentUtils.startToWebActivity(this, null,getString(R.string.github), getString(R.string.github_other_app_03));
-    }
-
-    @OnClick(R.id.tvThanks05)
-    void tvThanks05() {
-        IntentUtils.startToWebActivity(this, null,getString(R.string.github), getString(R.string.github_other_app_04));
-    }
-
-    @OnClick(R.id.tvThanks06)
-    void tvThanks06() {
-        IntentUtils.startToWebActivity(this,null, getString(R.string.github), getString(R.string.github_other_app_05));
-    }
 
     public void onResume() {
         super.onResume();
