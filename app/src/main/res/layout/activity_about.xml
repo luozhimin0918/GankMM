@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:background="?app_background"
+    android:fitsSystemWindows="true"
     android:gravity="center_horizontal">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="220dp"
+        android:background="?app_toolbar_bg"
         android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
@@ -18,14 +19,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
+            app:contentScrim="?app_toolbar_bg"
             app:expandedTitleTextAppearance="@style/CollapsingToolbarTitleStyle"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorPrimary"
                 android:fitsSystemWindows="true"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/app_name"
-                    android:textColor="@color/white"
+                    android:textColor="?toolbar_title_color"
                     android:textSize="20sp" />
 
                 <TextView
@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="版本号：1.0"
-                    android:textColor="@color/white"
+                    android:textColor="?toolbar_title_color"
                     android:textSize="16sp" />
 
             </LinearLayout>
@@ -85,7 +85,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="20dp"
                 android:text="项目Github地址："
-                android:textColor="@color/textBlack"
+                android:textColor="?black_text1_color"
                 android:textSize="14sp" />
 
             <TextView
@@ -93,10 +93,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/white"
+                android:background="?item_setting_bg"
                 android:gravity="center"
                 android:text="@string/github_my"
-                android:textColor="@color/colorPrimary"
+                android:textColor="?main_text_color"
                 android:textSize="14sp" />
 
             <TextView
@@ -105,7 +105,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="20dp"
                 android:text="APP下载地址："
-                android:textColor="@color/textBlack"
+                android:textColor="?black_text1_color"
                 android:textSize="14sp" />
 
             <TextView
@@ -113,10 +113,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/white"
+                android:background="?item_setting_bg"
                 android:gravity="center"
                 android:text="点击下载（ http://fir.im/gankmm ）"
-                android:textColor="@color/colorPrimary"
+                android:textColor="?main_text_color"
                 android:textSize="14sp" />
 
             <TextView
@@ -125,7 +125,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="20dp"
                 android:text="项目数据来源："
-                android:textColor="@color/textBlack"
+                android:textColor="?black_text1_color"
                 android:textSize="14sp" />
 
             <TextView
@@ -133,10 +133,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/white"
+                android:background="?item_setting_bg"
                 android:gravity="center"
                 android:text="干活集中营（www.gank.io）提供！"
-                android:textColor="@color/colorPrimary"
+                android:textColor="?main_text_color"
                 android:textSize="14sp" />
 
             <TextView
@@ -144,8 +144,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="20dp"
-                android:text="致谢："
-                android:textColor="@color/textBlack"
+                android:text="开源框架："
+                android:textColor="?black_text1_color"
                 android:textSize="14sp" />
 
             <TextView
@@ -153,50 +153,50 @@
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/white"
+                android:background="?item_setting_bg"
                 android:gravity="center"
                 android:text="代码家 - 干活集中营"
-                android:textColor="@color/colorPrimary"
+                android:textColor="?main_text_color"
                 android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tvThanks02"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
-                android:background="@color/white"
+                android:background="?item_setting_bg"
                 android:gravity="center"
                 android:text="drakeet - 妹纸.gank.io"
-                android:textColor="@color/colorPrimary"
+                android:textColor="?main_text_color"
                 android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tvThanks03"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
-                android:background="@color/white"
+                android:background="?item_setting_bg"
                 android:gravity="center"
                 android:text="xingrz - 干妹纸"
-                android:textColor="@color/colorPrimary"
+                android:textColor="?main_text_color"
                 android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tvThanks04"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
-                android:background="@color/white"
+                android:background="?item_setting_bg"
                 android:gravity="center"
                 android:text="xiongwei-git - GankApp"
-                android:textColor="@color/colorPrimary"
+                android:textColor="?main_text_color"
                 android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tvThanks05"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
-                android:background="@color/white"
+                android:background="?item_setting_bg"
                 android:gravity="center"
                 android:text="dongjunkun - GanK"
-                android:textColor="@color/colorPrimary"
+                android:textColor="?main_text_color"
                 android:textSize="14sp" />
 
             <TextView
@@ -204,10 +204,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:layout_marginBottom="10dp"
-                android:background="@color/white"
+                android:background="?item_setting_bg"
                 android:gravity="center"
                 android:text="zzhoujay - Gank4Android"
-                android:textColor="@color/colorPrimary"
+                android:textColor="?main_text_color"
                 android:textSize="14sp" />
 
         </LinearLayout>
