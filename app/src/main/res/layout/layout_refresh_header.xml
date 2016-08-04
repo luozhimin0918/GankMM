@@ -5,7 +5,6 @@
     android:layout_height="wrap_content">
 
     <RelativeLayout
-        android:background="@color/refreshBgBlack"
         android:layout_width="match_parent"
         android:layout_height="@dimen/refresh_header_height_twitter"
         android:layout_gravity="center">
@@ -17,7 +16,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="45dp"
             android:layout_toLeftOf="@+id/tvRefresh"
-            android:background="@mipmap/pull_arrow_white" />
+            android:background="?refresh_arrow_icon" />
 
         <ImageView
             android:id="@+id/ivSuccess"
@@ -26,7 +25,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="48dp"
             android:layout_toLeftOf="@+id/tvRefresh"
-            android:background="@mipmap/refresh_success" />
+            android:background="?refresh_success_icon" />
 
         <com.maning.gankmm.ui.view.ProgressWheel
             android:id="@+id/progressbar"
@@ -36,7 +35,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="44dp"
             android:layout_toLeftOf="@+id/tvRefresh"
-            wheel:matProg_barColor="#ffffff"
+            wheel:matProg_barColor="?refresh_text_color"
             wheel:matProg_barWidth="2dp"
             wheel:matProg_progressIndeterminate="true" />
 
@@ -46,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:textColor="@color/white" />
+            android:textColor="?refresh_text_color" />
     </RelativeLayout>
 
 </com.maning.gankmm.ui.view.TwitterRefreshHeaderView>

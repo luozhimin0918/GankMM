@@ -61,6 +61,8 @@
     <color name="icon_like_color">#fa4242</color>
     <color name="girl_pic_trans_shade">#00000000</color>
     <color name="history_text_color">#3b3b3b</color>
+    <color name="refresh_bg_color">#404040</color>
+    <color name="refresh_text_color">#FFFFFF</color>
     <!--夜间-->
     <color name="backgroundColor_night">#232736</color>
     <color name="textColor_night">#626f9b</color>
@@ -81,5 +83,7 @@
     <color name="icon_like_color_night">#AABCF0</color>
     <color name="girl_pic_trans_shade_night">#52252831</color>
     <color name="history_text_color_night">#626f9b</color>
+    <color name="refresh_bg_color_night">#232736</color>
+    <color name="refresh_text_color_night">#626f9b</color>
 
 </resources>

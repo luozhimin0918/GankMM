@@ -45,6 +45,10 @@
     <attr name="icon_like_color" format="reference|color" />
     <attr name="girl_pic_trans_shade" format="reference|color" />   <!--福利页面图片夜间模式遮罩层-->
     <attr name="history_text_color" format="reference|color" />
+    <attr name="refresh_bg" format="reference|color" />
+    <attr name="refresh_text_color" format="reference|color" />
+    <attr name="refresh_arrow_icon" format="reference|color" />
+    <attr name="refresh_success_icon" format="reference|color" />
 
 
 </resources>

@@ -50,6 +50,10 @@
         <item name="icon_like_color">@color/icon_like_color</item>
         <item name="girl_pic_trans_shade">@color/girl_pic_trans_shade</item>
         <item name="history_text_color">@color/history_text_color</item>
+        <item name="refresh_bg">@color/refresh_bg_color</item>
+        <item name="refresh_text_color">@color/refresh_text_color</item>
+        <item name="refresh_arrow_icon">@drawable/pull_arrow_white</item>
+        <item name="refresh_success_icon">@drawable/refresh_success</item>
     </style>
 
     <!--黑夜-->
@@ -77,6 +81,10 @@
         <item name="icon_like_color">@color/icon_like_color_night</item>
         <item name="girl_pic_trans_shade">@color/girl_pic_trans_shade_night</item>
         <item name="history_text_color">@color/history_text_color_night</item>
+        <item name="refresh_bg">@color/refresh_bg_color_night</item>
+        <item name="refresh_text_color">@color/refresh_text_color_night</item>
+        <item name="refresh_arrow_icon">@drawable/pull_arrow_white_night</item>
+        <item name="refresh_success_icon">@drawable/refresh_success_night</item>
     </style>
 
 
