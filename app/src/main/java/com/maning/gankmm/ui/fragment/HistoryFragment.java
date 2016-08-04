@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.maning.gankmm.R;
+import com.maning.gankmm.skin.SkinManager;
 import com.maning.gankmm.ui.adapter.RecycleHistoryAdapter;
 import com.maning.gankmm.ui.base.BaseFragment;
 import com.maning.gankmm.ui.iView.IHistoryView;
@@ -96,7 +97,12 @@ public class HistoryFragment extends BaseFragment implements OnRefreshListener, 
         swipeTarget.setLayoutManager(linearLayoutManager);
         swipeTarget.setItemAnimator(new DefaultItemAnimator());
         //添加分割线
-        swipeTarget.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).color(Color.LTGRAY).build());
+        int currentSkinType = SkinManager.getCurrentSkinType(getActivity());
+        if (currentSkinType == SkinManager.THEME_DAY) {
+            swipeTarget.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).color(Color.LTGRAY).build());
+        } else {
+            swipeTarget.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).color(getResources().getColor(R.color.lineColor_night)).build());
+        }
 
     }
 

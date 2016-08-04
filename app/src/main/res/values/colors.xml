@@ -46,6 +46,7 @@
     <color name="textColor">#3b3b3b</color>
     <color name="lineColor">#cccccc</color>
     <color name="item_bg">#ffffff</color>
+    <color name="item_setting_bg">#ffffff</color>
     <color name="item_selecter_pressed_color">#e6e6e6</color>
     <color name="main_color">#54aee6</color>
     <color name="setting_toobar_line_color">#54aee6</color>
@@ -59,11 +60,13 @@
     <color name="girl_pic_trans_item_text_color">#FFFFFF</color>
     <color name="icon_like_color">#fa4242</color>
     <color name="girl_pic_trans_shade">#00000000</color>
+    <color name="history_text_color">#3b3b3b</color>
     <!--夜间-->
     <color name="backgroundColor_night">#232736</color>
     <color name="textColor_night">#626f9b</color>
     <color name="lineColor_night">#5a6285</color>
-    <color name="item_bg_night">#2A2F41</color>
+    <color name="item_bg_night">#1e222e</color>
+    <color name="item_setting_bg_night">#2A2F41</color>
     <color name="item_selecter_pressed_color_night">#f6202431</color>
     <color name="main_color_night">#2A2F41</color>
     <color name="setting_toobar_line_color_night">#5a6285</color>
@@ -77,5 +80,6 @@
     <color name="girl_pic_trans_item_text_color_night">#626f9b</color>
     <color name="icon_like_color_night">#AABCF0</color>
     <color name="girl_pic_trans_shade_night">#52252831</color>
+    <color name="history_text_color_night">#626f9b</color>
 
 </resources>

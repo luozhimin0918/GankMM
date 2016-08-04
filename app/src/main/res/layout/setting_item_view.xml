@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/item_selecter">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/setting_tv_title"
@@ -28,9 +27,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="8dp"
         android:layout_toLeftOf="@id/setting_right_arrows"
         android:text="文本"
-        android:layout_marginLeft="8dp"
         android:textColor="?setting_small_text_color"
         android:textSize="12sp" />
 

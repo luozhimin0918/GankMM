@@ -32,6 +32,11 @@
 
             </RelativeLayout>
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?toolbar_line_color" />
+
 
             <com.aspsine.swipetoloadlayout.SwipeToLoadLayout xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/swipeToLoadLayout"
@@ -48,7 +53,7 @@
                     android:id="@+id/swipe_target"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#efefef"
+                    android:background="?app_background"
                     android:clipToPadding="false"
                     android:fadeScrollbars="true"
                     android:scrollbars="vertical" />

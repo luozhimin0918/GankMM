@@ -26,6 +26,7 @@
     <attr name="app_toolbar_bg" format="reference|color" />
     <attr name="toolbar_line_color" format="reference|color" />
     <attr name="item_bg" format="reference|color" />
+    <attr name="item_setting_bg" format="reference|color" />
     <attr name="item_bg_pressed" format="reference|color" />
     <attr name="lineColor" format="reference" />
     <attr name="setting_text_color" format="reference|color" />
@@ -43,6 +44,7 @@
     <attr name="icon_like_no" format="reference|color" />
     <attr name="icon_like_color" format="reference|color" />
     <attr name="girl_pic_trans_shade" format="reference|color" />   <!--福利页面图片夜间模式遮罩层-->
+    <attr name="history_text_color" format="reference|color" />
 
 
 </resources>

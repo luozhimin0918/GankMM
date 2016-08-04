@@ -30,6 +30,7 @@
         <item name="app_background">@color/backgroundColor</item>
         <item name="lineColor">@color/lineColor</item>
         <item name="item_bg">@color/item_bg</item>
+        <item name="item_setting_bg">@color/item_setting_bg</item>
         <item name="item_bg_pressed">@color/item_selecter_pressed_color</item>
         <item name="setting_text_color">@color/gank_text2_color</item>
         <item name="setting_small_text_color">@color/gank_text3_color</item>
@@ -48,6 +49,7 @@
         <item name="icon_like_no">@drawable/icon_collect_no</item>
         <item name="icon_like_color">@color/icon_like_color</item>
         <item name="girl_pic_trans_shade">@color/girl_pic_trans_shade</item>
+        <item name="history_text_color">@color/history_text_color</item>
     </style>
 
     <!--黑夜-->
@@ -55,6 +57,7 @@
         <item name="app_background">@color/backgroundColor_night</item>
         <item name="lineColor">@color/lineColor_night</item>
         <item name="item_bg">@color/item_bg_night</item>
+        <item name="item_setting_bg">@color/item_setting_bg_night</item>
         <item name="item_bg_pressed">@color/item_selecter_pressed_color_night</item>
         <item name="setting_text_color">@color/gank_text2_color_night</item>
         <item name="setting_small_text_color">@color/gank_text3_color_night</item>
@@ -73,6 +76,7 @@
         <item name="icon_like_no">@drawable/icon_collect_no_night</item>
         <item name="icon_like_color">@color/icon_like_color_night</item>
         <item name="girl_pic_trans_shade">@color/girl_pic_trans_shade_night</item>
+        <item name="history_text_color">@color/history_text_color_night</item>
     </style>
 
 
