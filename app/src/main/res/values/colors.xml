@@ -49,6 +49,9 @@
     <color name="item_selecter_pressed_color">#e6e6e6</color>
     <color name="main_color">#54aee6</color>
     <color name="setting_toobar_line_color">#54aee6</color>
+    <color name="navigation_bg_color">#f7f7f7</color>
+    <color name="navigation_menu_checked_color">#54aee6</color>
+    <color name="navigation_menu_default_color">#4d4d4d</color>
 
 
     <!--夜间-->
@@ -59,5 +62,8 @@
     <color name="item_selecter_pressed_color_night">#f6202431</color>
     <color name="main_color_night">#2A2F41</color>
     <color name="setting_toobar_line_color_night">#5a6285</color>
+    <color name="navigation_bg_color_night">#232736</color>
+    <color name="navigation_menu_checked_color_night">#9AACEC</color>
+    <color name="navigation_menu_default_color_night">#3d4561</color>
 
 </resources>

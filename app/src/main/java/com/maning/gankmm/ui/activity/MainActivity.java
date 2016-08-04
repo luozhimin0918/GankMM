@@ -169,7 +169,6 @@ public class MainActivity extends BaseActivity implements IMainView {
      * -----------------------------------------
      */
     private void initNavigationView() {
-        initnavigationItemView();
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -218,13 +217,6 @@ public class MainActivity extends BaseActivity implements IMainView {
                 return true;
             }
         });
-    }
-
-    public void initnavigationItemView(){
-        Resources resource= getBaseContext().getResources();
-        ColorStateList csl=resource.getColorStateList(R.color.navigation_menu_item_color);
-        navigationView.setItemTextColor(csl);
-        navigationView.setItemIconTintList(csl);
     }
 
     private SkinBroadcastReceiver skinBroadcastReceiver;

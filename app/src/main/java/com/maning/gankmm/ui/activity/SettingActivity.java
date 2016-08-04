@@ -158,8 +158,8 @@ public class SettingActivity extends BaseActivity implements ISettingView {
     @Override
     public void recreateActivity() {
         startActivity(new Intent(this.getApplicationContext(),SettingActivity.class));
-        this.finish();
         overridePendingTransition(R.anim.activity_enter,R.anim.activity_exit);
+        this.finish();
     }
 
     @Override

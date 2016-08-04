@@ -32,6 +32,8 @@
     <attr name="setting_small_text_color" format="reference|color" />
     <attr name="text1_color" format="reference|color" />
     <attr name="setting_arrow_right" format="reference" />
+    <attr name="navigation_bg" format="reference|color" />
+    <attr name="navigation_menu_item_color" format="reference|color" />
 
 
 </resources>
