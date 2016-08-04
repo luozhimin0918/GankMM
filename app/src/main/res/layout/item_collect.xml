@@ -38,7 +38,7 @@
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:text="daimajia"
-            android:textColor="?item_small_text_color"
+            android:textColor="?black_text3_color"
             android:textSize="14sp" />
 
         <LinearLayout
@@ -68,7 +68,7 @@
                 android:layout_marginLeft="12dp"
                 android:gravity="center"
                 android:text="2016-3-4"
-                android:textColor="?item_small_text_color"
+                android:textColor="?black_text3_color"
                 android:textSize="14sp" />
 
         </LinearLayout>

@@ -49,7 +49,6 @@
         <item name="icon_like_no">@drawable/icon_collect_no</item>
         <item name="icon_like_color">@color/icon_like_color</item>
         <item name="girl_pic_trans_shade">@color/girl_pic_trans_shade</item>
-        <item name="history_text_color">@color/history_text_color</item>
         <item name="refresh_bg">@color/refresh_bg_color</item>
         <item name="refresh_text_color">@color/refresh_text_color</item>
         <item name="refresh_arrow_icon">@drawable/pull_arrow_white</item>
@@ -58,7 +57,6 @@
         <item name="tablayout_text_color">@color/tablayout_text_color</item>
         <item name="tablayout_indicator_color">@color/tablayout_indicator_color</item>
         <item name="main_text_color">@color/main_text_color</item>
-        <item name="item_small_text_color">@color/item_small_text_color</item>
         <item name="progressbar_color">@color/progressbar_color</item>
         <item name="toolbar_title_color">@color/toolbar_title_color</item>
         <item name="black_text1_color">@color/black_text1_color</item>
@@ -91,7 +89,6 @@
         <item name="icon_like_no">@drawable/icon_collect_no_night</item>
         <item name="icon_like_color">@color/icon_like_color_night</item>
         <item name="girl_pic_trans_shade">@color/girl_pic_trans_shade_night</item>
-        <item name="history_text_color">@color/history_text_color_night</item>
         <item name="refresh_bg">@color/refresh_bg_color_night</item>
         <item name="refresh_text_color">@color/refresh_text_color_night</item>
         <item name="refresh_arrow_icon">@drawable/pull_arrow_white_night</item>
@@ -100,7 +97,6 @@
         <item name="tablayout_text_color">@color/tablayout_text_color_night</item>
         <item name="tablayout_indicator_color">@color/tablayout_indicator_color_night</item>
         <item name="main_text_color">@color/main_text_color_night</item>
-        <item name="item_small_text_color">@color/item_small_text_color_night</item>
         <item name="progressbar_color">@color/progressbar_color_night</item>
         <item name="toolbar_title_color">@color/toolbar_title_color_night</item>
         <item name="black_text1_color">@color/black_text1_color_night</item>

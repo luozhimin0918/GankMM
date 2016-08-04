@@ -148,23 +148,6 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
         //--------------------Umeng更新
         boolean umengUpdate = SharePreUtil.getBooleanData(context, Constants.SPAppUpdate + MyApplication.getVersionCode(), false);
         mView.setUmengUpdateState(umengUpdate);
-        UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
-            @Override
-            public void onUpdateReturned(int updateStatus, UpdateResponse updateResponse) {
-                switch (updateStatus) {
-                    case UpdateStatus.Yes:
-                        break;
-                    case UpdateStatus.No:
-                        if (mView != null) {
-                            mView.showToast("当前版本为最新版本");
-                        }
-                        break;
-                    case UpdateStatus.Timeout:
-                        KLog.i("Umeng更新-----超时");
-                        break;
-                }
-            }
-        });
 
     }
 
@@ -172,6 +155,23 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
     public void checkAppUpdate() {
         //版本更新检查
         if (NetUtils.hasNetWorkConection(context)) {
+            UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
+                @Override
+                public void onUpdateReturned(int updateStatus, UpdateResponse updateResponse) {
+                    switch (updateStatus) {
+                        case UpdateStatus.Yes:
+                            break;
+                        case UpdateStatus.No:
+                            if (mView != null) {
+                                mView.showToast("当前版本为最新版本");
+                            }
+                            break;
+                        case UpdateStatus.Timeout:
+                            KLog.i("Umeng更新-----超时");
+                            break;
+                    }
+                }
+            });
             //检测更新
             UmengUpdateAgent.update(context);
         } else {
