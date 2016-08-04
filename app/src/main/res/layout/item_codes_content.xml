@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="标题"
-            android:textColor="@color/textBlack"
+            android:textColor="?black_text2_color"
             android:textSize="18sp" />
 
         <TextView
@@ -35,7 +35,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginTop="6dp"
             android:text="86查看	  	14下载   2016-06-22 "
-            android:textColor="@color/textGray"
+            android:textColor="?black_text3_color"
             android:textSize="12sp" />
 
         <TextView
@@ -45,7 +45,7 @@
             android:layout_above="@id/tv_other_info"
             android:layout_marginTop="10dp"
             android:text="视图效果 (View Effects)"
-            android:textColor="@color/textBlack"
+            android:textColor="?black_text2_color"
             android:textSize="14sp" />
 
 
@@ -59,7 +59,7 @@
             android:ellipsize="end"
             android:maxLines="4"
             android:text="最最轻量级的新手引导库（只有7个类），能够快速的为一个Activity里的任何一个View控件创建一个遮罩式的导航页，支持单个页面，多个引导提示，以及引导动画，方便扩展"
-            android:textColor="@color/textBlack"
+            android:textColor="?black_text2_color"
             android:textSize="14sp" />
 
     </RelativeLayout>

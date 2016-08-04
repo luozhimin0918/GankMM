@@ -63,6 +63,8 @@
         <item name="toolbar_title_color">@color/toolbar_title_color</item>
         <item name="black_text1_color">@color/black_text1_color</item>
         <item name="black_text2_color">@color/black_text2_color</item>
+        <item name="black_text3_color">@color/black_text3_color</item>
+        <item name="app_icon_menu">@drawable/icon_menu2</item>
     </style>
 
     <!--黑夜-->
@@ -103,6 +105,8 @@
         <item name="toolbar_title_color">@color/toolbar_title_color_night</item>
         <item name="black_text1_color">@color/black_text1_color_night</item>
         <item name="black_text2_color">@color/black_text2_color_night</item>
+        <item name="black_text3_color">@color/black_text3_color_night</item>
+        <item name="app_icon_menu">@drawable/icon_menu2_night</item>
     </style>
 
 

@@ -73,6 +73,7 @@ public class CodesActivity extends BaseActivity implements OnRefreshListener, On
     private Animation animation_down;
 
     private CodesPresenterImpl codesPresenter;
+    private int currentSkinType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,14 +117,22 @@ public class CodesActivity extends BaseActivity implements OnRefreshListener, On
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recycleMenu.setLayoutManager(linearLayoutManager);
         recycleMenu.setItemAnimator(new DefaultItemAnimator());
-        //添加分割线
-        recycleMenu.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).color(Color.LTGRAY).build());
 
         LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recycleContent.setLayoutManager(linearLayoutManager2);
         recycleContent.setItemAnimator(new DefaultItemAnimator());
+
+
         //添加分割线
-        recycleContent.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).color(Color.LTGRAY).build());
+        currentSkinType = SkinManager.getCurrentSkinType(this);
+        if (currentSkinType == SkinManager.THEME_DAY) {
+            recycleContent.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).color(Color.LTGRAY).build());
+            recycleMenu.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).color(Color.LTGRAY).build());
+        } else {
+            recycleContent.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).color(getResources().getColor(R.color.lineColor_night)).build());
+            recycleMenu.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).color(getResources().getColor(R.color.lineColor_night)).build());
+        }
+
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setOnLoadMoreListener(this);
         swipeToLoadLayout.setRefreshEnabled(true);

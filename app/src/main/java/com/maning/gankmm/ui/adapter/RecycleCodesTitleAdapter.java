@@ -1,6 +1,7 @@
 package com.maning.gankmm.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 import com.maning.gankmm.R;
 import com.maning.gankmm.bean.CategoryTitleBean;
+import com.maning.gankmm.skin.SkinManager;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.List;
 
@@ -22,10 +25,12 @@ public class RecycleCodesTitleAdapter extends RecyclerView.Adapter<RecycleCodesT
     private List<CategoryTitleBean> mDatas;
     private LayoutInflater layoutInflater;
     private String type = "全部代码";
+    private int currentSkinType;
 
     public RecycleCodesTitleAdapter(Context context, List<CategoryTitleBean> mDatas) {
         this.context = context;
         this.mDatas = mDatas;
+        currentSkinType = SkinManager.getCurrentSkinType(this.context);
         layoutInflater = LayoutInflater.from(this.context);
     }
 
@@ -39,12 +44,22 @@ public class RecycleCodesTitleAdapter extends RecyclerView.Adapter<RecycleCodesT
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.tvTitle.setText(mDatas.get(position).getTitle());
 
-        if (type.equals(holder.tvTitle.getText().toString())) {
-            holder.tvTitle.setTextColor(context.getResources().getColor(R.color.white));
-            holder.tvTitle.setBackgroundColor(context.getResources().getColor(R.color.mainColoe));
+        if (currentSkinType == SkinManager.THEME_DAY) {
+            if (type.equals(holder.tvTitle.getText().toString())) {
+                holder.tvTitle.setTextColor(context.getResources().getColor(R.color.white));
+                holder.tvTitle.setBackgroundColor(context.getResources().getColor(R.color.main_color));
+            } else {
+                holder.tvTitle.setTextColor(context.getResources().getColor(R.color.textBlack));
+                holder.tvTitle.setBackgroundColor(context.getResources().getColor(R.color.white));
+            }
         } else {
-            holder.tvTitle.setTextColor(context.getResources().getColor(R.color.textBlack));
-            holder.tvTitle.setBackgroundColor(context.getResources().getColor(R.color.white));
+            if (type.equals(holder.tvTitle.getText().toString())) {
+                holder.tvTitle.setTextColor(context.getResources().getColor(R.color.gank_text1_color_night));
+                holder.tvTitle.setBackgroundColor(context.getResources().getColor(R.color.main_color_night));
+            } else {
+                holder.tvTitle.setTextColor(context.getResources().getColor(R.color.gank_text2_color_night));
+                holder.tvTitle.setBackgroundColor(context.getResources().getColor(R.color.gank_text4_color_night));
+            }
         }
 
         //如果设置了回调，则设置点击事件
