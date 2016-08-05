@@ -6,7 +6,7 @@
         <shape>
             <corners android:radius="0dp" />
 
-            <solid android:color="#ffffff" />
+            <solid android:color="?webview_progress_bg_color" />
         </shape>
     </item>
     <!-- 进度条 -->
@@ -15,7 +15,7 @@
             <shape>
                 <corners android:radius="0dp" />
 
-                <solid android:color="#FF8080" />
+                <solid android:color="?webview_progress_color" />
             </shape>
         </clip>
     </item>

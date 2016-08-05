@@ -1,12 +1,23 @@
 package com.maning.gankmm.skin;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.widget.ImageView;
 
 import com.maning.gankmm.R;
+import com.maning.gankmm.app.MyApplication;
 
 /**
  * Created by maning on 16/3/28.
@@ -110,5 +121,29 @@ public class SkinManager {
         }
         return sp.getInt(SkinKey, defValue);
     }
+
+    /*--------------------WebView 夜间模式-----------------*/
+    public static void setupWebView(WebView webView, String backgroudColor, String fontColor, String urlColor) {
+        if (webView != null) {
+            webView.setBackgroundColor(0);
+            if (getCurrentSkinType(MyApplication.getIntstance()) == THEME_NIGHT) {
+                String js = String.format(jsStyle, backgroudColor, fontColor, urlColor, backgroudColor);
+                webView.loadUrl(js);
+            }
+        }
+    }
+    
+    private static String jsStyle = "javascript:(function(){\n" +
+            "\t\t   document.body.style.backgroundColor=\"%s\";\n" +
+            "\t\t    document.body.style.color=\"%s\";\n" +
+            "\t\t\tvar as = document.getElementsByTagName(\"a\");\n" +
+            "\t\tfor(var i=0;i<as.length;i++){\n" +
+            "\t\t\tas[i].style.color = \"%s\";\n" +
+            "\t\t}\n" +
+            "\t\tvar divs = document.getElementsByTagName(\"div\");\n" +
+            "\t\tfor(var i=0;i<divs.length;i++){\n" +
+            "\t\t\tdivs[i].style.backgroundColor = \"%s\";\n" +
+            "\t\t}\n" +
+            "\t\t})()";
 
 }

@@ -76,6 +76,8 @@
         <item name="black_text2_color">@color/black_text2_color</item>
         <item name="black_text3_color">@color/black_text3_color</item>
         <item name="app_icon_menu">@drawable/icon_menu2</item>
+        <item name="webview_progress_bg_color">@color/webview_progress_bg_color</item>
+        <item name="webview_progress_color">@color/webview_progress_color</item>
     </style>
 
     <!--黑夜-->
@@ -119,6 +121,8 @@
         <item name="black_text2_color">@color/black_text2_color_night</item>
         <item name="black_text3_color">@color/black_text3_color_night</item>
         <item name="app_icon_menu">@drawable/icon_menu2_night</item>
+        <item name="webview_progress_bg_color">@color/webview_progress_bg_color_night</item>
+        <item name="webview_progress_color">@color/webview_progress_color_night</item>
     </style>
 
 

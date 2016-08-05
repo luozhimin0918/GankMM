@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,7 +28,6 @@ import com.maning.gankmm.ui.presenter.impl.WebPresenterImpl;
 import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.utils.MySnackbar;
 import com.maning.gankmm.utils.NetUtils;
-import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
@@ -153,7 +151,6 @@ public class WebActivity extends BaseActivity implements IWebView {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                KLog.i("-----shouldOverrideUrlLoading");
                 //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
                 view.loadUrl(url);
                 return true;
@@ -162,14 +159,16 @@ public class WebActivity extends BaseActivity implements IWebView {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                KLog.i("-----onPageFinished");
-
+                //设置webView
+                String backgroudColor = "#232736";
+                String fontColor = "#626f9b";
+                String urlColor = "#9AACEC";
+                SkinManager.setupWebView(webView, backgroudColor, fontColor, urlColor);
             }
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                KLog.i("-----onPageStarted");
                 webView.setVisibility(View.VISIBLE);
             }
 
@@ -184,11 +183,9 @@ public class WebActivity extends BaseActivity implements IWebView {
             public void onProgressChanged(WebView view, int newProgress) {
                 if (newProgress == 100) {
                     // 网页加载完成
-                    KLog.i("-----onProgressChanged完成");
                     progressbar.setVisibility(View.GONE);
                 } else {
                     // 加载中
-                    KLog.i("-----onProgressChanged：" + newProgress);
                     if (progressbar.getVisibility() == View.GONE) {
                         progressbar.setVisibility(View.VISIBLE);
                     }
@@ -199,6 +196,7 @@ public class WebActivity extends BaseActivity implements IWebView {
 
         webView.setDownloadListener(new MyWebViewDownLoadListener());
     }
+
 
     private class MyWebViewDownLoadListener implements DownloadListener {
         @Override

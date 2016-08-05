@@ -73,12 +73,12 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
     @Override
     public void clickNightMode() {
         //不可快速点击，设定2秒内不能连续点击
-        long currtTime = System.currentTimeMillis();
-        if (currtTime - lastTime < 2000) {
-            mView.showToast("你的手速太快了...");
-            lastTime = currtTime;
-            return;
-        }
+//        long currtTime = System.currentTimeMillis();
+//        if (currtTime - lastTime < 2000) {
+//            mView.showToast("你的手速太快了...");
+//            lastTime = currtTime;
+//            return;
+//        }
         int currentSkinType = SkinManager.getCurrentSkinType(context);
         if (SkinManager.THEME_DAY == currentSkinType) {
             SkinManager.changeSkin((SettingActivity) context, SkinManager.THEME_NIGHT);

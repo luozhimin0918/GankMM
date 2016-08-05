@@ -58,6 +58,8 @@
     <attr name="black_text2_color" format="reference|color" />
     <attr name="black_text3_color" format="reference|color" />
     <attr name="app_icon_menu" format="reference|color" />
+    <attr name="webview_progress_bg_color" format="reference|color" />
+    <attr name="webview_progress_color" format="reference|color" />
 
 
 </resources>
