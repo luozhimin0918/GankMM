@@ -166,6 +166,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.WebActivity"
+            android:hardwareAccelerated="false"
             android:screenOrientation="portrait" />
 
         <!-- Umeng自动更新 -->

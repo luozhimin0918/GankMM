@@ -68,6 +68,13 @@ public class WebActivity extends BaseActivity implements IWebView {
 
         initIntent();
 
+        initMyToolBar();
+
+        initWebView();
+
+    }
+
+    private void initMyToolBar() {
         String title;
         if (TextUtils.isEmpty(flagTitle)) {
             title = titleContent;
@@ -80,10 +87,6 @@ public class WebActivity extends BaseActivity implements IWebView {
         } else {
             initToolBar(toolbar, title, R.drawable.icon_arrow_back_night);
         }
-
-
-        initWebView();
-
     }
 
     @Override
@@ -117,6 +120,8 @@ public class WebActivity extends BaseActivity implements IWebView {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
+        //设置背景色
+        webView.setBackgroundColor(0);
         //设置WebView属性，能够执行Javascript脚本
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setAllowFileAccess(true);
