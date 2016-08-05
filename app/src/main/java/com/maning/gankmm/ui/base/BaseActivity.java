@@ -83,8 +83,10 @@ public class BaseActivity extends AppCompatActivity {
         int currentSkinType = SkinManager.getCurrentSkinType(this);
         if (SkinManager.THEME_DAY == currentSkinType) {
             toolbar.setTitleTextColor(getResources().getColor(R.color.gank_text1_color));
+            toolbar.setPopupTheme(R.style.ToolBarPopupThemeDay);
         } else {
             toolbar.setTitleTextColor(getResources().getColor(R.color.gank_text1_color_night));
+            toolbar.setPopupTheme(R.style.ToolBarPopupThemeNight);
         }
     }
 

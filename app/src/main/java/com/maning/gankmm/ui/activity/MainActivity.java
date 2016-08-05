@@ -63,6 +63,9 @@ public class MainActivity extends BaseActivity implements IMainView {
     private MaterialDialog mMaterialDialogPush;
 
     private MainPresenterImpl mainPresenter;
+    //夜间模式的广播
+    private SkinBroadcastReceiver skinBroadcastReceiver;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +95,9 @@ public class MainActivity extends BaseActivity implements IMainView {
         }
 
         setDefaultFragment();
+
+        //注册夜间模式广播监听
+        registerSkinReceiver();
 
     }
 
@@ -131,7 +137,6 @@ public class MainActivity extends BaseActivity implements IMainView {
         switch (flag) {
             case R.id.nav_fuli:
                 if (welFareFragment == null) {
-                    KLog.i("-------------------------welFareFragment---新建");
                     welFareFragment = WelFareFragment.newInstance();
                     fragmentTransaction.add(R.id.frame_content, welFareFragment);
                 } else {
@@ -140,7 +145,6 @@ public class MainActivity extends BaseActivity implements IMainView {
                 break;
             case R.id.nav_history:
                 if (timeFragment == null) {
-                    KLog.i("-------------------------timeFragment---新建");
                     timeFragment = HistoryFragment.newInstance();
                     fragmentTransaction.add(R.id.frame_content, timeFragment);
                 } else {
@@ -149,7 +153,6 @@ public class MainActivity extends BaseActivity implements IMainView {
                 break;
             case R.id.nav_category:
                 if (categoryFragment == null) {
-                    KLog.i("-------------------------categoryFragment---新建");
                     categoryFragment = CategoryFragment.newInstance();
                     fragmentTransaction.add(R.id.frame_content, categoryFragment);
                 } else {
@@ -158,7 +161,6 @@ public class MainActivity extends BaseActivity implements IMainView {
                 break;
             case R.id.nav_collect:
                 if (collectFragment == null) {
-                    KLog.i("-------------------------collectFragment---新建");
                     collectFragment = CollectFragment.newInstance();
                     fragmentTransaction.add(R.id.frame_content, collectFragment);
                 } else {
@@ -220,8 +222,6 @@ public class MainActivity extends BaseActivity implements IMainView {
                         menuItem.setChecked(false); // 改变item选中状态
                         //跳转
                         IntentUtils.startSettingActivity(context);
-                        //注册夜间模式广播
-                        registerSkinReceiver();
                         break;
                     case R.id.share_app:
                         menuItem.setChecked(false); // 改变item选中状态
@@ -233,8 +233,6 @@ public class MainActivity extends BaseActivity implements IMainView {
             }
         });
     }
-
-    private SkinBroadcastReceiver skinBroadcastReceiver;
 
     private void registerSkinReceiver() {
         if (skinBroadcastReceiver == null) {
@@ -296,6 +294,7 @@ public class MainActivity extends BaseActivity implements IMainView {
             mMaterialDialogPush = null;
         }
         SkinManager.unregisterSkinReceiver(this, skinBroadcastReceiver);
+        skinBroadcastReceiver = null;
         super.onDestroy();
     }
 

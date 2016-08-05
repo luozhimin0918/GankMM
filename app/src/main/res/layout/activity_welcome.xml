@@ -38,6 +38,6 @@
         android:id="@+id/shade_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#36000000" />
+        android:background="#49000000" />
 
 </RelativeLayout>
