@@ -105,8 +105,4 @@ public class WelFarePresenterImpl extends BasePresenterImpl<IWelFareView> implem
         GankApi.getRandomDatas(5, 0x003, httpCallBack);
     }
 
-    @Override
-    public void detachView() {
-        super.detachView();
-    }
 }

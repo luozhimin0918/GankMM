@@ -145,9 +145,4 @@ public class PublicPresenterImpl extends BasePresenterImpl<IPublicView> implemen
         }).start();
     }
 
-    @Override
-    public void detachView() {
-        super.detachView();
-    }
-
 }

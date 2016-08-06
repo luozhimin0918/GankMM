@@ -102,8 +102,4 @@ public class MainPresenterImpl extends BasePresenterImpl<IMainView> implements I
         UmengUpdateAgent.update(context);
     }
 
-    @Override
-    public void detachView() {
-        super.detachView();
-    }
 }

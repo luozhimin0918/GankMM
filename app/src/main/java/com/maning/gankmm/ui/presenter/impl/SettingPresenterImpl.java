@@ -228,8 +228,4 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
 
     }
 
-    @Override
-    public void detachView() {
-        super.detachView();
-    }
 }

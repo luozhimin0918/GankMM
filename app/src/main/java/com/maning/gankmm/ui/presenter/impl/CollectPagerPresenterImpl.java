@@ -57,8 +57,4 @@ public class CollectPagerPresenterImpl extends BasePresenterImpl<ICollectPagerVi
         mView.overRefresh();
     }
 
-    @Override
-    public void detachView() {
-        super.detachView();
-    }
 }

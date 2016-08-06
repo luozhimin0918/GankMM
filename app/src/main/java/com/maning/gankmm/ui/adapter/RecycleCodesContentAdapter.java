@@ -54,7 +54,7 @@ public class RecycleCodesContentAdapter extends RecyclerView.Adapter<RecycleCode
         String imageUrl = categoryContentBean.getImageUrl();
         if (imageUrl.endsWith(".gif")) {
             Glide
-                    .with(context)
+                    .with(context.getApplicationContext())
                     .load(categoryContentBean.getImageUrl())
                     .asGif()
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -63,7 +63,7 @@ public class RecycleCodesContentAdapter extends RecyclerView.Adapter<RecycleCode
                     .into(holder.ivShow);
         } else {
             Glide
-                    .with(context)
+                    .with(context.getApplicationContext())
                     .load(categoryContentBean.getImageUrl())
                     .asBitmap()
                     .centerCrop()

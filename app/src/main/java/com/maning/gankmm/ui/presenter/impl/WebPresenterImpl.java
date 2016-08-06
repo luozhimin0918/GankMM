@@ -41,8 +41,4 @@ public class WebPresenterImpl extends BasePresenterImpl<IWebView> implements IWe
         context.startActivity(intent);
     }
 
-    @Override
-    public void detachView() {
-        super.detachView();
-    }
 }

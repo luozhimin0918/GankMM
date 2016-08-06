@@ -94,8 +94,4 @@ public class ImagePresenterImpl extends BasePresenterImpl<IImageView> implements
         }).start();
     }
 
-    @Override
-    public void detachView() {
-        super.detachView();
-    }
 }

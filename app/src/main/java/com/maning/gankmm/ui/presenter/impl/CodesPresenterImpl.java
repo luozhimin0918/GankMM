@@ -141,9 +141,4 @@ public class CodesPresenterImpl extends BasePresenterImpl<ICodesView> implements
         }
     }
 
-    @Override
-    public void detachView() {
-        super.detachView();
-    }
-
 }

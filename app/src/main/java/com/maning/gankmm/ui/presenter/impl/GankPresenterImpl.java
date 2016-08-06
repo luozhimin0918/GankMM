@@ -168,10 +168,4 @@ public class GankPresenterImpl extends BasePresenterImpl<IGankView> implements I
         });
     }
 
-
-    @Override
-    public void detachView() {
-        super.detachView();
-    }
-
 }

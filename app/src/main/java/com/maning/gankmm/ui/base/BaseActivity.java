@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 
 import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.bumptech.glide.Glide;
 import com.maning.gankmm.R;
 import com.maning.gankmm.skin.SkinManager;
 import com.maning.gankmm.utils.StatusBarUtil;
@@ -104,8 +105,9 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         dissmissProgressDialog();
+        Glide.with(this.getApplicationContext()).pauseRequests();
+        super.onDestroy();
     }
 
 
