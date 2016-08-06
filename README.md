@@ -10,9 +10,10 @@
     4.状态的的颜色的设置（Android 4.4 +）；
     5.Android Material Design 风格控件的基本使用；
     6.SQLite的基本使用；
-    7.WebView的使用，自动缓存；
+    7.WebView的使用，自动缓存,夜间模式；
     8.Jsoup抓取网页数据；
     9.Android 6.0权限适配
+    10.夜间模式的使用
 
 ##所有的数据来自：
 ####[干货集中营(http://gank.io/)](http://gank.io/)<br>
@@ -20,23 +21,29 @@
 ##APK下载地址：
 ####[点击下载(http://fir.im/gankmm)](http://fir.im/gankmm)<br>
 
+##GankMM夜间模式实现Demo（切换主题实现）：
+####[AndroidChangeSkinDemo](https://github.com/maning0303/AndroidChangeSkinDemo)
+
 
 ##项目截图：
-![](https://github.com/maning0303/GankMM/raw/master/screenshots/001.jpg)
-![](https://github.com/maning0303/GankMM/raw/master/screenshots/002.jpg)
-![](https://github.com/maning0303/GankMM/raw/master/screenshots/003.jpg)
-![](https://github.com/maning0303/GankMM/raw/master/screenshots/004.jpg)
-![](https://github.com/maning0303/GankMM/raw/master/screenshots/005.jpg)
-![](https://github.com/maning0303/GankMM/raw/master/screenshots/006.jpg)
-![](https://github.com/maning0303/GankMM/raw/master/screenshots/007.jpg)
-![](https://github.com/maning0303/GankMM/raw/master/screenshots/008.jpg)
+![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_day_01.jpg)
+![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_night_01.jpg)
+![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_day_02.jpg)
+![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_night_02.jpg)
+![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_day_03.jpg)
+![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_night_03.jpg)
 
 ##下版本想法：
-##### 1.夜间模式
-##### 2....
+##### 1.去掉Umeng自动更新，换一个
 <br>
 
 ##更新日志：
+###V1.3.0:
+    1.添加夜间模式（设置页面）
+    2.妹子图瀑布流去掉假的随机高度，计算图片真实高度
+    3.修复已知Bug，优化代码
+    4.首页添加Gank滚动头条（暂时头条全部属于Android头条）
+
 ###V1.2.4:
     1.修复上一版本重构MVP造成的Bug
     2.适配6.0权限
@@ -97,3 +104,5 @@
 ######[klog](https://github.com/ZhaoKaiQiang/KLog)
 ######[easypermissions](https://github.com/googlesamples/easypermissions)
 ######[smarttablayout](https://github.com/ogaclejapan/SmartTabLayout)
+######[SwitcherView](https://github.com/maning0303/SwitcherView)
+
