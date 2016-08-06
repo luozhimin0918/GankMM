@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.maning.gankmm.R;
 import com.maning.gankmm.bean.CategoryContentBean;
@@ -21,11 +22,13 @@ import java.util.List;
 public class RecycleCodesContentAdapter extends RecyclerView.Adapter<RecycleCodesContentAdapter.MyViewHolder> {
 
     private Context context;
+    private final RequestManager glide;
     private List<CategoryContentBean> mDatas;
     private LayoutInflater layoutInflater;
 
-    public RecycleCodesContentAdapter(Context context, List<CategoryContentBean> mDatas) {
+    public RecycleCodesContentAdapter(Context context, List<CategoryContentBean> mDatas,RequestManager glide) {
         this.context = context;
+        this.glide = glide;
         this.mDatas = mDatas;
         layoutInflater = LayoutInflater.from(this.context);
     }
@@ -52,23 +55,11 @@ public class RecycleCodesContentAdapter extends RecyclerView.Adapter<RecycleCode
         holder.tvOtherInfo.setText(categoryContentBean.getOtherInfo());
 
         String imageUrl = categoryContentBean.getImageUrl();
-        if (imageUrl.endsWith(".gif")) {
-            Glide
-                    .with(context.getApplicationContext())
-                    .load(categoryContentBean.getImageUrl())
-                    .asGif()
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .centerCrop()
-                    .crossFade()
-                    .into(holder.ivShow);
-        } else {
-            Glide
-                    .with(context.getApplicationContext())
-                    .load(categoryContentBean.getImageUrl())
-                    .asBitmap()
-                    .centerCrop()
-                    .into(holder.ivShow);
-        }
+        glide
+                .load(imageUrl)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .centerCrop()
+                .into(holder.ivShow);
 
         //如果设置了回调，则设置点击事件
         if (mOnItemClickLitener != null) {

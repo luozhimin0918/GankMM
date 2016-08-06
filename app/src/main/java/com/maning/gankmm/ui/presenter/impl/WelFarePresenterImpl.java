@@ -102,7 +102,7 @@ public class WelFarePresenterImpl extends BasePresenterImpl<IWelFareView> implem
 
     @Override
     public void getRandomDatas() {
-        GankApi.getRandomDatas(5, 0x003, httpCallBack);
+        GankApi.getRandomDatas(10, 0x003, httpCallBack);
     }
 
 }

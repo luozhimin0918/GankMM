@@ -173,7 +173,7 @@ public class CodesActivity extends BaseActivity implements OnRefreshListener, On
     private void initContentAdapter() {
         overRefresh();
         if (recycleContentAdapter == null) {
-            recycleContentAdapter = new RecycleCodesContentAdapter(this, codes);
+            recycleContentAdapter = new RecycleCodesContentAdapter(this, codes, Glide.with(this.getApplicationContext()));
             recycleContent.setAdapter(recycleContentAdapter);
             recycleContentAdapter.setOnItemClickLitener(new RecycleCodesContentAdapter.OnItemClickLitener() {
                 @Override
@@ -280,6 +280,8 @@ public class CodesActivity extends BaseActivity implements OnRefreshListener, On
 
     @Override
     protected void onDestroy() {
+        recycleContentAdapter = null;
+        recycleTitleAdapter = null;
         codesPresenter.detachView();
         animation_up.cancel();
         animation_up = null;
