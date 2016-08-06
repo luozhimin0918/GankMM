@@ -173,7 +173,7 @@ public class CodesActivity extends BaseActivity implements OnRefreshListener, On
     private void initContentAdapter() {
         overRefresh();
         if (recycleContentAdapter == null) {
-            recycleContentAdapter = new RecycleCodesContentAdapter(this, codes, Glide.with(this.getApplicationContext()));
+            recycleContentAdapter = new RecycleCodesContentAdapter(this, codes, Glide.with(this));
             recycleContent.setAdapter(recycleContentAdapter);
             recycleContentAdapter.setOnItemClickLitener(new RecycleCodesContentAdapter.OnItemClickLitener() {
                 @Override

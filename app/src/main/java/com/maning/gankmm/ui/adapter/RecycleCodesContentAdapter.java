@@ -57,7 +57,7 @@ public class RecycleCodesContentAdapter extends RecyclerView.Adapter<RecycleCode
         String imageUrl = categoryContentBean.getImageUrl();
         glide
                 .load(imageUrl)
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .asBitmap()
                 .centerCrop()
                 .into(holder.ivShow);
 
