@@ -72,9 +72,9 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
 
     @Override
     public void clickNightMode() {
-        //不可快速点击，设定2秒内不能连续点击
+        //不可快速点击，设定1秒内不能连续点击
         long currtTime = System.currentTimeMillis();
-        if (currtTime - lastTime < 2000) {
+        if (currtTime - lastTime < 1000) {
             mView.showToast("你的手速太快了...");
             lastTime = currtTime;
             return;
