@@ -107,14 +107,6 @@ public class WelFarePresenterImpl extends BasePresenterImpl<IWelFareView> implem
 
     @Override
     public void detachView() {
-        if (welFareLists != null) {
-            welFareLists.clear();
-            welFareLists = null;
-        }
-        if (randomLists != null) {
-            randomLists.clear();
-            randomLists = null;
-        }
         super.detachView();
     }
 }

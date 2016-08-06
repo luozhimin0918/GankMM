@@ -40,4 +40,9 @@ public class WebPresenterImpl extends BasePresenterImpl<IWebView> implements IWe
         intent.setData(content_url);
         context.startActivity(intent);
     }
+
+    @Override
+    public void detachView() {
+        super.detachView();
+    }
 }

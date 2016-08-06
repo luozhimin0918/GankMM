@@ -171,10 +171,6 @@ public class GankPresenterImpl extends BasePresenterImpl<IGankView> implements I
 
     @Override
     public void detachView() {
-        if (dayEntityArrayList != null) {
-            dayEntityArrayList.clear();
-            dayEntityArrayList = null;
-        }
         super.detachView();
     }
 

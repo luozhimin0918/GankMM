@@ -1,7 +1,5 @@
 package com.maning.gankmm.ui.presenter.impl;
 
-import android.util.Log;
-
 import com.maning.gankmm.ui.presenter.IBasePresenter;
 
 /**
@@ -17,7 +15,6 @@ public class BasePresenterImpl<T> implements IBasePresenter {
 
     @Override
     public void detachView() {
-        Log.i("-----", mView.toString());
-        this.mView = null;
+//        this.mView = null;
     }
 }

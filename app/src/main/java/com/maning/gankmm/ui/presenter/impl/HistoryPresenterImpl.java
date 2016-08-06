@@ -47,4 +47,9 @@ public class HistoryPresenterImpl extends BasePresenterImpl<IHistoryView> implem
     public void getHistoryDatas() {
         GankApi.getHistoryData(0x001, httpCallBack);
     }
+
+    @Override
+    public void detachView() {
+        super.detachView();
+    }
 }
