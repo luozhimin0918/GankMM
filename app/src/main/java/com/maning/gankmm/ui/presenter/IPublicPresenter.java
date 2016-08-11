@@ -11,4 +11,6 @@ public interface IPublicPresenter {
 
     void getDBDatas();
 
+    void itemClick(int position);
+
 }

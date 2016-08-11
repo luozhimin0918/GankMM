@@ -7,4 +7,6 @@ public interface ICollectPagerPresenter {
 
     void getCollectLists(String flag);
 
+    void itemClick(int position);
+
 }

@@ -92,8 +92,7 @@ public class PublicFragment extends BaseFragment implements OnRefreshListener, O
             recyclePublicAdapter.setOnItemClickLitener(new RecyclePublicAdapter.OnItemClickLitener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    GankEntity resultsEntity = publicList.get(position);
-                    IntentUtils.startToWebActivity(getActivity(), flagFragment, resultsEntity.getDesc(), resultsEntity.getUrl());
+                    publicPresenter.itemClick(position);
                 }
             });
 

@@ -11,4 +11,6 @@ public interface IWelFarePresenter {
 
     void getRandomDatas();
 
+    void itemClick(int position);
+
 }

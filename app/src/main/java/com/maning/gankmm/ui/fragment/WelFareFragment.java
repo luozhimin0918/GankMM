@@ -89,12 +89,7 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
             recyclePicAdapter.setOnItemClickLitener(new RecyclePicAdapter.OnItemClickLitener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    List<GankEntity> allDatas = recyclePicAdapter.getAllDatas();
-                    imagesList = new ArrayList<>();
-                    for (int i = 0; i < allDatas.size(); i++) {
-                        imagesList.add(allDatas.get(i).getUrl());
-                    }
-                    IntentUtils.startToImageShow(context, imagesList, position);
+                    welFarePresenter.itemClick(position);
                 }
             });
             //获取头条随机

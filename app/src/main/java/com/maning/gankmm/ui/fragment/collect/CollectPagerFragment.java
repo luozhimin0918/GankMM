@@ -84,17 +84,7 @@ public class CollectPagerFragment extends BaseFragment implements OnRefreshListe
         recycleCollectAdapter.setOnItemClickLitener(new RecycleCollectAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
-                GankEntity resultsEntity = collects.get(position);
-                if (Constants.FlagWelFare.equals(resultsEntity.getType())) {
-                    ArrayList<String> imageList = new ArrayList<>();
-                    for (int i = 0; i < collects.size(); i++) {
-                        imageList.add(collects.get(i).getUrl());
-                    }
-                    IntentUtils.startToImageShow(context, imageList, position);
-
-                } else {
-                    IntentUtils.startToWebActivity(getActivity(), flag, resultsEntity.getDesc(), resultsEntity.getUrl());
-                }
+                collectPagerPresenter.itemClick(position);
             }
         });
 

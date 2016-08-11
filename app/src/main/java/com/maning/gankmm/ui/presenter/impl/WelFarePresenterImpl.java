@@ -9,6 +9,7 @@ import com.maning.gankmm.http.GankApi;
 import com.maning.gankmm.http.MyCallBack;
 import com.maning.gankmm.ui.iView.IWelFareView;
 import com.maning.gankmm.ui.presenter.IWelFarePresenter;
+import com.maning.gankmm.utils.IntentUtils;
 import com.socks.library.KLog;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class WelFarePresenterImpl extends BasePresenterImpl<IWelFareView> implem
     private List<GankEntity> randomLists;
     private int pageSize = 20;
     private int pageIndex = 1;
+    private ArrayList<String> imagesList = new ArrayList<>();
 
     public WelFarePresenterImpl(Context context, IWelFareView iWelFareView) {
         this.context = context;
@@ -103,6 +105,15 @@ public class WelFarePresenterImpl extends BasePresenterImpl<IWelFareView> implem
     @Override
     public void getRandomDatas() {
         GankApi.getRandomDatas(10, 0x003, httpCallBack);
+    }
+
+    @Override
+    public void itemClick(int position) {
+        imagesList.clear();
+        for (int i = 0; i < welFareLists.size(); i++) {
+            imagesList.add(welFareLists.get(i).getUrl());
+        }
+        IntentUtils.startToImageShow(context, imagesList, position);
     }
 
 }

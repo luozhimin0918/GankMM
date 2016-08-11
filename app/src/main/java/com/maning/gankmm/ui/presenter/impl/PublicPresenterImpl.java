@@ -12,6 +12,7 @@ import com.maning.gankmm.http.MyCallBack;
 import com.maning.gankmm.ui.iView.IPublicView;
 import com.maning.gankmm.ui.iView.IWelFareView;
 import com.maning.gankmm.ui.presenter.IPublicPresenter;
+import com.maning.gankmm.utils.IntentUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -143,6 +144,12 @@ public class PublicPresenterImpl extends BasePresenterImpl<IPublicView> implemen
                 });
             }
         }).start();
+    }
+
+    @Override
+    public void itemClick(int position) {
+        GankEntity resultsEntity = publicList.get(position);
+        IntentUtils.startToWebActivity(context, flagFragment, resultsEntity.getDesc(), resultsEntity.getUrl());
     }
 
 }
