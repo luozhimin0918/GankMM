@@ -25,6 +25,9 @@ public class HistoryPresenterImpl extends BasePresenterImpl<IHistoryView> implem
     private MyCallBack httpCallBack = new MyCallBack() {
         @Override
         public void onSuccessList(int what, List results) {
+            if(mView == null){
+                return;
+            }
             mView.overRefresh();
             mView.setHistoryList(results);
         }
@@ -36,6 +39,9 @@ public class HistoryPresenterImpl extends BasePresenterImpl<IHistoryView> implem
 
         @Override
         public void onFail(int what, String result) {
+            if(mView == null){
+                return;
+            }
             mView.overRefresh();
             if (!TextUtils.isEmpty(result)) {
                 mView.showToast(result);

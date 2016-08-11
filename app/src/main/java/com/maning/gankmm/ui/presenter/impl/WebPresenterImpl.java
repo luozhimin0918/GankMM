@@ -29,7 +29,9 @@ public class WebPresenterImpl extends BasePresenterImpl<IWebView> implements IWe
         // 将文本内容放到系统剪贴板里。
         ClipData clipData = ClipData.newPlainText("text", string);
         cm.setPrimaryClip(clipData);
-        mView.showToast(context.getString(R.string.gank_hint_copy_success));
+        if(mView != null) {
+            mView.showToast(context.getString(R.string.gank_hint_copy_success));
+        }
     }
 
     @Override

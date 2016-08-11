@@ -40,6 +40,9 @@ public class PublicPresenterImpl extends BasePresenterImpl<IPublicView> implemen
 
         @Override
         public void onSuccessList(int what, List results) {
+            if(mView == null){
+                return;
+            }
             if (results == null) {
                 mView.overRefresh();
                 return;
@@ -92,6 +95,9 @@ public class PublicPresenterImpl extends BasePresenterImpl<IPublicView> implemen
 
         @Override
         public void onFail(int what, String result) {
+            if(mView == null){
+                return;
+            }
             mView.overRefresh();
             if (!TextUtils.isEmpty(result)) {
                 mView.showToast(result);
@@ -134,6 +140,9 @@ public class PublicPresenterImpl extends BasePresenterImpl<IPublicView> implemen
                 MyApplication.getHandler().post(new Runnable() {
                     @Override
                     public void run() {
+                        if(mView == null){
+                            return;
+                        }
                         if (publicList != null && publicList.size() > 0) {
                             mView.setPublicList(publicList);
                         } else {

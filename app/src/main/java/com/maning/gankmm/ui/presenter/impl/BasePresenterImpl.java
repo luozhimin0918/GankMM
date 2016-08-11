@@ -15,6 +15,6 @@ public class BasePresenterImpl<T> implements IBasePresenter {
 
     @Override
     public void detachView() {
-//        this.mView = null;
+        this.mView = null;
     }
 }

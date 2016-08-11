@@ -103,6 +103,9 @@ public class CodesPresenterImpl extends BasePresenterImpl<ICodesView> implements
                     ((Activity) context).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            if (mView == null) {
+                                return;
+                            }
                             mView.setCodesTitleList(titles);
                             mView.setCodesContentList(codes);
                             mView.overRefresh();
@@ -110,6 +113,9 @@ public class CodesPresenterImpl extends BasePresenterImpl<ICodesView> implements
                     });
                 } catch (IOException e) {
                     e.printStackTrace();
+                    if (mView == null) {
+                        return;
+                    }
                     ((Activity) context).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -125,9 +131,11 @@ public class CodesPresenterImpl extends BasePresenterImpl<ICodesView> implements
     @Override
     public void getNewDatas(String url) {
         codes.clear();
-        mView.setRefreshEnabled(true);
-        mView.setLoadMoreEnabled(true);
         getDatas(url);
+        if (mView != null) {
+            mView.setRefreshEnabled(true);
+            mView.setLoadMoreEnabled(true);
+        }
     }
 
     @Override
@@ -135,9 +143,11 @@ public class CodesPresenterImpl extends BasePresenterImpl<ICodesView> implements
         if (!TextUtils.isEmpty(nextPageUrl)) {
             getDatas(nextPageUrl);
         } else {
-            mView.showToast("没有更多数据了");
-            mView.overRefresh();
-            mView.setLoadMoreEnabled(false);
+            if (mView != null) {
+                mView.showToast("没有更多数据了");
+                mView.overRefresh();
+                mView.setLoadMoreEnabled(false);
+            }
         }
     }
 

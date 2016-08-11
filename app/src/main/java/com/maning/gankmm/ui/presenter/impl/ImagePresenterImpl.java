@@ -27,6 +27,9 @@ public class ImagePresenterImpl extends BasePresenterImpl<IImageView> implements
 
     @Override
     public void saveImage() {
+        if(mView == null){
+            return;
+        }
         //显示dialog
         mView.showBaseProgressDialog("正在保存...");
         final Bitmap bitmap = mView.getCurrentImageViewBitmap();
@@ -42,6 +45,9 @@ public class ImagePresenterImpl extends BasePresenterImpl<IImageView> implements
                 MyApplication.getHandler().post(new Runnable() {
                     @Override
                     public void run() {
+                        if(mView == null){
+                            return;
+                        }
                         if (saveBitmapToSD) {
                             mView.showBasesProgressSuccess("保存成功，保存目录：" + Constants.BasePath);
                         } else {
@@ -55,6 +61,9 @@ public class ImagePresenterImpl extends BasePresenterImpl<IImageView> implements
 
     @Override
     public void setWallpaper() {
+        if(mView == null){
+            return;
+        }
         mView.showBaseProgressDialog("正在设置壁纸...");
         final Bitmap bitmap = mView.getCurrentImageViewBitmap();
         if (bitmap == null) {
@@ -74,21 +83,24 @@ public class ImagePresenterImpl extends BasePresenterImpl<IImageView> implements
                     e.printStackTrace();
                     flag = false;
                 } finally {
-                    if (flag) {
-                        MyApplication.getHandler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mView.showBasesProgressSuccess("设置成功");
-                            }
-                        });
-                    } else {
-                        MyApplication.getHandler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mView.showBasesProgressError("设置失败");
-                            }
-                        });
+                    if(mView != null){
+                        if (flag) {
+                            MyApplication.getHandler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mView.showBasesProgressSuccess("设置成功");
+                                }
+                            });
+                        } else {
+                            MyApplication.getHandler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mView.showBasesProgressError("设置失败");
+                                }
+                            });
+                        }
                     }
+
                 }
             }
         }).start();

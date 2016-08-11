@@ -36,6 +36,9 @@ public class WelFarePresenterImpl extends BasePresenterImpl<IWelFareView> implem
     private MyCallBack httpCallBack = new MyCallBack() {
         @Override
         public void onSuccessList(int what, List results) {
+            if(mView == null){
+                return;
+            }
             switch (what) {
                 case 0x001:
                     if (results == null) {
@@ -85,6 +88,9 @@ public class WelFarePresenterImpl extends BasePresenterImpl<IWelFareView> implem
 
         @Override
         public void onFail(int what, String result) {
+            if(mView == null){
+                return;
+            }
             mView.overRefresh();
             if (!TextUtils.isEmpty(result)) {
                 mView.showToast(result);

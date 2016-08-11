@@ -58,8 +58,10 @@ public class CollectPagerPresenterImpl extends BasePresenterImpl<ICollectPagerVi
             });
             KLog.i("排序后：" + collects.toString());
         }
-        mView.setCollectList(collects);
-        mView.overRefresh();
+        if(mView!=null){
+            mView.setCollectList(collects);
+            mView.overRefresh();
+        }
     }
 
     @Override

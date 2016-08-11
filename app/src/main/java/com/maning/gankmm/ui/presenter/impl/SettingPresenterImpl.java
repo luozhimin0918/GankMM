@@ -53,15 +53,24 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
         boolean jpush = SharePreUtil.getBooleanData(context, Constants.SPJpush, true);
         if (jpush) {
             JPushInterface.resumePush(context.getApplicationContext());
+            if(mView == null){
+                return;
+            }
             mView.openPush();
         } else {
             JPushInterface.stopPush(context.getApplicationContext());
+            if(mView == null){
+                return;
+            }
             mView.closePush();
         }
     }
 
     @Override
     public void initNightModeState() {
+        if(mView == null){
+            return;
+        }
         int currentSkinType = SkinManager.getCurrentSkinType(context);
         if (SkinManager.THEME_DAY == currentSkinType) {
             mView.closeNightMode();
@@ -72,6 +81,9 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
 
     @Override
     public void clickNightMode() {
+        if(mView == null){
+            return;
+        }
         //不可快速点击，设定1秒内不能连续点击
         long currtTime = System.currentTimeMillis();
         if (currtTime - lastTime < 1000) {
@@ -92,6 +104,9 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
 
     @Override
     public void changePushState() {
+        if(mView == null){
+            return;
+        }
         boolean jpush = SharePreUtil.getBooleanData(context, Constants.SPJpush, true);
         if (!jpush) {
             SharePreUtil.saveBooleanData(context, Constants.SPJpush, true);
@@ -122,6 +137,9 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
                     public void run() {
                         //清除内存缓存
                         Glide.get(context).clearMemory();
+                        if(mView == null){
+                            return;
+                        }
                         mView.showBasesProgressSuccess("清除完毕");
                         initCache();
                     }
@@ -157,6 +175,9 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
 
         //--------------------Umeng更新
         boolean umengUpdate = SharePreUtil.getBooleanData(context, Constants.SPAppUpdate + MyApplication.getVersionCode(), false);
+        if(mView == null){
+            return;
+        }
         mView.setUmengUpdateState(umengUpdate);
 
     }
@@ -183,13 +204,17 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
             UmengUpdateAgent.update(context);
             flag = false;
         } else {
-            mView.showToast(context.getString(R.string.mm_no_net));
+            if(mView != null) {
+                mView.showToast(context.getString(R.string.mm_no_net));
+            }
         }
     }
 
     private void initUmengFeedBack() {
         boolean feedback = SharePreUtil.getBooleanData(context, Constants.SPFeedback, false);
-        mView.setUmengFeedbackState(feedback);
+        if(mView != null){
+            mView.setUmengFeedbackState(feedback);
+        }
     }
 
 
@@ -198,7 +223,9 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
 
         @Override
         protected void onPreExecute() {
-            mView.setCacheSize("计算中...");
+            if(mView != null){
+                mView.setCacheSize("计算中...");
+            }
         }
 
         @Override
@@ -223,7 +250,9 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
         @Override
         protected void onPostExecute(Long size) {
             String sizeText = Formatter.formatFileSize(context, size);
-            mView.setCacheSize(sizeText);
+            if(mView != null){
+                mView.setCacheSize(sizeText);
+            }
         }
 
     }

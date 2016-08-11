@@ -29,6 +29,9 @@ public class GankPresenterImpl extends BasePresenterImpl<IGankView> implements I
 
         @Override
         public void onSuccess(int what, Object result) {
+            if(mView==null){
+                return;
+            }
             final DayEntity dayEntity = (DayEntity) result;
             if (dayEntity != null) {
                 String url = dayEntity.getResults().get福利().get(0).getUrl();
@@ -46,6 +49,9 @@ public class GankPresenterImpl extends BasePresenterImpl<IGankView> implements I
 
         @Override
         public void onFail(int what, String result) {
+            if(mView == null){
+                return;
+            }
             mView.hideBaseProgressDialog();
             if (!TextUtils.isEmpty(result)) {
                 mView.showToast(result);
@@ -163,7 +169,9 @@ public class GankPresenterImpl extends BasePresenterImpl<IGankView> implements I
         MyApplication.getHandler().post(new Runnable() {
             @Override
             public void run() {
-                mView.setGankList(dayEntityArrayList);
+                if(mView!=null){
+                    mView.setGankList(dayEntityArrayList);
+                }
             }
         });
     }

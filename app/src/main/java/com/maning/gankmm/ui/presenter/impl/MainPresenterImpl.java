@@ -46,7 +46,10 @@ public class MainPresenterImpl extends BasePresenterImpl<IMainView> implements I
             public void onReceiveDevReply(List<Reply> list) {
                 if (list != null && list.size() > 0) {
                     SharePreUtil.saveBooleanData(context, Constants.SPFeedback, true);
-                    mView.showFeedBackDialog();
+                    if(mView != null){
+                        mView.showFeedBackDialog();
+                    }
+
                 }
             }
 
