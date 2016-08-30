@@ -20,6 +20,8 @@
 
 ##APK下载地址：
 ####[点击下载(http://fir.im/gankmm)](http://fir.im/gankmm)<br>
+####扫描下载:
+![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_ewm.png)
 
 ##GankMM夜间模式实现Demo（切换主题实现）：
 ####[AndroidChangeSkinDemo](https://github.com/maning0303/AndroidChangeSkinDemo)
