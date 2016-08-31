@@ -2,23 +2,19 @@ package com.maning.gankmm.ui.presenter.impl;
 
 import android.content.Context;
 
+import com.alibaba.sdk.android.feedback.impl.FeedbackAPI;
+import com.alibaba.sdk.android.feedback.util.IWxCallback;
 import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.ui.iView.IMainView;
 import com.maning.gankmm.ui.presenter.IMainPresenter;
 import com.maning.gankmm.utils.SharePreUtil;
 import com.socks.library.KLog;
-import com.umeng.fb.FeedbackAgent;
-import com.umeng.fb.SyncListener;
-import com.umeng.fb.model.Conversation;
-import com.umeng.fb.model.Reply;
 import com.umeng.update.UmengDialogButtonListener;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
 import com.umeng.update.UpdateStatus;
-
-import java.util.List;
 
 /**
  * Created by maning on 16/6/21.
@@ -39,22 +35,28 @@ public class MainPresenterImpl extends BasePresenterImpl<IMainView> implements I
     }
 
     private void initUmengFeedback() {
-        FeedbackAgent umengAgent = new FeedbackAgent(context);
-        Conversation defaultConversation = umengAgent.getDefaultConversation();
-        defaultConversation.sync(new SyncListener() {
+        FeedbackAPI.getFeedbackUnreadCount(context, "", new IWxCallback() {
             @Override
-            public void onReceiveDevReply(List<Reply> list) {
-                if (list != null && list.size() > 0) {
-                    SharePreUtil.saveBooleanData(context, Constants.SPFeedback, true);
-                    if(mView != null){
-                        mView.showFeedBackDialog();
+            public void onSuccess(final Object... result) {
+                if (result != null && result.length == 1 && result[0] instanceof Integer) {
+                    int count = (Integer) result[0];
+                    KLog.i("反馈："+count);
+                    if(count > 0){
+                        SharePreUtil.saveBooleanData(context, Constants.SPFeedback, true);
+                        if(mView != null){
+                            mView.showFeedBackDialog();
+                        }
                     }
-
                 }
             }
 
             @Override
-            public void onSendUserReply(List<Reply> list) {
+            public void onError(int code, String info) {
+
+            }
+
+            @Override
+            public void onProgress(int progress) {
 
             }
         });

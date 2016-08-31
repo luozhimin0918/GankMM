@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.util.Log;
 
+import com.alibaba.sdk.android.feedback.impl.FeedbackAPI;
 import com.maning.gankmm.BuildConfig;
 import com.maning.gankmm.crash.CrashHandler;
 import com.maning.gankmm.utils.ACache;
@@ -40,10 +41,10 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        initBase();
+
         //Jpush
         initJpush();
-
-        initBase();
 
         //初始化异常捕获
         initCrash();
@@ -54,6 +55,14 @@ public class MyApplication extends Application {
         //初始化ACache类
         aCache = ACache.get(this);
 
+        //初始化意见反馈
+        initAliFeedBack();
+
+    }
+
+    private void initAliFeedBack() {
+        //第二个参数是appkey，就是百川应用创建时候的appkey
+        FeedbackAPI.initAnnoy(this, "23444312");
     }
 
     private void initJpush() {

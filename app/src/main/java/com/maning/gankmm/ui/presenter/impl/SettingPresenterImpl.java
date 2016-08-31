@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.text.format.Formatter;
 import android.util.Log;
 
+import com.alibaba.sdk.android.feedback.impl.FeedbackAPI;
+import com.alibaba.sdk.android.feedback.util.IWxCallback;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.cache.DiskCache;
 import com.maning.gankmm.R;
@@ -15,14 +17,8 @@ import com.maning.gankmm.ui.activity.SettingActivity;
 import com.maning.gankmm.ui.iView.ISettingView;
 import com.maning.gankmm.ui.presenter.ISettingPresenter;
 import com.maning.gankmm.utils.FileUtils;
-import com.maning.gankmm.utils.MySnackbar;
 import com.maning.gankmm.utils.NetUtils;
 import com.maning.gankmm.utils.SharePreUtil;
-import com.socks.library.KLog;
-import com.umeng.fb.FeedbackAgent;
-import com.umeng.fb.SyncListener;
-import com.umeng.fb.model.Conversation;
-import com.umeng.fb.model.Reply;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
@@ -30,7 +26,6 @@ import com.umeng.update.UpdateStatus;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -53,13 +48,13 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
         boolean jpush = SharePreUtil.getBooleanData(context, Constants.SPJpush, true);
         if (jpush) {
             JPushInterface.resumePush(context.getApplicationContext());
-            if(mView == null){
+            if (mView == null) {
                 return;
             }
             mView.openPush();
         } else {
             JPushInterface.stopPush(context.getApplicationContext());
-            if(mView == null){
+            if (mView == null) {
                 return;
             }
             mView.closePush();
@@ -68,7 +63,7 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
 
     @Override
     public void initNightModeState() {
-        if(mView == null){
+        if (mView == null) {
             return;
         }
         int currentSkinType = SkinManager.getCurrentSkinType(context);
@@ -81,7 +76,7 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
 
     @Override
     public void clickNightMode() {
-        if(mView == null){
+        if (mView == null) {
             return;
         }
         //不可快速点击，设定1秒内不能连续点击
@@ -104,7 +99,7 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
 
     @Override
     public void changePushState() {
-        if(mView == null){
+        if (mView == null) {
             return;
         }
         boolean jpush = SharePreUtil.getBooleanData(context, Constants.SPJpush, true);
@@ -137,7 +132,7 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
                     public void run() {
                         //清除内存缓存
                         Glide.get(context).clearMemory();
-                        if(mView == null){
+                        if (mView == null) {
                             return;
                         }
                         mView.showBasesProgressSuccess("清除完毕");
@@ -151,31 +146,34 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
 
     @Override
     public void initUmeng() {
-        //修复点击设置--意见反馈闪退的问题(packageName与applicationId不一致导致的问题)
-        //具体可以参考：http://bbs.umeng.com/thread-8071-1-1.html
-        com.umeng.fb.util.Res.setPackageName(R.class.getPackage().getName());
         initUmengFeedBack();
-        //Umeng 反馈
-        FeedbackAgent umengAgent = new FeedbackAgent(context);
-        Conversation defaultConversation = umengAgent.getDefaultConversation();
-        defaultConversation.sync(new SyncListener() {
+        FeedbackAPI.getFeedbackUnreadCount(context, "", new IWxCallback() {
             @Override
-            public void onReceiveDevReply(List<Reply> list) {
-                if (list != null && list.size() > 0) {
-                    SharePreUtil.saveBooleanData(context, Constants.SPFeedback, true);
-                    initUmengFeedBack();
+            public void onSuccess(final Object... result) {
+                if (result != null && result.length == 1 && result[0] instanceof Integer) {
+                    int count = (Integer) result[0];
+                    if (count > 0) {
+                        SharePreUtil.saveBooleanData(context, Constants.SPFeedback, true);
+                        initUmengFeedBack();
+                    }
                 }
             }
 
             @Override
-            public void onSendUserReply(List<Reply> list) {
+            public void onError(int code, String info) {
+
+            }
+
+            @Override
+            public void onProgress(int progress) {
 
             }
         });
 
+
         //--------------------Umeng更新
         boolean umengUpdate = SharePreUtil.getBooleanData(context, Constants.SPAppUpdate + MyApplication.getVersionCode(), false);
-        if(mView == null){
+        if (mView == null) {
             return;
         }
         mView.setUmengUpdateState(umengUpdate);
@@ -204,7 +202,7 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
             UmengUpdateAgent.update(context);
             flag = false;
         } else {
-            if(mView != null) {
+            if (mView != null) {
                 mView.showToast(context.getString(R.string.mm_no_net));
             }
         }
@@ -212,7 +210,7 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
 
     private void initUmengFeedBack() {
         boolean feedback = SharePreUtil.getBooleanData(context, Constants.SPFeedback, false);
-        if(mView != null){
+        if (mView != null) {
             mView.setUmengFeedbackState(feedback);
         }
     }
@@ -223,7 +221,7 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
 
         @Override
         protected void onPreExecute() {
-            if(mView != null){
+            if (mView != null) {
                 mView.setCacheSize("计算中...");
             }
         }
@@ -250,7 +248,7 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
         @Override
         protected void onPostExecute(Long size) {
             String sizeText = Formatter.formatFileSize(context, size);
-            if(mView != null){
+            if (mView != null) {
                 mView.setCacheSize(sizeText);
             }
         }

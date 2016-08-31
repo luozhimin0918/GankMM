@@ -2,20 +2,16 @@ package com.maning.gankmm.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 
+import com.alibaba.sdk.android.feedback.impl.FeedbackAPI;
 import com.maning.gankmm.R;
 import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.skin.SkinBroadcastReceiver;
@@ -30,8 +26,12 @@ import com.maning.gankmm.ui.presenter.impl.MainPresenterImpl;
 import com.maning.gankmm.utils.DialogUtils;
 import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.utils.MySnackbar;
+import com.maning.gankmm.utils.SharePreUtil;
 import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -300,23 +300,34 @@ public class MainActivity extends BaseActivity implements IMainView {
 
     @Override
     public void showFeedBackDialog() {
-        if (mMaterialDialogFeedBack == null) {
-            mMaterialDialogFeedBack = DialogUtils.initDialog(this,
-                    getString(R.string.gank_dialog_title_notify),
-                    getString(R.string.gank_dialog_msg_feedback),
-                    "查看", "等一会去", new DialogUtils.OnDialogClickListener() {
-                        @Override
-                        public void onConfirm() {
-                            //自定义意见反馈
-                            startActivity(new Intent(context, FeedBackActivity.class));
-                        }
+        KLog.i("反馈MainActivty显示dialog");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mMaterialDialogFeedBack == null) {
+                    mMaterialDialogFeedBack = DialogUtils.initDialog(MainActivity.this,
+                            getString(R.string.gank_dialog_title_notify),
+                            getString(R.string.gank_dialog_msg_feedback),
+                            "查看", "等一会去", new DialogUtils.OnDialogClickListener() {
+                                @Override
+                                public void onConfirm() {
+                                    SharePreUtil.saveBooleanData(context, Constants.SPFeedback, false);
+                                    Map<String, String> customInfoMap = new HashMap<>();
+                                    customInfoMap.put("themeColor","#54aee6");
+                                    customInfoMap.put("pageTitle","意见反馈");
+                                    FeedbackAPI.setUICustomInfo(customInfoMap);
+                                    FeedbackAPI.openFeedbackActivity(MainActivity.this);
+                                }
 
-                        @Override
-                        public void onCancel() {
+                                @Override
+                                public void onCancel() {
 
-                        }
-                    });
-        }
-        mMaterialDialogFeedBack.show();
+                                }
+                            });
+                }
+                mMaterialDialogFeedBack.show();
+            }
+        });
+
     }
 }

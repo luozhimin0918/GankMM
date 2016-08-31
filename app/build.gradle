@@ -41,6 +41,7 @@ android {
             minifyEnabled true
             //设置压缩对齐
             zipAlignEnabled true
+            signingConfig signingConfigs.release
             //移除无用的资源文件
             shrinkResources true
             proguardFiles customerproguardFile.path
@@ -60,12 +61,19 @@ android {
         debug {
             //混淆
             minifyEnabled false
+            signingConfig signingConfigs.release
             proguardFiles customerproguardFile.path
             buildConfigField "boolean", "LOG_DEBUG", "true"
         }
 
     }
 
+}
+
+repositories{
+    flatDir{
+        dirs 'libs'
+    }
 }
 
 dependencies {
@@ -92,4 +100,9 @@ dependencies {
     compile 'com.github.maning0303:SwitcherView:v1.0.4'
     compile project(':libraryumeng')
     compile files('libs/jpush-android-2.1.5.jar')
+    /*阿里百川的意见反馈*/
+    compile(name:'feedbackSdk', ext:'aar')
+    compile files('libs/securityguard-3.1.27.jar')
+    compile files('libs/utdid4all-1.0.4.jar')
+    compile files('libs/alisdk-ut-5.jar')
 }
