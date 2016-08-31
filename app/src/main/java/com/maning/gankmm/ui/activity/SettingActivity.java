@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import com.alibaba.sdk.android.feedback.impl.FeedbackAPI;
 import com.maning.gankmm.R;
+import com.maning.gankmm.bean.AppUpdateInfo;
 import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.skin.SkinManager;
 import com.maning.gankmm.ui.base.BaseActivity;
@@ -16,9 +17,11 @@ import com.maning.gankmm.ui.presenter.impl.SettingPresenterImpl;
 import com.maning.gankmm.ui.view.MySettingItemView;
 import com.maning.gankmm.utils.DialogUtils;
 import com.maning.gankmm.utils.MySnackbar;
+import com.maning.gankmm.utils.NetUtils;
 import com.maning.gankmm.utils.SharePreUtil;
 import com.umeng.analytics.MobclickAgent;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,6 +47,7 @@ public class SettingActivity extends BaseActivity implements ISettingView {
     MySettingItemView itemAppUpdate;
 
     private MaterialDialog mMaterialDialog;
+    private MaterialDialog mMaterialDialogAppUpdate;
 
     private SettingPresenterImpl settingPresenter;
 
@@ -68,7 +72,7 @@ public class SettingActivity extends BaseActivity implements ISettingView {
 
         settingPresenter.initCache();
 
-        settingPresenter.initUmeng();
+        settingPresenter.initAppUpdateState();
 
         settingPresenter.initFeedBack();
 
@@ -207,8 +211,41 @@ public class SettingActivity extends BaseActivity implements ISettingView {
     }
 
     @Override
-    public void setUmengUpdateState(boolean flag) {
+    public void setAppUpdateState(boolean flag) {
         itemAppUpdate.setRedDot(flag);
+    }
+
+    @Override
+    public void showAppUpdateDialog(final AppUpdateInfo appUpdateInfo) {
+        if (mMaterialDialogAppUpdate == null) {
+
+            String title = "检测到新版本:V" + appUpdateInfo.getVersionShort();
+            Double appSize = Double.parseDouble(appUpdateInfo.getBinary().getFsize() + "") / 1024 / 1024;
+            DecimalFormat df=new DecimalFormat(".##");
+            String resultSize =df.format(appSize) + "M";
+            boolean isWifi = NetUtils.isWifiConnected(this);
+            String content = appUpdateInfo.getChangelog() +
+                    "\n\n新版大小：" + resultSize +
+                    "\n当前网络："+ (isWifi ? "wifi":"非wifi环境(注意)");
+
+            mMaterialDialogAppUpdate = DialogUtils.initDialog(this,
+                    title, content, "立马更新", "稍后更新    ",
+                    new DialogUtils.OnDialogClickListener() {
+                        @Override
+                        public void onConfirm() {
+                            //更新版本
+                            String install_url = appUpdateInfo.getInstall_url();
+
+
+                        }
+
+                        @Override
+                        public void onCancel() {
+
+                        }
+                    });
+        }
+        mMaterialDialogAppUpdate.show();
     }
 
     @Override
@@ -235,7 +272,6 @@ public class SettingActivity extends BaseActivity implements ISettingView {
         super.onResume();
         MobclickAgent.onPageStart("SettingActivity");
         MobclickAgent.onResume(this);          //统计时长
-        settingPresenter.initUmeng();
     }
 
     public void onPause() {

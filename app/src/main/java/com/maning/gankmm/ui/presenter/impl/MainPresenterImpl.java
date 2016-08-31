@@ -51,6 +51,7 @@ public class MainPresenterImpl extends BasePresenterImpl<IMainView> implements I
                         appUpdateInfo = new AppUpdateInfo();
                     }
                     if (MyApplication.getVersionCode() < newVersion) {
+                        SharePreUtil.saveBooleanData(context, Constants.SPAppUpdate + MyApplication.getVersionCode(), true);
                         //需要版本更新
                         if(mView!=null){
                             mView.showAppUpdateDialog(appUpdateInfo);

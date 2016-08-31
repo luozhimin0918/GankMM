@@ -11,7 +11,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.cache.DiskCache;
 import com.maning.gankmm.R;
 import com.maning.gankmm.app.MyApplication;
+import com.maning.gankmm.bean.AppUpdateInfo;
 import com.maning.gankmm.constant.Constants;
+import com.maning.gankmm.http.GankApi;
+import com.maning.gankmm.http.MyCallBack;
 import com.maning.gankmm.skin.SkinManager;
 import com.maning.gankmm.ui.activity.SettingActivity;
 import com.maning.gankmm.ui.iView.ISettingView;
@@ -22,6 +25,7 @@ import com.maning.gankmm.utils.SharePreUtil;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -31,8 +35,50 @@ import cn.jpush.android.api.JPushInterface;
 public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implements ISettingPresenter {
 
     private Context context;
-    private boolean flag = true;
     private long lastTime = System.currentTimeMillis();
+
+
+    private MyCallBack httpCallBack = new MyCallBack() {
+        @Override
+        public void onSuccessList(int what, List results) {
+
+        }
+
+        @Override
+        public void onSuccess(int what, Object result) {
+            if (mView == null) {
+                return;
+            }
+            switch (what) {
+                case 0x001:
+                    if (result == null) {
+                        return;
+                    }
+                    //获取当前APP的版本号
+                    int newVersion;
+                    AppUpdateInfo appUpdateInfo;
+                    try{
+                        appUpdateInfo = (AppUpdateInfo) result;
+                        newVersion = Integer.parseInt(appUpdateInfo.getBuild());
+                    }catch (Exception e){
+                        newVersion = 1;
+                        appUpdateInfo = new AppUpdateInfo();
+                    }
+                    if (MyApplication.getVersionCode() < newVersion) {
+                        //需要版本更新
+                        if(mView!=null){
+                            mView.showAppUpdateDialog(appUpdateInfo);
+                        }
+                    }
+
+                    break;
+            }
+        }
+
+        @Override
+        public void onFail(int what, String result) {
+        }
+    };
 
     public SettingPresenterImpl(Context context, ISettingView iSettingView) {
         this.context = context;
@@ -165,15 +211,13 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
 
             }
         });
-
-        initUmeng();
     }
 
-    public void initUmeng() {
-        //--------------------Umeng更新
-        boolean umengUpdate = SharePreUtil.getBooleanData(context, Constants.SPAppUpdate + MyApplication.getVersionCode(), false);
-        if (mView != null) {
-            mView.setUmengUpdateState(umengUpdate);
+    @Override
+    public void initAppUpdateState() {
+        boolean isUpdate = SharePreUtil.getBooleanData(context, Constants.SPAppUpdate + MyApplication.getVersionCode(), false);
+        if(mView != null){
+            mView.setAppUpdateState(isUpdate);
         }
     }
 
@@ -181,7 +225,7 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
     public void checkAppUpdate() {
         //版本更新检查
         if (NetUtils.hasNetWorkConection(context)) {
-
+            GankApi.getAppUpdateInfo(0x001, httpCallBack);
         } else {
             if (mView != null) {
                 mView.showToast(context.getString(R.string.mm_no_net));

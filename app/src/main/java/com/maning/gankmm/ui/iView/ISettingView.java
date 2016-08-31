@@ -1,5 +1,7 @@
 package com.maning.gankmm.ui.iView;
 
+import com.maning.gankmm.bean.AppUpdateInfo;
+
 /**
  * Created by maning on 16/6/21.
  */
@@ -19,7 +21,9 @@ public interface ISettingView extends IBaseView {
 
     void setFeedbackState(boolean flag);
 
-    void setUmengUpdateState(boolean flag);
+    void setAppUpdateState(boolean flag);
+
+    void showAppUpdateDialog(AppUpdateInfo appUpdateInfo);
 
     void showBasesProgressSuccess(String msg);
 

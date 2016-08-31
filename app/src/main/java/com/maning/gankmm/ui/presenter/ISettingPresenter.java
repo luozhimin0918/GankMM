@@ -19,6 +19,9 @@ public interface ISettingPresenter {
     //百川反馈
     void initFeedBack();
 
+    //初始化版本更新的状态
+    void initAppUpdateState();
+
     //检查更新
     void checkAppUpdate();
 

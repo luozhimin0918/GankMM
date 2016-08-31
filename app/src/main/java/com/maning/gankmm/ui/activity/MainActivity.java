@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import com.alibaba.sdk.android.feedback.impl.FeedbackAPI;
 import com.maning.gankmm.R;
+import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.bean.AppUpdateInfo;
 import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.skin.SkinBroadcastReceiver;
