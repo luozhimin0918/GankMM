@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/GankMM.iml" filepath="$PROJECT_DIR$/GankMM.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/libraryumeng/libraryumeng.iml" filepath="$PROJECT_DIR$/libraryumeng/libraryumeng.iml" />
     </modules>
   </component>
 </project>

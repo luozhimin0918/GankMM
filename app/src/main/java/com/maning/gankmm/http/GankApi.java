@@ -2,6 +2,7 @@ package com.maning.gankmm.http;
 
 import com.maning.gankmm.R;
 import com.maning.gankmm.app.MyApplication;
+import com.maning.gankmm.bean.AppUpdateInfo;
 import com.maning.gankmm.bean.DayEntity;
 import com.maning.gankmm.bean.GankEntity;
 import com.maning.gankmm.bean.HttpResult;
@@ -146,7 +147,7 @@ public class GankApi {
 
     public static Call<RandomEntity> getRandomDatas(int count, final int what, final MyCallBack myCallBack) {
 
-        Call<RandomEntity> randomDatasCall = BuildApi.getAPIService().getRandomDatas("Android",count);
+        Call<RandomEntity> randomDatasCall = BuildApi.getAPIService().getRandomDatas("Android", count);
 
         randomDatasCall.enqueue(new Callback<RandomEntity>() {
             @Override
@@ -177,6 +178,41 @@ public class GankApi {
         });
 
         return randomDatasCall;
+    }
+
+
+    public static Call<AppUpdateInfo> getAppUpdateInfo(final int what, final MyCallBack myCallBack) {
+
+        Call<AppUpdateInfo> theLastAppInfoCall = BuildApi.getAPIService().getTheLastAppInfo();
+
+        theLastAppInfoCall.enqueue(new Callback<AppUpdateInfo>() {
+            @Override
+            public void onResponse(Call<AppUpdateInfo> call, Response<AppUpdateInfo> response) {
+                if (response.isSuccessful()) {
+                    AppUpdateInfo body = response.body();
+                    if (body != null) {
+                        if (body.getName().equals("干货营")) {
+                            myCallBack.onSuccess(what, body);
+                        } else {
+                            myCallBack.onFail(what, GET_DATA_FAIL);
+                        }
+                    } else {
+                        myCallBack.onFail(what, GET_DATA_FAIL);
+                    }
+                } else {
+                    myCallBack.onFail(what, GET_DATA_FAIL);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AppUpdateInfo> call, Throwable t) {
+                KLog.i("getRandomDatas-----onFailure：" + t.toString());
+                //数据错误
+                myCallBack.onFail(what, NET_FAIL);
+            }
+        });
+
+        return theLastAppInfoCall;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.maning.gankmm.http;
 
+import com.maning.gankmm.bean.AppUpdateInfo;
 import com.maning.gankmm.bean.DayEntity;
 import com.maning.gankmm.bean.GankEntity;
 import com.maning.gankmm.bean.HttpResult;
@@ -46,5 +47,10 @@ public interface APIService {
     Call<RandomEntity> getRandomDatas(@Path("type") String type,
                                       @Path("count") int count
     );
+
+    //获取fir.im中的GankMM的最新版本
+    @Headers("Cache-Control: public, max-age=3600")
+    @GET(Constants.URL_AppUpdateInfo)
+    Call<AppUpdateInfo> getTheLastAppInfo();
 
 }

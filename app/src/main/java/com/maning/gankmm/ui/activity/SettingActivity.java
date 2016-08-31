@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.alibaba.sdk.android.feedback.impl.FeedbackAPI;
-import com.alibaba.sdk.android.feedback.util.IWxCallback;
 import com.maning.gankmm.R;
 import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.skin.SkinManager;
@@ -20,7 +18,6 @@ import com.maning.gankmm.utils.DialogUtils;
 import com.maning.gankmm.utils.MySnackbar;
 import com.maning.gankmm.utils.SharePreUtil;
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.update.UmengUpdateAgent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -73,6 +70,8 @@ public class SettingActivity extends BaseActivity implements ISettingView {
 
         settingPresenter.initUmeng();
 
+        settingPresenter.initFeedBack();
+
     }
 
     public void initPresenter() {
@@ -93,7 +92,7 @@ public class SettingActivity extends BaseActivity implements ISettingView {
     void item_feedback() {
         //保存状态
         SharePreUtil.saveBooleanData(this, Constants.SPFeedback, false);
-
+        setFeedbackState(false);
         //阿里百川意见反馈
         //可以设置UI自定义参数，如主题色等,map的key值具体为：
         //enableAudio(是否开启语音 1：开启 0：关闭)
@@ -247,7 +246,6 @@ public class SettingActivity extends BaseActivity implements ISettingView {
 
     @Override
     protected void onDestroy() {
-        UmengUpdateAgent.setUpdateListener(null);
         settingPresenter.detachView();
         if (mMaterialDialog != null) {
             mMaterialDialog.dismiss();

@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import com.alibaba.sdk.android.feedback.impl.FeedbackAPI;
 import com.maning.gankmm.R;
+import com.maning.gankmm.bean.AppUpdateInfo;
 import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.skin.SkinBroadcastReceiver;
 import com.maning.gankmm.skin.SkinManager;
@@ -26,10 +27,11 @@ import com.maning.gankmm.ui.presenter.impl.MainPresenterImpl;
 import com.maning.gankmm.utils.DialogUtils;
 import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.utils.MySnackbar;
+import com.maning.gankmm.utils.NetUtils;
 import com.maning.gankmm.utils.SharePreUtil;
-import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,6 +62,7 @@ public class MainActivity extends BaseActivity implements IMainView {
 
     private long exitTime = 0;
     private MaterialDialog mMaterialDialogFeedBack;
+    private MaterialDialog mMaterialDialogAppUpdate;
     private MaterialDialog mMaterialDialogPush;
 
     private MainPresenterImpl mainPresenter;
@@ -301,6 +304,10 @@ public class MainActivity extends BaseActivity implements IMainView {
             mMaterialDialogPush.dismiss();
             mMaterialDialogPush = null;
         }
+        if (mMaterialDialogAppUpdate != null) {
+            mMaterialDialogAppUpdate.dismiss();
+            mMaterialDialogAppUpdate = null;
+        }
         SkinManager.unregisterSkinReceiver(this, skinBroadcastReceiver);
         skinBroadcastReceiver = null;
         super.onDestroy();
@@ -320,8 +327,8 @@ public class MainActivity extends BaseActivity implements IMainView {
                                 public void onConfirm() {
                                     SharePreUtil.saveBooleanData(context, Constants.SPFeedback, false);
                                     Map<String, String> customInfoMap = new HashMap<>();
-                                    customInfoMap.put("themeColor","#54aee6");
-                                    customInfoMap.put("pageTitle","意见反馈");
+                                    customInfoMap.put("themeColor", "#54aee6");
+                                    customInfoMap.put("pageTitle", "意见反馈");
                                     FeedbackAPI.setUICustomInfo(customInfoMap);
                                     FeedbackAPI.openFeedbackActivity(MainActivity.this);
                                 }
@@ -336,5 +343,38 @@ public class MainActivity extends BaseActivity implements IMainView {
             }
         });
 
+    }
+
+    @Override
+    public void showAppUpdateDialog(final AppUpdateInfo appUpdateInfo) {
+        if (mMaterialDialogAppUpdate == null) {
+
+            String title = "检测到新版本:V" + appUpdateInfo.getVersionShort();
+            Double appSize = Double.parseDouble(appUpdateInfo.getBinary().getFsize() + "") / 1024 / 1024;
+            DecimalFormat df=new DecimalFormat(".##");
+            String resultSize =df.format(appSize) + "M";
+            boolean isWifi = NetUtils.isWifiConnected(this);
+            String content = appUpdateInfo.getChangelog() +
+                    "\n\n新版大小：" + resultSize +
+                    "\n当前网络："+ (isWifi ? "wifi":"非wifi环境(注意)");
+
+            mMaterialDialogAppUpdate = DialogUtils.initDialog(MainActivity.this,
+                    title, content, "立马更新", "稍后更新    ",
+                    new DialogUtils.OnDialogClickListener() {
+                        @Override
+                        public void onConfirm() {
+                            //更新版本
+                            String install_url = appUpdateInfo.getInstall_url();
+
+
+                        }
+
+                        @Override
+                        public void onCancel() {
+
+                        }
+                    });
+        }
+        mMaterialDialogAppUpdate.show();
     }
 }

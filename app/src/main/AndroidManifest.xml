@@ -9,7 +9,6 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!-- Umeng -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <!-- Jpush -->
     <permission
@@ -167,23 +166,6 @@
         <activity
             android:name=".ui.activity.WebActivity"
             android:hardwareAccelerated="false"
-            android:screenOrientation="portrait" />
-
-        <!-- Umeng自动更新 -->
-        <service
-            android:name="com.umeng.update.net.DownloadingService"
-            android:process=":DownloadingService" />
-
-        <activity
-            android:name="com.umeng.update.UpdateDialogActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <!-- umeng反馈 -->
-        <activity
-            android:name="com.umeng.fb.ConversationActivity"
-            android:screenOrientation="portrait" />
-        <!-- 自定义Umeng反馈界面 -->
-        <activity
-            android:name=".ui.activity.FeedBackActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.AboutActivity"

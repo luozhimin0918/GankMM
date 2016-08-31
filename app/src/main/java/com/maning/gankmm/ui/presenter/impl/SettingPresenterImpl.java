@@ -19,10 +19,6 @@ import com.maning.gankmm.ui.presenter.ISettingPresenter;
 import com.maning.gankmm.utils.FileUtils;
 import com.maning.gankmm.utils.NetUtils;
 import com.maning.gankmm.utils.SharePreUtil;
-import com.umeng.update.UmengUpdateAgent;
-import com.umeng.update.UmengUpdateListener;
-import com.umeng.update.UpdateResponse;
-import com.umeng.update.UpdateStatus;
 
 import java.io.File;
 import java.util.Arrays;
@@ -176,34 +172,16 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
     public void initUmeng() {
         //--------------------Umeng更新
         boolean umengUpdate = SharePreUtil.getBooleanData(context, Constants.SPAppUpdate + MyApplication.getVersionCode(), false);
-        if (mView == null) {
-            return;
+        if (mView != null) {
+            mView.setUmengUpdateState(umengUpdate);
         }
-        mView.setUmengUpdateState(umengUpdate);
-
     }
 
     @Override
     public void checkAppUpdate() {
         //版本更新检查
         if (NetUtils.hasNetWorkConection(context)) {
-            if (flag) {
-                UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
-                    @Override
-                    public void onUpdateReturned(int updateStatus, UpdateResponse updateResponse) {
-                        switch (updateStatus) {
-                            case UpdateStatus.No:
-                                if (mView != null) {
-                                    mView.showToast("当前版本为最新版本");
-                                }
-                                break;
-                        }
-                    }
-                });
-            }
-            //检测更新
-            UmengUpdateAgent.update(context);
-            flag = false;
+
         } else {
             if (mView != null) {
                 mView.showToast(context.getString(R.string.mm_no_net));
