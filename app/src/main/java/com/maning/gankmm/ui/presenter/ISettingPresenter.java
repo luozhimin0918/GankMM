@@ -16,8 +16,8 @@ public interface ISettingPresenter {
     //清除缓存
     void cleanCache();
 
-    //Umeng
-    void initUmeng();
+    //百川反馈
+    void initFeedBack();
 
     //检查更新
     void checkAppUpdate();

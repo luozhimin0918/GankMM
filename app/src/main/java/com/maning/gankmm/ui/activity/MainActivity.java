@@ -75,30 +75,38 @@ public class MainActivity extends BaseActivity implements IMainView {
 
         context = this;
 
-        int currentSkinType = SkinManager.getCurrentSkinType(this);
-        if (SkinManager.THEME_DAY == currentSkinType) {
-            initToolBar(toolbar, Constants.FlagWelFare, R.drawable.icon_menu2);
-        } else {
-            initToolBar(toolbar, Constants.FlagWelFare, R.drawable.icon_menu2_night);
-        }
+        initMyToolBar();
 
         initNavigationView();
 
         mainPresenter = new MainPresenterImpl(this, this);
-        mainPresenter.initUmeng();
+        mainPresenter.initAppUpdate();
 
         initIntent();
 
-        if (savedInstanceState != null && savedInstanceState.getInt(savedInstanceStateItemId) != 0) {
-            navigationCheckedItemId = savedInstanceState.getInt(savedInstanceStateItemId);
-            navigationCheckedTitle = savedInstanceState.getString(savedInstanceStateTitle);
-        }
+        initOtherDatas(savedInstanceState);
 
         setDefaultFragment();
 
         //注册夜间模式广播监听
         registerSkinReceiver();
 
+    }
+
+    private void initOtherDatas(Bundle savedInstanceState) {
+        if (savedInstanceState != null && savedInstanceState.getInt(savedInstanceStateItemId) != 0) {
+            navigationCheckedItemId = savedInstanceState.getInt(savedInstanceStateItemId);
+            navigationCheckedTitle = savedInstanceState.getString(savedInstanceStateTitle);
+        }
+    }
+
+    private void initMyToolBar() {
+        int currentSkinType = SkinManager.getCurrentSkinType(this);
+        if (SkinManager.THEME_DAY == currentSkinType) {
+            initToolBar(toolbar, Constants.FlagWelFare, R.drawable.icon_menu2);
+        } else {
+            initToolBar(toolbar, Constants.FlagWelFare, R.drawable.icon_menu2_night);
+        }
     }
 
     private void initIntent() {
@@ -300,7 +308,6 @@ public class MainActivity extends BaseActivity implements IMainView {
 
     @Override
     public void showFeedBackDialog() {
-        KLog.i("反馈MainActivty显示dialog");
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

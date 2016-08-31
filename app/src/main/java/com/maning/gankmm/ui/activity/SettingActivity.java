@@ -198,7 +198,7 @@ public class SettingActivity extends BaseActivity implements ISettingView {
     }
 
     @Override
-    public void setUmengFeedbackState(final boolean flag) {
+    public void setFeedbackState(final boolean flag) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

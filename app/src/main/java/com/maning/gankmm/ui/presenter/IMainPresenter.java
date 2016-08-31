@@ -5,6 +5,8 @@ package com.maning.gankmm.ui.presenter;
  */
 public interface IMainPresenter {
 
-    void initUmeng();
+    void initFeedBack();
+
+    void initAppUpdate();
 
 }

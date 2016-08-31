@@ -17,7 +17,7 @@ public interface ISettingView extends IBaseView {
 
     void setCacheSize(String cacheSize);
 
-    void setUmengFeedbackState(boolean flag);
+    void setFeedbackState(boolean flag);
 
     void setUmengUpdateState(boolean flag);
 

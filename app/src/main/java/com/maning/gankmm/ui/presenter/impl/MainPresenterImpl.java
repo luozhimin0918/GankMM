@@ -29,12 +29,7 @@ public class MainPresenterImpl extends BasePresenterImpl<IMainView> implements I
     }
 
     @Override
-    public void initUmeng() {
-        initUmengFeedback();
-        initUmengUpdate();
-    }
-
-    private void initUmengFeedback() {
+    public void initFeedBack() {
         FeedbackAPI.getFeedbackUnreadCount(context, "", new IWxCallback() {
             @Override
             public void onSuccess(final Object... result) {
@@ -62,7 +57,8 @@ public class MainPresenterImpl extends BasePresenterImpl<IMainView> implements I
         });
     }
 
-    private void initUmengUpdate() {
+    @Override
+    public void initAppUpdate() {
         UmengUpdateAgent.setDeltaUpdate(true);//增量更新，默认true
         UmengUpdateAgent.setUpdateAutoPopup(true);
         UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
@@ -106,5 +102,4 @@ public class MainPresenterImpl extends BasePresenterImpl<IMainView> implements I
         //检测更新
         UmengUpdateAgent.update(context);
     }
-
 }

@@ -145,8 +145,8 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
     }
 
     @Override
-    public void initUmeng() {
-        initUmengFeedBack();
+    public void initFeedBack() {
+        setFeedBackState();
         FeedbackAPI.getFeedbackUnreadCount(context, "", new IWxCallback() {
             @Override
             public void onSuccess(final Object... result) {
@@ -154,7 +154,7 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
                     int count = (Integer) result[0];
                     if (count > 0) {
                         SharePreUtil.saveBooleanData(context, Constants.SPFeedback, true);
-                        initUmengFeedBack();
+                        setFeedBackState();
                     }
                 }
             }
@@ -170,7 +170,10 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
             }
         });
 
+        initUmeng();
+    }
 
+    public void initUmeng() {
         //--------------------Umeng更新
         boolean umengUpdate = SharePreUtil.getBooleanData(context, Constants.SPAppUpdate + MyApplication.getVersionCode(), false);
         if (mView == null) {
@@ -208,10 +211,10 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
         }
     }
 
-    private void initUmengFeedBack() {
+    private void setFeedBackState() {
         boolean feedback = SharePreUtil.getBooleanData(context, Constants.SPFeedback, false);
         if (mView != null) {
-            mView.setUmengFeedbackState(feedback);
+            mView.setFeedbackState(feedback);
         }
     }
 
