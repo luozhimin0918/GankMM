@@ -1,6 +1,7 @@
 package com.maning.gankmm.ui.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -52,6 +53,8 @@ public class SettingActivity extends BaseActivity implements ISettingView {
     MySettingItemView itemAppUpdate;
 
     private SettingPresenterImpl settingPresenter;
+    private MaterialDialog dialogUpdate;
+    private MaterialDialog dialogCloseWarn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -235,7 +238,7 @@ public class SettingActivity extends BaseActivity implements ISettingView {
                 "\n当前网络：" + (isWifi ? "wifi" : "非wifi环境(注意)");
 
         DialogUtils.showMyDialog(this,
-                title, content, "立马更新", "稍后更新    ",
+                title, content, "立马更新", "稍后更新",
                 new DialogUtils.OnDialogClickListener() {
                     @Override
                     public void onConfirm() {
@@ -251,48 +254,70 @@ public class SettingActivity extends BaseActivity implements ISettingView {
     }
 
     private void showDownloadDialog(AppUpdateInfo appUpdateInfo) {
-        final MaterialDialog dialog = new MaterialDialog.Builder(SettingActivity.this)
+        dialogUpdate = new MaterialDialog.Builder(SettingActivity.this)
                 .title("正在下载最新版本")
                 .content("请稍等")
                 .canceledOnTouchOutside(false)
                 .progress(false, 100, false)
+                .cancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(final DialogInterface dialog) {
+                        dialogCloseWarn = DialogUtils.showMyDialog(SettingActivity.this, "警告", "当前正在下载APK，是否关闭进度框？", "关闭", "取消", new DialogUtils.OnDialogClickListener() {
+                            @Override
+                            public void onConfirm() {
+                                dialog.dismiss();
+                            }
+
+                            @Override
+                            public void onCancel() {
+
+                            }
+                        });
+                    }
+                })
                 .show();
 
-        new InstallUtils(context, appUpdateInfo.getInstall_url(), Constants.UpdateAPKPath, "GankMM_"+appUpdateInfo.getVersionShort(), new InstallUtils.DownloadCallBack() {
+        new InstallUtils(context, appUpdateInfo.getInstall_url(), Constants.UpdateAPKPath, "GankMM_" + appUpdateInfo.getVersionShort(), new InstallUtils.DownloadCallBack() {
             @Override
             public void onStart() {
-                KLog.i( "onStart");
-                if(dialog.isCancelled()){
-                   return;
+                KLog.i("onStart");
+                if (dialogUpdate.isCancelled()) {
+                    return;
                 }
-                dialog.setProgress(0);
+                dialogUpdate.setProgress(0);
             }
 
             @Override
             public void onComplete(String path) {
-                KLog.i(  "onComplete:" + path);
+                KLog.i("onComplete:" + path);
                 InstallUtils.installAPK(context, path);
-                if(dialog.isCancelled()){
+                if (dialogCloseWarn != null) {
+                    dialogCloseWarn.dismiss();
+                }
+                if (dialogUpdate.isCancelled()) {
                     return;
                 }
-                dialog.dismiss();
+                dialogUpdate.dismiss();
             }
 
             @Override
             public void onLoading(long total, long current) {
-                KLog.i(  "onLoading:-----total:" + total + ",current:" + current);
-                if(dialog.isCancelled()){
+                KLog.i("onLoading:-----total:" + total + ",current:" + current);
+                if (dialogUpdate.isCancelled()) {
                     return;
                 }
-                dialog.setProgress((int) (current * 100 / total));
+                dialogUpdate.setProgress((int) (current * 100 / total));
             }
 
             @Override
             public void onFail(Exception e) {
-                if(dialog.isCancelled()){
+                if (dialogCloseWarn != null) {
+                    dialogCloseWarn.dismiss();
+                }
+                if (dialogUpdate.isCancelled()) {
                     return;
                 }
-                dialog.dismiss();
+                dialogUpdate.dismiss();
             }
 
         }).downloadAPK();
