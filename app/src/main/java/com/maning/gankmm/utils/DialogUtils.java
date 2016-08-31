@@ -1,37 +1,41 @@
 package com.maning.gankmm.utils;
 
 import android.content.Context;
-import android.view.View;
+import android.support.annotation.NonNull;
 
-import me.drakeet.materialdialog.MaterialDialog;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 /**
  * Created by maning on 16/6/22.
  */
 public class DialogUtils {
 
-    public static MaterialDialog initDialog(final Context context, String title, String content, String positiveBtnText, String negativeBtnText, final OnDialogClickListener onDialogClickListener) {
-        final MaterialDialog materialDialog = new MaterialDialog(context);
-        materialDialog.setTitle(title);
-        materialDialog.setMessage(content);
-        materialDialog.setPositiveButton(positiveBtnText, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                materialDialog.dismiss();
-                if (onDialogClickListener != null) {
-                    onDialogClickListener.onConfirm();
-                }
-            }
-        });
-        materialDialog.setNegativeButton(negativeBtnText, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                materialDialog.dismiss();
-                if (onDialogClickListener != null) {
-                    onDialogClickListener.onCancel();
-                }
-            }
-        });
+    public static MaterialDialog showMyDialog(final Context context, String title, String content, String positiveBtnText, String negativeBtnText, final OnDialogClickListener onDialogClickListener) {
+
+        MaterialDialog materialDialog = new MaterialDialog.Builder(context)
+                .title(title)
+                .content(content)
+                .positiveText(positiveBtnText)
+                .negativeText(negativeBtnText)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        if (onDialogClickListener != null) {
+                            onDialogClickListener.onConfirm();
+                        }
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        if (onDialogClickListener != null) {
+                            onDialogClickListener.onCancel();
+                        }
+                    }
+                })
+                .show();
+        materialDialog.setCancelable(false);
         return materialDialog;
     }
 

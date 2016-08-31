@@ -28,7 +28,6 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import me.drakeet.materialdialog.MaterialDialog;
 
 public class SettingActivity extends BaseActivity implements ISettingView {
 
@@ -45,9 +44,6 @@ public class SettingActivity extends BaseActivity implements ISettingView {
     MySettingItemView itemFeedback;
     @Bind(R.id.item_app_update)
     MySettingItemView itemAppUpdate;
-
-    private MaterialDialog mMaterialDialog;
-    private MaterialDialog mMaterialDialogAppUpdate;
 
     private SettingPresenterImpl settingPresenter;
 
@@ -124,8 +120,8 @@ public class SettingActivity extends BaseActivity implements ISettingView {
         //voiceCancelContent: (滑到这里取消录音), String
         //voiceReleaseContent: (松开取消录音), String
         Map<String, String> customInfoMap = new HashMap<>();
-        customInfoMap.put("themeColor","#54aee6");
-        customInfoMap.put("pageTitle","意见反馈");
+        customInfoMap.put("themeColor", "#54aee6");
+        customInfoMap.put("pageTitle", "意见反馈");
         FeedbackAPI.setUICustomInfo(customInfoMap);
         FeedbackAPI.openFeedbackActivity(this);
 
@@ -138,15 +134,13 @@ public class SettingActivity extends BaseActivity implements ISettingView {
 
     @OnClick(R.id.item_clean_cache)
     void item_clean_cache() {
-        if (mMaterialDialog == null) {
-            initCacheDialog();
-        }
-        mMaterialDialog.show();
+        showCacheDialog();
     }
 
 
-    private void initCacheDialog() {
-        mMaterialDialog = DialogUtils.initDialog(this, "缓存清理", "确定要清除图片的缓存吗？", "确定", "取消", new DialogUtils.OnDialogClickListener() {
+    private void showCacheDialog() {
+        DialogUtils.showMyDialog(this, "缓存清理", "确定要清除图片的缓存吗？", "确定", "取消", new DialogUtils.OnDialogClickListener() {
+
             @Override
             public void onConfirm() {
                 settingPresenter.cleanCache();
@@ -154,8 +148,10 @@ public class SettingActivity extends BaseActivity implements ISettingView {
 
             @Override
             public void onCancel() {
+
             }
         });
+
     }
 
     @OnClick(R.id.iv_push)
@@ -190,8 +186,8 @@ public class SettingActivity extends BaseActivity implements ISettingView {
 
     @Override
     public void recreateActivity() {
-        startActivity(new Intent(this.getApplicationContext(),SettingActivity.class));
-        overridePendingTransition(R.anim.activity_enter,R.anim.activity_exit);
+        startActivity(new Intent(this.getApplicationContext(), SettingActivity.class));
+        overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
         this.finish();
     }
 
@@ -217,35 +213,31 @@ public class SettingActivity extends BaseActivity implements ISettingView {
 
     @Override
     public void showAppUpdateDialog(final AppUpdateInfo appUpdateInfo) {
-        if (mMaterialDialogAppUpdate == null) {
+        String title = "检测到新版本:V" + appUpdateInfo.getVersionShort();
+        Double appSize = Double.parseDouble(appUpdateInfo.getBinary().getFsize() + "") / 1024 / 1024;
+        DecimalFormat df = new DecimalFormat(".##");
+        String resultSize = df.format(appSize) + "M";
+        boolean isWifi = NetUtils.isWifiConnected(this);
+        String content = appUpdateInfo.getChangelog() +
+                "\n\n新版大小：" + resultSize +
+                "\n当前网络：" + (isWifi ? "wifi" : "非wifi环境(注意)");
 
-            String title = "检测到新版本:V" + appUpdateInfo.getVersionShort();
-            Double appSize = Double.parseDouble(appUpdateInfo.getBinary().getFsize() + "") / 1024 / 1024;
-            DecimalFormat df=new DecimalFormat(".##");
-            String resultSize =df.format(appSize) + "M";
-            boolean isWifi = NetUtils.isWifiConnected(this);
-            String content = appUpdateInfo.getChangelog() +
-                    "\n\n新版大小：" + resultSize +
-                    "\n当前网络："+ (isWifi ? "wifi":"非wifi环境(注意)");
-
-            mMaterialDialogAppUpdate = DialogUtils.initDialog(this,
-                    title, content, "立马更新", "稍后更新    ",
-                    new DialogUtils.OnDialogClickListener() {
-                        @Override
-                        public void onConfirm() {
-                            //更新版本
-                            String install_url = appUpdateInfo.getInstall_url();
+        DialogUtils.showMyDialog(this,
+                title, content, "立马更新", "稍后更新    ",
+                new DialogUtils.OnDialogClickListener() {
+                    @Override
+                    public void onConfirm() {
+                        //更新版本
+                        String install_url = appUpdateInfo.getInstall_url();
 
 
-                        }
+                    }
 
-                        @Override
-                        public void onCancel() {
+                    @Override
+                    public void onCancel() {
 
-                        }
-                    });
-        }
-        mMaterialDialogAppUpdate.show();
+                    }
+                });
     }
 
     @Override
@@ -283,10 +275,6 @@ public class SettingActivity extends BaseActivity implements ISettingView {
     @Override
     protected void onDestroy() {
         settingPresenter.detachView();
-        if (mMaterialDialog != null) {
-            mMaterialDialog.dismiss();
-            mMaterialDialog = null;
-        }
         super.onDestroy();
     }
 }

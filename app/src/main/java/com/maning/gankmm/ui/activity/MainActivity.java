@@ -13,7 +13,6 @@ import android.view.MenuItem;
 
 import com.alibaba.sdk.android.feedback.impl.FeedbackAPI;
 import com.maning.gankmm.R;
-import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.bean.AppUpdateInfo;
 import com.maning.gankmm.constant.Constants;
 import com.maning.gankmm.skin.SkinBroadcastReceiver;
@@ -38,7 +37,6 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import me.drakeet.materialdialog.MaterialDialog;
 
 public class MainActivity extends BaseActivity implements IMainView {
 
@@ -62,9 +60,6 @@ public class MainActivity extends BaseActivity implements IMainView {
     private static final String savedInstanceStateTitle = "navigationCheckedTitle";
 
     private long exitTime = 0;
-    private MaterialDialog mMaterialDialogFeedBack;
-    private MaterialDialog mMaterialDialogAppUpdate;
-    private MaterialDialog mMaterialDialogPush;
 
     private MainPresenterImpl mainPresenter;
     //夜间模式的广播
@@ -116,9 +111,12 @@ public class MainActivity extends BaseActivity implements IMainView {
     private void initIntent() {
         Intent intent = getIntent();
         String pushMessage = intent.getStringExtra(IntentUtils.PushMessage);
-        if (!TextUtils.isEmpty(pushMessage)) {
-            mMaterialDialogPush = DialogUtils.initDialog(this, getString(R.string.gank_dialog_title_notify), pushMessage, getString(R.string.gank_dialog_confirm), "", null);
-            mMaterialDialogPush.show();
+        if(!TextUtils.isEmpty(pushMessage)){
+            DialogUtils.showMyDialog(this,
+                    getString(R.string.gank_dialog_title_notify),
+                    pushMessage,
+                    getString(R.string.gank_dialog_confirm),
+                    "", null);
         }
     }
 
@@ -297,18 +295,6 @@ public class MainActivity extends BaseActivity implements IMainView {
     @Override
     protected void onDestroy() {
         mainPresenter.detachView();
-        if (mMaterialDialogFeedBack != null) {
-            mMaterialDialogFeedBack.dismiss();
-            mMaterialDialogFeedBack = null;
-        }
-        if (mMaterialDialogPush != null) {
-            mMaterialDialogPush.dismiss();
-            mMaterialDialogPush = null;
-        }
-        if (mMaterialDialogAppUpdate != null) {
-            mMaterialDialogAppUpdate.dismiss();
-            mMaterialDialogAppUpdate = null;
-        }
         SkinManager.unregisterSkinReceiver(this, skinBroadcastReceiver);
         skinBroadcastReceiver = null;
         super.onDestroy();
@@ -319,47 +305,41 @@ public class MainActivity extends BaseActivity implements IMainView {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (mMaterialDialogFeedBack == null) {
-                    mMaterialDialogFeedBack = DialogUtils.initDialog(MainActivity.this,
-                            getString(R.string.gank_dialog_title_notify),
-                            getString(R.string.gank_dialog_msg_feedback),
-                            "查看", "等一会去", new DialogUtils.OnDialogClickListener() {
-                                @Override
-                                public void onConfirm() {
-                                    SharePreUtil.saveBooleanData(context, Constants.SPFeedback, false);
-                                    Map<String, String> customInfoMap = new HashMap<>();
-                                    customInfoMap.put("themeColor", "#54aee6");
-                                    customInfoMap.put("pageTitle", "意见反馈");
-                                    FeedbackAPI.setUICustomInfo(customInfoMap);
-                                    FeedbackAPI.openFeedbackActivity(MainActivity.this);
-                                }
+                DialogUtils.showMyDialog(MainActivity.this,
+                        getString(R.string.gank_dialog_title_notify),
+                        getString(R.string.gank_dialog_msg_feedback),
+                        "查看", "等一会去", new DialogUtils.OnDialogClickListener() {
+                            @Override
+                            public void onConfirm() {
+                                SharePreUtil.saveBooleanData(context, Constants.SPFeedback, false);
+                                Map<String, String> customInfoMap = new HashMap<>();
+                                customInfoMap.put("themeColor", "#54aee6");
+                                customInfoMap.put("pageTitle", "意见反馈");
+                                FeedbackAPI.setUICustomInfo(customInfoMap);
+                                FeedbackAPI.openFeedbackActivity(MainActivity.this);
+                            }
 
-                                @Override
-                                public void onCancel() {
+                            @Override
+                            public void onCancel() {
 
-                                }
-                            });
-                }
-                mMaterialDialogFeedBack.show();
+                            }
+                        });
             }
         });
-
     }
 
-    @Override
-    public void showAppUpdateDialog(final AppUpdateInfo appUpdateInfo) {
-        if (mMaterialDialogAppUpdate == null) {
-
+        @Override
+        public void showAppUpdateDialog ( final AppUpdateInfo appUpdateInfo){
             String title = "检测到新版本:V" + appUpdateInfo.getVersionShort();
             Double appSize = Double.parseDouble(appUpdateInfo.getBinary().getFsize() + "") / 1024 / 1024;
-            DecimalFormat df=new DecimalFormat(".##");
-            String resultSize =df.format(appSize) + "M";
+            DecimalFormat df = new DecimalFormat(".##");
+            String resultSize = df.format(appSize) + "M";
             boolean isWifi = NetUtils.isWifiConnected(this);
             String content = appUpdateInfo.getChangelog() +
                     "\n\n新版大小：" + resultSize +
-                    "\n当前网络："+ (isWifi ? "wifi":"非wifi环境(注意)");
+                    "\n当前网络：" + (isWifi ? "wifi" : "非wifi环境(注意)");
 
-            mMaterialDialogAppUpdate = DialogUtils.initDialog(MainActivity.this,
+            DialogUtils.showMyDialog(this,
                     title, content, "立马更新", "稍后更新    ",
                     new DialogUtils.OnDialogClickListener() {
                         @Override
@@ -376,6 +356,4 @@ public class MainActivity extends BaseActivity implements IMainView {
                         }
                     });
         }
-        mMaterialDialogAppUpdate.show();
     }
-}

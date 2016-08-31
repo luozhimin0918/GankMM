@@ -174,11 +174,10 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
                     public void run() {
                         //清除内存缓存
                         Glide.get(context).clearMemory();
-                        if (mView == null) {
-                            return;
+                        if (mView != null) {
+                            mView.showBasesProgressSuccess("清除完毕");
+                            initCache();
                         }
-                        mView.showBasesProgressSuccess("清除完毕");
-                        initCache();
                     }
                 });
             }
