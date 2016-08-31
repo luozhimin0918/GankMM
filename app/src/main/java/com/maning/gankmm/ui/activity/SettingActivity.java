@@ -1,11 +1,13 @@
 package com.maning.gankmm.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.alibaba.sdk.android.feedback.impl.FeedbackAPI;
 import com.maning.gankmm.R;
 import com.maning.gankmm.bean.AppUpdateInfo;
@@ -16,9 +18,11 @@ import com.maning.gankmm.ui.iView.ISettingView;
 import com.maning.gankmm.ui.presenter.impl.SettingPresenterImpl;
 import com.maning.gankmm.ui.view.MySettingItemView;
 import com.maning.gankmm.utils.DialogUtils;
+import com.maning.gankmm.utils.InstallUtils;
 import com.maning.gankmm.utils.MySnackbar;
 import com.maning.gankmm.utils.NetUtils;
 import com.maning.gankmm.utils.SharePreUtil;
+import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
 
 import java.text.DecimalFormat;
@@ -30,6 +34,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class SettingActivity extends BaseActivity implements ISettingView {
+
+    private Context context;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -53,12 +59,9 @@ public class SettingActivity extends BaseActivity implements ISettingView {
         setContentView(R.layout.activity_setting);
         ButterKnife.bind(this);
 
-        int currentSkinType = SkinManager.getCurrentSkinType(this);
-        if (SkinManager.THEME_DAY == currentSkinType) {
-            initToolBar(toolbar, "设置", R.drawable.icon_arrow_back);
-        } else {
-            initToolBar(toolbar, "设置", R.drawable.icon_arrow_back_night);
-        }
+        context = this;
+
+        initMyToolBar();
 
         initPresenter();
 
@@ -72,6 +75,15 @@ public class SettingActivity extends BaseActivity implements ISettingView {
 
         settingPresenter.initFeedBack();
 
+    }
+
+    private void initMyToolBar() {
+        int currentSkinType = SkinManager.getCurrentSkinType(this);
+        if (SkinManager.THEME_DAY == currentSkinType) {
+            initToolBar(toolbar, "设置", R.drawable.icon_arrow_back);
+        } else {
+            initToolBar(toolbar, "设置", R.drawable.icon_arrow_back_night);
+        }
     }
 
     public void initPresenter() {
@@ -228,9 +240,7 @@ public class SettingActivity extends BaseActivity implements ISettingView {
                     @Override
                     public void onConfirm() {
                         //更新版本
-                        String install_url = appUpdateInfo.getInstall_url();
-
-
+                        showDownloadDialog(appUpdateInfo);
                     }
 
                     @Override
@@ -238,6 +248,54 @@ public class SettingActivity extends BaseActivity implements ISettingView {
 
                     }
                 });
+    }
+
+    private void showDownloadDialog(AppUpdateInfo appUpdateInfo) {
+        final MaterialDialog dialog = new MaterialDialog.Builder(SettingActivity.this)
+                .title("正在下载最新版本")
+                .content("请稍等")
+                .canceledOnTouchOutside(false)
+                .progress(false, 100, false)
+                .show();
+
+        new InstallUtils(context, appUpdateInfo.getInstall_url(), Constants.UpdateAPKPath, "GankMM_"+appUpdateInfo.getVersionShort(), new InstallUtils.DownloadCallBack() {
+            @Override
+            public void onStart() {
+                KLog.i( "onStart");
+                if(dialog.isCancelled()){
+                   return;
+                }
+                dialog.setProgress(0);
+            }
+
+            @Override
+            public void onComplete(String path) {
+                KLog.i(  "onComplete:" + path);
+                InstallUtils.installAPK(context, path);
+                if(dialog.isCancelled()){
+                    return;
+                }
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onLoading(long total, long current) {
+                KLog.i(  "onLoading:-----total:" + total + ",current:" + current);
+                if(dialog.isCancelled()){
+                    return;
+                }
+                dialog.setProgress((int) (current * 100 / total));
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                if(dialog.isCancelled()){
+                    return;
+                }
+                dialog.dismiss();
+            }
+
+        }).downloadAPK();
     }
 
     @Override

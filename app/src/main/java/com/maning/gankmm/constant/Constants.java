@@ -2,6 +2,8 @@ package com.maning.gankmm.constant;
 
 import android.os.Environment;
 
+import java.io.File;
+
 /**
  * 常量类
  * 一些接口地址等常量
@@ -19,6 +21,11 @@ public class Constants {
 
     //保存图片的地址
     public static final String BasePath = Environment.getExternalStorageDirectory() + "/GankMM";
+
+    //更新APK地址
+    public static final String UpdateAPKPath = Environment.getExternalStorageDirectory() + "/GankMM/update";
+
+
 
     //标签
     public static final String FlagFragment = "Flag";

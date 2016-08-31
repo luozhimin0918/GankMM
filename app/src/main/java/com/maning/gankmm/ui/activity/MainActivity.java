@@ -9,8 +9,10 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.alibaba.sdk.android.feedback.impl.FeedbackAPI;
 import com.maning.gankmm.R;
 import com.maning.gankmm.bean.AppUpdateInfo;
@@ -25,10 +27,12 @@ import com.maning.gankmm.ui.fragment.collect.CollectFragment;
 import com.maning.gankmm.ui.iView.IMainView;
 import com.maning.gankmm.ui.presenter.impl.MainPresenterImpl;
 import com.maning.gankmm.utils.DialogUtils;
+import com.maning.gankmm.utils.InstallUtils;
 import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.utils.MySnackbar;
 import com.maning.gankmm.utils.NetUtils;
 import com.maning.gankmm.utils.SharePreUtil;
+import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
 
 import java.text.DecimalFormat;
@@ -111,7 +115,7 @@ public class MainActivity extends BaseActivity implements IMainView {
     private void initIntent() {
         Intent intent = getIntent();
         String pushMessage = intent.getStringExtra(IntentUtils.PushMessage);
-        if(!TextUtils.isEmpty(pushMessage)){
+        if (!TextUtils.isEmpty(pushMessage)) {
             DialogUtils.showMyDialog(this,
                     getString(R.string.gank_dialog_title_notify),
                     pushMessage,
@@ -328,32 +332,79 @@ public class MainActivity extends BaseActivity implements IMainView {
         });
     }
 
-        @Override
-        public void showAppUpdateDialog ( final AppUpdateInfo appUpdateInfo){
-            String title = "检测到新版本:V" + appUpdateInfo.getVersionShort();
-            Double appSize = Double.parseDouble(appUpdateInfo.getBinary().getFsize() + "") / 1024 / 1024;
-            DecimalFormat df = new DecimalFormat(".##");
-            String resultSize = df.format(appSize) + "M";
-            boolean isWifi = NetUtils.isWifiConnected(this);
-            String content = appUpdateInfo.getChangelog() +
-                    "\n\n新版大小：" + resultSize +
-                    "\n当前网络：" + (isWifi ? "wifi" : "非wifi环境(注意)");
+    @Override
+    public void showAppUpdateDialog(final AppUpdateInfo appUpdateInfo) {
+        String title = "检测到新版本:V" + appUpdateInfo.getVersionShort();
+        Double appSize = Double.parseDouble(appUpdateInfo.getBinary().getFsize() + "") / 1024 / 1024;
+        DecimalFormat df = new DecimalFormat(".##");
+        String resultSize = df.format(appSize) + "M";
+        boolean isWifi = NetUtils.isWifiConnected(this);
+        String content = appUpdateInfo.getChangelog() +
+                "\n\n新版大小：" + resultSize +
+                "\n当前网络：" + (isWifi ? "wifi" : "非wifi环境(注意)");
 
-            DialogUtils.showMyDialog(this,
-                    title, content, "立马更新", "稍后更新    ",
-                    new DialogUtils.OnDialogClickListener() {
-                        @Override
-                        public void onConfirm() {
-                            //更新版本
-                            String install_url = appUpdateInfo.getInstall_url();
+        DialogUtils.showMyDialog(this,
+                title, content, "立马更新", "稍后更新    ",
+                new DialogUtils.OnDialogClickListener() {
+                    @Override
+                    public void onConfirm() {
+                        //更新版本
+                        showDownloadDialog(appUpdateInfo);
+                    }
 
+                    @Override
+                    public void onCancel() {
 
-                        }
-
-                        @Override
-                        public void onCancel() {
-
-                        }
-                    });
-        }
+                    }
+                });
     }
+
+    private void showDownloadDialog(AppUpdateInfo appUpdateInfo) {
+        final MaterialDialog dialog = new MaterialDialog.Builder(MainActivity.this)
+                .title("正在下载最新版本")
+                .content("请稍等")
+                .canceledOnTouchOutside(false)
+                .progress(false, 100, false)
+                .show();
+
+        new InstallUtils(context, appUpdateInfo.getInstall_url(), Constants.UpdateAPKPath, "GankMM_"+appUpdateInfo.getVersionShort(), new InstallUtils.DownloadCallBack() {
+            @Override
+            public void onStart() {
+                KLog.i( "onStart");
+                if(dialog.isCancelled()){
+                    return;
+                }
+                dialog.setProgress(0);
+            }
+
+            @Override
+            public void onComplete(String path) {
+                KLog.i(  "onComplete:" + path);
+                InstallUtils.installAPK(context, path);
+                if(dialog.isCancelled()){
+                    return;
+                }
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onLoading(long total, long current) {
+                KLog.i(  "onLoading:-----total:" + total + ",current:" + current);
+                if(dialog.isCancelled()){
+                    return;
+                }
+                dialog.setProgress((int) (current * 100 / total));
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                if(dialog.isCancelled()){
+                    return;
+                }
+                dialog.dismiss();
+            }
+
+        }).downloadAPK();
+    }
+
+}
