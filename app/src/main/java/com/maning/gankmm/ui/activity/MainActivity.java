@@ -372,6 +372,9 @@ public class MainActivity extends BaseActivity implements IMainView {
                 .cancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(final DialogInterface dialog) {
+                        if(dialogUpdate.isCancelled()){
+                            return;
+                        }
                         dialogCloseWarn = DialogUtils.showMyDialog(MainActivity.this, "警告", "当前正在下载APK，是否关闭进度框？", "关闭", "取消", new DialogUtils.OnDialogClickListener() {
                             @Override
                             public void onConfirm() {
