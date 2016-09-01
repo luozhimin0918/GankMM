@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
@@ -11,7 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.maning.gankmm.R;
 import com.maning.gankmm.skin.SkinManager;
@@ -21,6 +21,7 @@ import com.maning.gankmm.ui.iView.IImageView;
 import com.maning.gankmm.ui.presenter.impl.ImagePresenterImpl;
 import com.maning.gankmm.utils.IntentUtils;
 import com.maning.gankmm.utils.MySnackbar;
+import com.maning.gankmm.utils.MyToast;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -29,9 +30,11 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.github.yavski.fabspeeddial.FabSpeedDial;
+import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class ImagesActivity extends BaseActivity implements IImageView, EasyPermissions.PermissionCallbacks{
+public class ImagesActivity extends BaseActivity implements IImageView, EasyPermissions.PermissionCallbacks {
 
     private static final String TAG = ImagesActivity.class.getSimpleName();
     @Bind(R.id.viewPager)
@@ -40,6 +43,8 @@ public class ImagesActivity extends BaseActivity implements IImageView, EasyPerm
     TextView tvShowNum;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
+    @Bind(R.id.fab_speed_dial)
+    FabSpeedDial fabSpeedDial;
 
     private Context mContext;
 
@@ -58,12 +63,7 @@ public class ImagesActivity extends BaseActivity implements IImageView, EasyPerm
         ButterKnife.bind(this);
         mContext = this;
 
-        int currentSkinType = SkinManager.getCurrentSkinType(this);
-        if (SkinManager.THEME_DAY == currentSkinType) {
-            initToolBar(toolbar, getString(R.string.gank_page_title_girls), R.drawable.icon_arrow_back);
-        } else {
-            initToolBar(toolbar, getString(R.string.gank_page_title_girls), R.drawable.icon_arrow_back_night);
-        }
+        initMyToolBar();
 
         imagePresenter = new ImagePresenterImpl(this, this);
 
@@ -74,6 +74,45 @@ public class ImagesActivity extends BaseActivity implements IImageView, EasyPerm
         //初始化ViewPager
         initViewPager();
 
+        initMenuListener();
+
+    }
+
+    private void initMenuListener() {
+        fabSpeedDial.setMenuListener(new SimpleMenuListenerAdapter() {
+            @Override
+            public boolean onMenuItemSelected(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.action_save:
+                        if (EasyPermissions.hasPermissions(ImagesActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                            imagePresenter.saveImage();
+                        } else {
+                            // Ask for one permission
+                            EasyPermissions.requestPermissions(this, "请求存储文件权限，用来保存图片到本地",
+                                    REQUECT_CODE_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                        }
+                        break;
+                    case R.id.action_share:
+                        int currentItem = viewPager.getCurrentItem();
+                        String picUrl = mDatas.get(currentItem);
+                        IntentUtils.startAppShareText(ImagesActivity.this, "GankMM图片分享", "分享图片：" + picUrl);
+                        break;
+                    case R.id.action_wallpaper:
+                        imagePresenter.setWallpaper();
+                        break;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void initMyToolBar() {
+        int currentSkinType = SkinManager.getCurrentSkinType(this);
+        if (SkinManager.THEME_DAY == currentSkinType) {
+            initToolBar(toolbar, getString(R.string.gank_page_title_girls), R.drawable.icon_arrow_back);
+        } else {
+            initToolBar(toolbar, getString(R.string.gank_page_title_girls), R.drawable.icon_arrow_back_night);
+        }
     }
 
     @Override
@@ -115,22 +154,6 @@ public class ImagesActivity extends BaseActivity implements IImageView, EasyPerm
         Intent intent = getIntent();
         mDatas = intent.getStringArrayListExtra(IntentUtils.ImageArrayList);
         startIndex = intent.getIntExtra(IntentUtils.ImagePositionForImageShow, 0);
-    }
-
-    @OnClick(R.id.btn_save)
-    void btn_save() {
-        if (EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            imagePresenter.saveImage();
-        } else {
-            // Ask for one permission
-            EasyPermissions.requestPermissions(this, "请求存储文件权限，用来保存图片到本地",
-                    REQUECT_CODE_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
-    }
-
-    @OnClick(R.id.btn_wallpaper)
-    void btn_wallpaper() {
-        imagePresenter.setWallpaper();
     }
 
 
@@ -187,7 +210,7 @@ public class ImagesActivity extends BaseActivity implements IImageView, EasyPerm
     @Override
     public void onPermissionsGranted(int requestCode, List<String> perms) {
         Log.d(TAG, "onPermissionsGranted:" + requestCode + ":" + perms.size());
-        MySnackbar.makeSnackBarBlack(toolbar,"权限申请成功");
+        MySnackbar.makeSnackBarBlack(toolbar, "权限申请成功");
     }
 
     @Override

@@ -121,4 +121,6 @@ dependencies {
     compile files('libs/securityguard-3.1.27.jar')
     compile files('libs/utdid4all-1.0.4.jar')
     compile files('libs/alisdk-ut-5.jar')
+    /*菜单*/
+    compile 'io.github.yavski:fab-speed-dial:1.0.4'
 }
