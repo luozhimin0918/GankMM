@@ -320,11 +320,7 @@ public class MainActivity extends BaseActivity implements IMainView {
                             @Override
                             public void onConfirm() {
                                 SharePreUtil.saveBooleanData(context, Constants.SPFeedback, false);
-                                Map<String, String> customInfoMap = new HashMap<>();
-                                customInfoMap.put("themeColor", "#54aee6");
-                                customInfoMap.put("pageTitle", "意见反馈");
-                                FeedbackAPI.setUICustomInfo(customInfoMap);
-                                FeedbackAPI.openFeedbackActivity(MainActivity.this);
+                                IntentUtils.startToFeedBackPage(MainActivity.this);
                             }
 
                             @Override
