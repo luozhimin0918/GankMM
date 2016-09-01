@@ -17,11 +17,12 @@
     <string name="github_08">https://github.com/JakeWharton/butterknife</string>
     <string name="github_09">https://github.com/Aspsine/SwipeToLoadLayout</string>
     <string name="github_10">https://github.com/jd-alexander/LikeButton</string>
-    <string name="github_11">https://github.com/drakeet/MaterialDialog</string>
+    <string name="github_11">https://github.com/afollestad/material-dialogs</string>
     <string name="github_12">https://github.com/jhy/jsoup</string>
     <string name="github_13">https://github.com/googlesamples/easypermissions</string>
     <string name="github_14">https://github.com/ogaclejapan/SmartTabLayout</string>
     <string name="github_15">https://github.com/maning0303/SwitcherView</string>
+    <string name="github_16">https://github.com/yavski/fab-speed-dial</string>
 
 
     <!-- umeng反馈 -->

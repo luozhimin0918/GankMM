@@ -158,6 +158,10 @@ public class AboutActivity extends BaseActivity {
     void tv_github15() {
         IntentUtils.startToWebActivity(this, null,getString(R.string.github), getString(R.string.github_15));
     }
+    @OnClick(R.id.tv_github16)
+    void tv_github16() {
+        IntentUtils.startToWebActivity(this, null,getString(R.string.github), getString(R.string.github_16));
+    }
 
     @Override
     protected void onResume() {
