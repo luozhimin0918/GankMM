@@ -49,7 +49,7 @@ public class BaseActivity extends AppCompatActivity {
 
     public void showProgressDialog() {
         dissmissProgressDialog();
-        mSVProgressHUD.showWithStatus("加载中...", SVProgressHUD.SVProgressHUDMaskType.BlackCancel);
+        mSVProgressHUD.showWithStatus("加载中...", SVProgressHUD.SVProgressHUDMaskType.Black);
     }
 
     public void showProgressDialog(String message) {
@@ -57,18 +57,18 @@ public class BaseActivity extends AppCompatActivity {
             showProgressDialog();
         } else {
             dissmissProgressDialog();
-            mSVProgressHUD.showWithStatus(message, SVProgressHUD.SVProgressHUDMaskType.BlackCancel);
+            mSVProgressHUD.showWithStatus(message, SVProgressHUD.SVProgressHUDMaskType.Black);
         }
     }
 
     public void showProgressSuccess(String message) {
         dissmissProgressDialog();
-        mSVProgressHUD.showSuccessWithStatus(message, SVProgressHUD.SVProgressHUDMaskType.BlackCancel);
+        mSVProgressHUD.showSuccessWithStatus(message, SVProgressHUD.SVProgressHUDMaskType.Black);
     }
 
     public void showProgressError(String message) {
         dissmissProgressDialog();
-        mSVProgressHUD.showErrorWithStatus(message, SVProgressHUD.SVProgressHUDMaskType.BlackCancel);
+        mSVProgressHUD.showErrorWithStatus(message, SVProgressHUD.SVProgressHUDMaskType.Black);
     }
 
     public void dissmissProgressDialog() {

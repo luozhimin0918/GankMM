@@ -49,7 +49,7 @@ public class ImagePresenterImpl extends BasePresenterImpl<IImageView> implements
                             return;
                         }
                         if (saveBitmapToSD) {
-                            mView.showBasesProgressSuccess("保存成功，保存目录：" + Constants.BasePath);
+                            mView.showBasesProgressSuccess("保存成功，保存目录：\n" + Constants.BasePath);
                         } else {
                             mView.showBasesProgressError(context.getString(R.string.gank_hint_save_pic_fail));
                         }
