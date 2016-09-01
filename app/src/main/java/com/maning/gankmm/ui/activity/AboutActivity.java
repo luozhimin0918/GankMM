@@ -19,6 +19,7 @@ import com.umeng.analytics.MobclickAgent;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 
 public class AboutActivity extends BaseActivity {
 
@@ -158,17 +159,17 @@ public class AboutActivity extends BaseActivity {
         IntentUtils.startToWebActivity(this, null,getString(R.string.github), getString(R.string.github_15));
     }
 
-
-
-    public void onResume() {
+    @Override
+    protected void onResume() {
         super.onResume();
         MobclickAgent.onPageStart(TAG);
-        MobclickAgent.onResume(this);          //统计时长
+        MobclickAgent.onResume(this);       //统计时长
     }
 
-    public void onPause() {
+    @Override
+    protected void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd(TAG);
+        MobclickAgent.onPageStart(TAG);
         MobclickAgent.onPause(this);
     }
 

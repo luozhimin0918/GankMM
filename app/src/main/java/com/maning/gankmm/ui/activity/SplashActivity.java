@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.maning.gankmm.R;
 import com.maning.gankmm.app.MyApplication;
 import com.maning.gankmm.skin.SkinManager;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -48,11 +49,16 @@ public class SplashActivity extends Activity {
     protected void onResume() {
         super.onResume();
         JPushInterface.onResume(this);
+        MobclickAgent.onPageStart("CodesActivity");
+        MobclickAgent.onResume(this);       //统计时长
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         JPushInterface.onPause(this);
+        MobclickAgent.onPageStart("CodesActivity");
+        MobclickAgent.onPause(this);
     }
+
 }

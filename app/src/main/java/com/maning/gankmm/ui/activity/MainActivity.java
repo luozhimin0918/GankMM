@@ -289,12 +289,14 @@ public class MainActivity extends BaseActivity implements IMainView {
         finish();
     }
 
-    public void onResume() {
+    @Override
+    protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);       //统计时长
     }
 
-    public void onPause() {
+    @Override
+    protected void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
     }

@@ -146,11 +146,13 @@ public class WelFareFragment extends BaseFragment implements OnRefreshListener, 
         welFarePresenter.getMoreDatas();
     }
 
+    @Override
     public void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("WelFareFragment");
     }
 
+    @Override
     public void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("WelFareFragment");

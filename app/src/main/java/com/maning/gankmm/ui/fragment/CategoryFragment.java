@@ -102,11 +102,13 @@ public class CategoryFragment extends BaseFragment {
         ButterKnife.unbind(this);
     }
 
+    @Override
     public void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("CategoryFragment");
     }
 
+    @Override
     public void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("CategoryFragment");

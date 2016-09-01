@@ -147,15 +147,17 @@ public class GankActivity extends BaseActivity implements IGankView {
         }
     }
 
-    public void onResume() {
+    @Override
+    protected void onResume() {
         super.onResume();
         MobclickAgent.onPageStart(TAG);
-        MobclickAgent.onResume(this);          //统计时长
+        MobclickAgent.onResume(this);       //统计时长
     }
 
-    public void onPause() {
+    @Override
+    protected void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd(TAG);
+        MobclickAgent.onPageStart(TAG);
         MobclickAgent.onPause(this);
     }
 

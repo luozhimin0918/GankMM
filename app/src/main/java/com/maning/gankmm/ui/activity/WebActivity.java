@@ -219,10 +219,11 @@ public class WebActivity extends BaseActivity implements IWebView {
         super.onBackPressed();
     }
 
-    public void onResume() {
+    @Override
+    protected void onResume() {
         super.onResume();
         MobclickAgent.onPageStart(TAG);
-        MobclickAgent.onResume(this);
+        MobclickAgent.onResume(this);       //统计时长
     }
 
     @Override
@@ -234,6 +235,7 @@ public class WebActivity extends BaseActivity implements IWebView {
         MobclickAgent.onPageEnd(TAG);
         MobclickAgent.onPause(this);
     }
+
 
     @Override
     protected void onDestroy() {

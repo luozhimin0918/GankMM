@@ -36,6 +36,7 @@ import butterknife.OnClick;
 
 public class SettingActivity extends BaseActivity implements ISettingView {
 
+    private static final String TAG = "SettingActivity";
     private Context context;
 
     @Bind(R.id.toolbar)
@@ -343,17 +344,20 @@ public class SettingActivity extends BaseActivity implements ISettingView {
         MySnackbar.makeSnackBarBlack(toolbar, msg);
     }
 
-    public void onResume() {
+    @Override
+    protected void onResume() {
         super.onResume();
-        MobclickAgent.onPageStart("SettingActivity");
-        MobclickAgent.onResume(this);          //统计时长
+        MobclickAgent.onPageStart(TAG);
+        MobclickAgent.onResume(this);       //统计时长
     }
 
-    public void onPause() {
+    @Override
+    protected void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd("SettingActivity");
+        MobclickAgent.onPageStart(TAG);
         MobclickAgent.onPause(this);
     }
+
 
     @Override
     protected void onDestroy() {

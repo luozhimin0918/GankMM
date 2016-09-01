@@ -270,11 +270,13 @@ public class CodesActivity extends BaseActivity implements OnRefreshListener, On
 
     public void onResume() {
         super.onResume();
+        MobclickAgent.onPageStart("CodesActivity");
         MobclickAgent.onResume(this);       //统计时长
     }
 
     public void onPause() {
         super.onPause();
+        MobclickAgent.onPageStart("CodesActivity");
         MobclickAgent.onPause(this);
     }
 
