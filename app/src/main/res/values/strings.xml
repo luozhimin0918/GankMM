@@ -24,7 +24,13 @@
     <string name="github_15">https://github.com/maning0303/SwitcherView</string>
     <string name="github_16">https://github.com/yavski/fab-speed-dial</string>
 
+
     <string name="gank_update_apk">当前版本是最新版</string>
+
+    <string name="hour_before">%d小时前</string>
+    <string name="minute_before">%d分钟前</string>
+    <string name="second_before">%d秒前</string>
+
 
     <!--网络相关-->
     <string name="gank_net_fail">网络出问题啦</string>
