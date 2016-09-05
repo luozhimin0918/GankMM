@@ -2,6 +2,7 @@ package com.maning.gankmm.ui.presenter.impl;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.text.TextUtils;
 import android.text.format.Formatter;
 import android.util.Log;
 
@@ -57,17 +58,21 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
                     //获取当前APP的版本号
                     int newVersion;
                     AppUpdateInfo appUpdateInfo;
-                    try{
+                    try {
                         appUpdateInfo = (AppUpdateInfo) result;
                         newVersion = Integer.parseInt(appUpdateInfo.getBuild());
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         newVersion = 1;
                         appUpdateInfo = new AppUpdateInfo();
                     }
                     if (MyApplication.getVersionCode() < newVersion) {
                         //需要版本更新
-                        if(mView!=null){
+                        if (mView != null) {
                             mView.showAppUpdateDialog(appUpdateInfo);
+                        }
+                    } else {
+                        if (mView != null) {
+                            mView.showToast(context.getResources().getString(R.string.gank_update_apk));
                         }
                     }
 
@@ -77,6 +82,11 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
 
         @Override
         public void onFail(int what, String result) {
+            if(!TextUtils.isEmpty(result)){
+                if (mView != null) {
+                    mView.showToast("检测新版本发生错误");
+                }
+            }
         }
     };
 
@@ -215,7 +225,7 @@ public class SettingPresenterImpl extends BasePresenterImpl<ISettingView> implem
     @Override
     public void initAppUpdateState() {
         boolean isUpdate = SharePreUtil.getBooleanData(context, Constants.SPAppUpdate + MyApplication.getVersionCode(), false);
-        if(mView != null){
+        if (mView != null) {
             mView.setAppUpdateState(isUpdate);
         }
     }

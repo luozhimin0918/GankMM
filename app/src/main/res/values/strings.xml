@@ -24,16 +24,7 @@
     <string name="github_15">https://github.com/maning0303/SwitcherView</string>
     <string name="github_16">https://github.com/yavski/fab-speed-dial</string>
 
-
-    <!-- umeng反馈 -->
-    <string name="feedback">意见反馈</string>
-    <string name="reply_no_empty">反馈内容不能为空</string>
-    <string name="comment_count">评论(%d)</string>
-    <string name="hour_before">%d小时前</string>
-    <string name="minute_before">%d分钟前</string>
-    <string name="second_before">%d秒前</string>
-    <string name="fb_reply_content_default">我是 干货~营 的开发者，有任何问题及建议欢迎吐槽</string>
-    <string name="current">刚刚</string>
+    <string name="gank_update_apk">当前版本是最新版</string>
 
     <!--网络相关-->
     <string name="gank_net_fail">网络出问题啦</string>
