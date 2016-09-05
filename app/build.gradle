@@ -16,9 +16,9 @@ android {
     signingConfigs {//签名信息
         release {
             storeFile file("gank_mm.jks")
-            storePassword "123456"
-            keyAlias "Gank"
-            keyPassword "123456"
+            storePassword rootProject.ext.storePassword
+            keyAlias rootProject.ext.keyAlias
+            keyPassword rootProject.ext.keyPassword
         }
     }
 
