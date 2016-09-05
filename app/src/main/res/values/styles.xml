@@ -42,9 +42,8 @@
         <item name="android:windowBackground">@color/main_color</item>
         <item name="app_background">@color/backgroundColor</item>
         <item name="lineColor">@color/lineColor</item>
-        <item name="item_bg">@color/item_bg</item>
-        <item name="item_setting_bg">@color/item_setting_bg</item>
-        <item name="item_bg_pressed">@color/item_selecter_pressed_color</item>
+        <item name="item_bg">@drawable/item_selecter</item>
+        <item name="item_setting_bg">@drawable/item_setting_selecter</item>
         <item name="setting_text_color">@color/gank_text2_color</item>
         <item name="setting_small_text_color">@color/gank_text3_color</item>
         <item name="app_toolbar_bg">@color/main_color</item>
@@ -86,9 +85,8 @@
         <item name="android:windowBackground">@color/main_color_night</item>
         <item name="app_background">@color/backgroundColor_night</item>
         <item name="lineColor">@color/lineColor_night</item>
-        <item name="item_bg">@color/item_bg_night</item>
-        <item name="item_setting_bg">@color/item_setting_bg_night</item>
-        <item name="item_bg_pressed">@color/item_selecter_pressed_color_night</item>
+        <item name="item_bg">@drawable/item_selecter_night</item>
+        <item name="item_setting_bg">@drawable/item_setting_selecter_night</item>
         <item name="setting_text_color">@color/gank_text2_color_night</item>
         <item name="setting_small_text_color">@color/gank_text3_color_night</item>
         <item name="app_toolbar_bg">@color/main_color_night</item>

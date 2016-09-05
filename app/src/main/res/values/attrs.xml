@@ -27,7 +27,6 @@
     <attr name="toolbar_line_color" format="reference|color" />
     <attr name="item_bg" format="reference|color" />
     <attr name="item_setting_bg" format="reference|color" />
-    <attr name="item_bg_pressed" format="reference|color" />
     <attr name="lineColor" format="reference" />
     <attr name="setting_text_color" format="reference|color" />
     <attr name="setting_small_text_color" format="reference|color" />

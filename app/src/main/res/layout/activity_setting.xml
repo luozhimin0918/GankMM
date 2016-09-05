@@ -98,7 +98,7 @@
             android:id="@+id/item_clean_cache"
             android:layout_width="match_parent"
             android:layout_height="44dp"
-            android:background="@drawable/item_setting_selecter"
+            android:background="?item_setting_bg"
             app:setting_red_dot="false"
             app:setting_right_text="0M"
             app:setting_title="图片缓存" />
@@ -114,7 +114,8 @@
             android:id="@+id/item_feedback"
             android:layout_width="match_parent"
             android:layout_height="44dp"
-            android:background="@drawable/item_setting_selecter"
+            android:visibility="visible"
+            android:background="?item_setting_bg"
             app:setting_red_dot="true"
             app:setting_title="意见反馈" />
 
@@ -130,7 +131,7 @@
             android:id="@+id/item_app_update"
             android:layout_width="match_parent"
             android:layout_height="44dp"
-            android:background="@drawable/item_setting_selecter"
+            android:background="?item_setting_bg"
             app:setting_red_dot="true"
             app:setting_title="版本更新" />
 
