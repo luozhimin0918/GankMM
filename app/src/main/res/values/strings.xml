@@ -27,6 +27,8 @@
 
     <string name="gank_update_apk">当前版本是最新版</string>
 
+
+    <string name="current">刚刚</string>
     <string name="hour_before">%d小时前</string>
     <string name="minute_before">%d分钟前</string>
     <string name="second_before">%d秒前</string>

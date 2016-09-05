@@ -34,12 +34,21 @@
 ![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_night_02.jpg)
 ![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_day_03.jpg)
 ![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_night_03.jpg)
+![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_001.jpg)
+![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_002.jpg)
 
 ##下版本想法：
-##### 1.去掉Umeng自动更新，换一个
+##### 1.首页头条支持配置...
 <br>
 
 ##更新日志：
+###V1.4.0:
+    1.去掉Umeng自动更新，使用fir.im 接口更新检测
+    2.升级Umeng反馈到阿里百川反馈界面
+    3.修复Umeng统计添加错误
+    4.图片浏览添加分享功能
+    5.修复已知Bug
+
 ###V1.3.1:
     1.修复item点击跳转错乱问题
     2.优化MVP模式，添加判空处理
