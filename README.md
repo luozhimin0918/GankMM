@@ -19,6 +19,7 @@
 ####[干货集中营(http://gank.io/)](http://gank.io/)<br>
 
 ##APK下载地址：
+### 豌豆荚，应用宝 市场都已经通过审核，请到市场下载--->搜索：干货营 
 ####[点击下载(http://fir.im/gankmm)](http://fir.im/gankmm)<br>
 ####扫描下载:
 ![](https://github.com/maning0303/GankMM/raw/master/screenshots/gank_ewm.png)
