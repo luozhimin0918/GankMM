@@ -36,10 +36,17 @@ public class GankPresenterImpl extends BasePresenterImpl<IGankView> implements I
             if (dayEntity != null) {
                 DayEntity.ResultsEntity results = dayEntity.getResults();
                 if (results != null) {
-                    try {
+
+                    List<DayEntity.ResultsEntity.福利Entity> 福利 = dayEntity.getResults().get福利();
+                    if (福利 != null && 福利.size() > 0) {
                         String url = dayEntity.getResults().get福利().get(0).getUrl();
                         mView.setProgressBarVisility(View.GONE);
                         mView.showImageView(url);
+                    } else {
+                        mView.setProgressBarVisility(View.GONE);
+                        mView.showToast("糟糕，图片没找到");
+                    }
+                    try {
                         //初始化数据
                         new Thread(new Runnable() {
                             @Override
@@ -50,10 +57,10 @@ public class GankPresenterImpl extends BasePresenterImpl<IGankView> implements I
                     } catch (Exception e) {
                         mView.showToast("抱歉，出错了...");
                     }
-                }else{
+                } else {
                     mView.showToast("抱歉，当天数据没有...");
                 }
-            }else{
+            } else {
                 mView.showToast("抱歉，当天数据没有...");
             }
         }
