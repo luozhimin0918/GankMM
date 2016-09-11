@@ -29,27 +29,38 @@ public class GankPresenterImpl extends BasePresenterImpl<IGankView> implements I
 
         @Override
         public void onSuccess(int what, Object result) {
-            if(mView==null){
+            if (mView == null) {
                 return;
             }
             final DayEntity dayEntity = (DayEntity) result;
             if (dayEntity != null) {
-                String url = dayEntity.getResults().get福利().get(0).getUrl();
-                mView.setProgressBarVisility(View.GONE);
-                mView.showImageView(url);
-                //初始化数据
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        initDatas(dayEntity);
+                DayEntity.ResultsEntity results = dayEntity.getResults();
+                if (results != null) {
+                    try {
+                        String url = dayEntity.getResults().get福利().get(0).getUrl();
+                        mView.setProgressBarVisility(View.GONE);
+                        mView.showImageView(url);
+                        //初始化数据
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                initDatas(dayEntity);
+                            }
+                        }).start();
+                    } catch (Exception e) {
+                        mView.showToast("抱歉，出错了...");
                     }
-                }).start();
+                }else{
+                    mView.showToast("抱歉，当天数据没有...");
+                }
+            }else{
+                mView.showToast("抱歉，当天数据没有...");
             }
         }
 
         @Override
         public void onFail(int what, String result) {
-            if(mView == null){
+            if (mView == null) {
                 return;
             }
             mView.hideBaseProgressDialog();
@@ -169,7 +180,7 @@ public class GankPresenterImpl extends BasePresenterImpl<IGankView> implements I
         MyApplication.getHandler().post(new Runnable() {
             @Override
             public void run() {
-                if(mView!=null){
+                if (mView != null) {
                     mView.setGankList(dayEntityArrayList);
                 }
             }
